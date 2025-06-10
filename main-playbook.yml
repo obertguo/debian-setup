@@ -1,0 +1,28 @@
+---
+- name: Test
+  hosts: localhost
+
+  tasks:
+    - name: Copy tasks to current working directory
+      block:
+        - name: Gather task filenames to copy
+          ansible.builtin.find:
+            paths: ./tasks
+          register: tasks_to_copy
+
+        - name: Copy tasks
+          ansible.builtin.copy:
+            src: "{{ item.path }}"
+            dest: .
+          loop: "{{ tasks_to_copy.files }}"
+          loop_control: 
+            label: "{{ item.path }}"
+          register: copy_tasks_output
+
+
+
+
+  
+
+
+

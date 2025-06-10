@@ -1,0 +1,8 @@
+---
+ansible_connection: local
+
+tasks_to_run:
+- apt.yml
+
+apt-packages:
+- flatpak
