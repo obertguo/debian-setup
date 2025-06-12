@@ -1,8 +1,12 @@
 ---
 ansible_connection: local
 
-tasks_to_run:
-- apt.yml
+gpg_keys_to_install:
+- gpg_key_url: https://packages.microsoft.com/keys/microsoft.asc
+  keyring_name: microsoft-archive-keyring
 
-apt-packages:
-- flatpak
+apt_packages_to_install:
+- curl
+- wget
+- git
+- python3

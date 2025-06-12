@@ -1,0 +1,10 @@
+---
+- name: Install GPG keys
+  ansible.builtin.shell:
+    cmd: > 
+      curl {{ item.gpg_key_url }} | 
+      gpg --dearmor | 
+      sudo tee /usr/share/keyrings/{{ item.keyring_name }}.gpg > /dev/null
+  loop: "{{ gpg_keys_to_install }}"
+  become: true
+  
