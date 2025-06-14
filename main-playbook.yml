@@ -3,6 +3,7 @@
   hosts: localhost
 
   tasks:
+<<<<<<< HEAD
     - name: Copy tasks to current working directory
       block:
         - name: Gather task filenames to copy
@@ -26,3 +27,14 @@
 
 
 
+=======
+    - name: Determine if GPG keys needs to be added
+      ansible.builtin.shell:
+        cmd: apt list -qq code
+      register: output
+      ignore_errors: true
+
+    - name: echo
+      ansible.builtin.debug:
+        msg: "{{ output.stdout | length == 0}}"
+>>>>>>> c15b984 (fix)

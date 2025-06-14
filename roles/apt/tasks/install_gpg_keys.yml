@@ -1,4 +1,10 @@
 ---
+- name: Determine if apt package repository needs to be added
+  ansible.builtin.shell:
+    cmd: apt list -qq {{ item.package_name }}
+  register: apt_output
+  ignore_errors: true
+
 - name: Add GPG keys
   ansible.builtin.shell:
     cmd: > 
@@ -6,11 +12,13 @@
       gpg --dearmor | 
       sudo tee /usr/share/keyrings/{{ item.keyring_name }}.gpg > /dev/null
   become: true
+  when: apt_output.stdout | length == 0
 
 - name: Register architechture version
   ansible.builtin.shell:
     cmd: dpkg --print-architecture
   register: arch
+  when: apt_output.stdout | length == 0
 
 - name: Add apt repository source
   ansible.builtin.shell:
@@ -19,3 +27,4 @@
       signed-by=/usr/share/keyrings/{{ item.keyring_name }}.gpg] {{ item.apt_repo_url }} stable main' |
       sudo tee /etc/apt/sources.list.d/{{ item.package_name }}.list
   become: true
+  when: apt_output.stdout | length == 0

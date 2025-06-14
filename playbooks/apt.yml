@@ -6,6 +6,10 @@
     - name: Debug
       ansible.builtin.debug:
         msg: "test"
+<<<<<<< HEAD
+=======
+
+>>>>>>> c15b984 (fix)
     - name: Install apt packages
       ansible.builtin.apt:
         name: "{{ item }}"
@@ -14,6 +18,10 @@
       loop_control: 
         label: "{{ item }}"
       become: true
+<<<<<<< HEAD
+=======
+
+>>>>>>> c15b984 (fix)
     - name: Install GPG keys and apt repos
       ansible.builtin.include_role:
         name: apt
@@ -21,7 +29,23 @@
       loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
       loop_control:
         label: "{{ item.package_name }}"
+<<<<<<< HEAD
     - name: Update apt repositories
       ansible.builtin.apt:
         update_cache: true
+=======
+
+    - name: Update apt repositories
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+
+    - name: Install additional apt packages
+      ansible.builtin.apt:
+        name: "{{ item.package_name }}"
+        state: present
+      loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
+      loop_control: 
+        label: "{{ item.package_name }}"
+>>>>>>> c15b984 (fix)
       become: true

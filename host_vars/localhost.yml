@@ -4,8 +4,13 @@ ansible_connection: local
 gpg_keys_to_install:
 - gpg_key_url: https://packages.microsoft.com/keys/microsoft.asc
   keyring_name: microsoft-archive-keyring
+<<<<<<< HEAD
   apt_repo_url: https://packages.microsoft.com/code
   package_name: vscode
+=======
+  apt_repo_url: https://packages.microsoft.com/repos/code
+  package_name: code
+>>>>>>> c15b984 (fix)
 
 apt_packages_to_install:
 - curl
