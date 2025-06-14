@@ -1,6 +1,6 @@
 # Debian-Setup
 A collection of Ansible and bash scripts for setting up a personal Debian environment from scratch.
-# Overview
+## Overview
 1. Download/clone this repository onto your Debian environment. 
 2. Execute `su -` to login as su, and run `add-to-sudoers.sh YOUR_USERNAME` to add YOUR_USERNAME to the sudoers group. This allows sudo commands to be run when logged in as YOUR_USERNAME.
 3. Run `setup.sh` to install Python and setup an Ansible virtual environment.
