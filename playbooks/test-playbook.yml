@@ -1,0 +1,13 @@
+---
+- name: Test
+  hosts: localhost
+
+  tasks:
+    - name: Invoke Gitconfig dotfiles role
+      ansible.builtin.include_role:
+        name: dotfiles
+        tasks_from: gitconfig
+      vars:
+        GITHUB_USERNAME: "{{ lookup('ansible.builtin.env', 'GITHUB_USERNAME') }}"
+        GITHUB_PAT: "{{ lookup('ansible.builtin.env', 'GITHUB_PAT') }}"
+        GITHUB_EMAIL: "{{ lookup('ansible.builtin.env', 'GITHUB_EMAIL') }}"
