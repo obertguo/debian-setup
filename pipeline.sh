@@ -6,18 +6,11 @@ call_playbook() {
   SUDO_PASSWORD=$2
 
   cp "./playbooks/${PLAYBOOK}" .
-<<<<<<< HEAD
-  ansible-playbook -i ./inventory/inventory.ini $PLAYBOOK --extra-vars ansible_sudo_pass=${SUDO_PASSWORD}
-  if [ $? -ne 0 ]
-  then
-    echo "Failed to run ${PLAYBOOK}"
-=======
   ansible-playbook -v -i ./inventory/inventory.ini $PLAYBOOK --extra-vars ansible_sudo_pass=${SUDO_PASSWORD}
   if [ $? -ne 0 ]
   then
     echo "Failed to run ${PLAYBOOK}"
     rm $PLAYBOOK 
->>>>>>> c15b984 (fix)
     exit 1
   fi
   

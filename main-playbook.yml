@@ -3,31 +3,6 @@
   hosts: localhost
 
   tasks:
-<<<<<<< HEAD
-    - name: Copy tasks to current working directory
-      block:
-        - name: Gather task filenames to copy
-          ansible.builtin.find:
-            paths: ./tasks
-          register: tasks_to_copy
-
-        - name: Copy tasks
-          ansible.builtin.copy:
-            src: "{{ item.path }}"
-            dest: .
-          loop: "{{ tasks_to_copy.files }}"
-          loop_control: 
-            label: "{{ item.path }}"
-          register: copy_tasks_output
-
-
-
-
-  
-
-
-
-=======
     - name: Determine if GPG keys needs to be added
       ansible.builtin.shell:
         cmd: apt list -qq code
@@ -37,4 +12,3 @@
     - name: echo
       ansible.builtin.debug:
         msg: "{{ output.stdout | length == 0}}"
->>>>>>> c15b984 (fix)
