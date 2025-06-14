@@ -1,0 +1,8 @@
+    - name: Cleanup playbooks in current working directory
+      ansible.builtin.file:
+        path: "{{ item.dest }}"
+        state: absent
+      loop: "{{ copy_playbooks_output.results }}"
+      loop_control: 
+        label: "{{ item.dest }}"
+      when: copy_playbooks_output is defined

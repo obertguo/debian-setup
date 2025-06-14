@@ -1,0 +1,14 @@
+---
+- name: Test
+  hosts: localhost
+
+  tasks:
+    - name: Determine if GPG keys needs to be added
+      ansible.builtin.shell:
+        cmd: apt list -qq code
+      register: output
+      ignore_errors: true
+
+    - name: echo
+      ansible.builtin.debug:
+        msg: "{{ output.stdout | length == 0}}"

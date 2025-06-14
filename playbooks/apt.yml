@@ -1,0 +1,39 @@
+---
+- name: Example
+  hosts: localhost
+
+  tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "test"
+
+    - name: Install apt packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ hostvars.localhost.apt_packages_to_install }}"
+      loop_control: 
+        label: "{{ item }}"
+      become: true
+
+    - name: Install GPG keys and apt repos
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: install_gpg_keys
+      loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
+      loop_control:
+        label: "{{ item.package_name }}"
+
+    - name: Update apt repositories
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+
+    - name: Install additional apt packages
+      ansible.builtin.apt:
+        name: "{{ item.package_name }}"
+        state: present
+      loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
+      loop_control: 
+        label: "{{ item.package_name }}"
+      become: true
