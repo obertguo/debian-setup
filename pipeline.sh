@@ -1,6 +1,6 @@
 #!/bin/bash
 PLAYBOOKS_TO_RUN=("apt.yml" "test-playbook.yml")
-PLAYBOOKS_TO_RUN=("test-playbook.yml")
+# PLAYBOOKS_TO_RUN=("test-playbook.yml")
 
 call_playbook() {
   PLAYBOOK=$1
@@ -21,9 +21,9 @@ call_playbook() {
 
 run_pipeline() {
   # Load Ansible
-  . ./ansible-venv/bin/activate
+  . ./ansible-venv/bin/activate || exit 1
   # Load user credentials into current shell session
-  . ./.env
+  . ./.env || exit 1
 
   SUDO_PASSWORD=""
   read -s -p "Enter sudo password to allow privileged playbook execution: " SUDO_PASSWORD

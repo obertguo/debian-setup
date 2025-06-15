@@ -11,4 +11,8 @@ apt_packages_to_install:
 - curl
 - wget
 - git
+- bash-completion
 - python3
+- nodejs
+- npm
+- default-jdk
