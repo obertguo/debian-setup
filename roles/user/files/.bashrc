@@ -102,7 +102,7 @@ PS1_PROMPT_ERRCODE() {
 if [ "$color_prompt" = yes ]; then
     # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     PROMPT_COMMAND=PS1_PROMPT_ERRCODE    
-    PS1="$bldred"'[$PROMPT_ERRCODE]'"$txtgrn${debian_chroot:+($debian_chroot)}$bldgrn\u@\h$txtrst:$bldcyn\w$txtrst\$ "
+    PS1="$bldred"'[$PROMPT_ERRCODE]'"$txtgrn${debian_chroot:+($debian_chroot)}$bldgrn\u$txtrst:$bldblu\w$txtrst\$ "
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
