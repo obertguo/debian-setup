@@ -1,0 +1,13 @@
+{
+    "redhat.telemetry.enabled": false,
+    "ansible.validation.lint.path": "/home/og185034/.local/bin",
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "editor.stickyScroll.enabled": false,
+    "workbench.colorTheme": "Atom One Dark",
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": false
+}

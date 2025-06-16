@@ -21,3 +21,8 @@ apt_packages_to_install:
 - nodejs
 - npm
 - default-jdk
+
+# VS Code extension names can be listed by running `code --list-extensions` and 
+# be placed here to be installed with `code --install-extension EXTENSION_NAME` 
+vscode_extensions:
+- akamud.vscode-theme-onedark

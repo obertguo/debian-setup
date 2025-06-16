@@ -1,0 +1,14 @@
+- name: Verify that VS code is installed
+  ansible.builtin.apt:
+    name: code
+    state: present
+  become: true
+
+- name: Install VS code extensions
+  ansible.builtin.command: code --install-extension "{{ item }}"
+  loop: "{{ vscode_extensions }}"
+  when: "vscode_extensions is defined"
+
+- name: Copy user configurations for VS code
+  ansible.builtin.debug:
+    msg: "Test"  
