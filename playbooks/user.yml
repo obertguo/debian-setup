@@ -1,0 +1,18 @@
+---
+- name: Playbook to setup user configurations
+  hosts: localhost
+
+  tasks:
+    - name: Backup existing user bashrc and copy over an updated one
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: bashrc
+
+    - name: Template and copy gitconfig to user home directory
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: gitconfig
+      vars:
+        GITHUB_USERNAME: "{{ lookup('ansible.builtin.env', 'GITHUB_USERNAME') }}"
+        GITHUB_PAT: "{{ lookup('ansible.builtin.env', 'GITHUB_PAT') }}"
+        GITHUB_EMAIL: "{{ lookup('ansible.builtin.env', 'GITHUB_EMAIL') }}"

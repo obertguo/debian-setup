@@ -1,8 +1,26 @@
 ---
-- name: Example
+- name: Playbook to add apt repos and install apt packages
   hosts: localhost
 
   tasks:
+    - name: Update apt repositories
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+
+    - name: Add apt repos
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: add_apt
+      loop: "{{ hostvars.localhost.apt_repos_to_add }}"
+      loop_control:
+        label: "{{ item.package_name }}"
+
+    - name: Update apt repositories after adding apt repos
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+
     - name: Install apt packages
       ansible.builtin.apt:
         name: "{{ item }}"
@@ -10,26 +28,4 @@
       loop: "{{ hostvars.localhost.apt_packages_to_install }}"
       loop_control: 
         label: "{{ item }}"
-      become: true
-      
-    - name: Install GPG keys and apt repos
-      ansible.builtin.include_role:
-        name: apt
-        tasks_from: install_gpg_keys
-      loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
-      loop_control:
-        label: "{{ item.package_name }}"
-
-    - name: Update apt repositories
-      ansible.builtin.apt:
-        update_cache: true
-      become: true
-
-    - name: Install additional apt packages
-      ansible.builtin.apt:
-        name: "{{ item.package_name }}"
-        state: present
-      loop: "{{ hostvars.localhost.gpg_keys_to_install }}"
-      loop_control: 
-        label: "{{ item.package_name }}"
       become: true

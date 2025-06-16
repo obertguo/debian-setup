@@ -1,0 +1,13 @@
+---
+- name: Assert required GITHUB variables are defined
+  ansible.builtin.assert:
+    that: 
+      - "GITHUB_USERNAME is defined and GITHUB_USERNAME | length > 0"
+      - "GITHUB_EMAIL is defined and GITHUB_EMAIL | length > 0"
+      - "GITHUB_PAT is defined and GITHUB_PAT | length > 0"
+    fail_msg: "Required GITHUB variables are not defined"
+
+- name: Template and copy .gitconfig to user home directory
+  ansible.builtin.template:
+    src: ./templates/.gitconfig.j2
+    dest: ~/.gitconfig

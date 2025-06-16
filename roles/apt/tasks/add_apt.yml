@@ -1,0 +1,49 @@
+---
+- name: Assert required variables are defined
+  ansible.builtin.assert:
+    that: 
+      - item.package_name is defined and item.package_name | length > 0
+      - item.key_url is defined and item.key_url | length > 0
+      - item.source_list_name is defined and item.source_list_name | length > 0
+
+- name: Determine if apt repository needs to be added for package "{{ item.package_name}}"
+  ansible.builtin.shell:
+    cmd: apt list -qq {{ item.package_name }}
+  register: apt_output
+  ignore_errors: true
+
+- name: Add key for the apt repository
+  ansible.builtin.get_url:
+    url: "{{ item.key_url }}"
+    dest: /etc/apt/keyrings/{{ item.key_filename }}
+  become: true
+  when: 
+    - apt_output.stdout | length == 0
+    - item.key_url is defined and item.key_url | length > 0
+    - item.key_filename is defined and item.key_filename | length > 0
+
+- name: Register architechture version
+  ansible.builtin.shell:
+    cmd: dpkg --print-architecture
+  register: arch
+  when: apt_output.stdout | length == 0
+
+- name: Add apt repository to sources list (no key)
+  ansible.builtin.apt_repository:
+    repo: deb {{ item.apt_repo_url }} {{ item.sources_list_suite_name | default(ansible_distribution_release, true) }} {{ item.sources_list_components }}
+    filename: "{{ item.source_list_name }}"
+    state: present
+  become: true
+  when:
+    - apt_output.stdout | length == 0
+    - item.key_filename is undefined or item.key_filename | length == 0
+
+- name: Add apt repository to sources list (with key)
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ arch.stdout }} signed-by=/etc/apt/keyrings/{{ item.key_filename }}] {{ item.apt_repo_url }} {{ item.sources_list_suite_name | default(ansible_distribution_release, true) }} {{ item.sources_list_components }}"
+    filename: "{{ item.source_list_name }}"    
+    state: present
+  become: true
+  when: 
+    - apt_output.stdout | length == 0
+    - item.key_filename is defined and item.key_filename | length > 0

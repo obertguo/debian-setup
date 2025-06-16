@@ -1,0 +1,10 @@
+---
+- name: Backup existing user bashrc
+  ansible.builtin.copy:
+    src: ~/.bashrc
+    dest: ~/.bashrc-old
+
+- name: Copy over updated bashrc to user home directory
+  ansible.builtin.copy:
+    src: ./files/.bashrc
+    dest: ~/.bashrc

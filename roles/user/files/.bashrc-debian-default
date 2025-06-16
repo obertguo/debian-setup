@@ -2,9 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# SET USER VARIABLES
-export GIT_PAT="your_github_pat_here"
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
