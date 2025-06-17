@@ -1,0 +1,15 @@
+{
+    "latex-workshop.view.pdf.viewer": "tab",
+    "redhat.telemetry.enabled": false,
+    "ansible.python.activationScript": "~/debian-setup/ansible-venv/bin/activate",
+    "editor.bracketPairColorization.enabled": true,
+    "workbench.colorTheme": "Atom One Dark",
+    "editor.rulers": [
+        120
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.stickyScroll.enabled": false,
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": false
+}

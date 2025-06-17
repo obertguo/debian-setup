@@ -1,3 +1,4 @@
+---
 - name: Verify that VS code is installed
   ansible.builtin.apt:
     name: code
@@ -9,6 +10,12 @@
   loop: "{{ vscode_extensions }}"
   when: "vscode_extensions is defined"
 
-- name: Copy user configurations for VS code
-  ansible.builtin.debug:
-    msg: "Test"  
+- name: Copy user settings.json for VS code
+  ansible.builtin.copy:
+    src: "./files/vscode-settings-final.json"
+    dest: "~/.config/Code/User/settings.json"
+
+- name: Copy user keybindings.json for VS code
+  ansible.builtin.copy:
+    src: "./files/vscode-keybindings-final.json"
+    dest: "~/.config/Code/User/keybindings.json"

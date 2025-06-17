@@ -1,0 +1,11 @@
+---
+- name: Copy over all items inside fonts to the usr fonts folder
+  ansible.builtin.copy:
+    src: './files/fonts/'
+    dest: '/usr/local/share/fonts/'
+  become: true
+
+- name: Force reload font cache
+  ansible.builtin.command: fc-cache -f -v
+  become: true
+  

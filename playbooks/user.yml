@@ -16,3 +16,15 @@
         GITHUB_USERNAME: "{{ lookup('ansible.builtin.env', 'GITHUB_USERNAME') }}"
         GITHUB_PAT: "{{ lookup('ansible.builtin.env', 'GITHUB_PAT') }}"
         GITHUB_EMAIL: "{{ lookup('ansible.builtin.env', 'GITHUB_EMAIL') }}"
+
+    - name: Add additional fonts
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: fonts
+
+    - name: Add VS code extensions and settings
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: vscode
+      vars:
+        vscode_extensions: "{{ hostvars.localhost.vscode_extensions }}"
