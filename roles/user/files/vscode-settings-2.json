@@ -1,0 +1,15 @@
+{
+    "latex-workshop.view.pdf.viewer": "tab",
+    "editor.bracketPairColorization.enabled": false,
+    "workbench.colorTheme": "Solarized Dark",
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "remote.SSH.remotePlatform": {
+        "cs136": "linux"
+    },
+    "editor.rulers": [
+        120
+    ],
+    "editor.wordWrap": "wordWrapColumn"
+}
