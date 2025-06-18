@@ -6,5 +6,5 @@
 
 - name: Copy over updated bashrc to user home directory
   ansible.builtin.copy:
-    src: ./files/.bashrc
+    src: ./files/.bashrc-final
     dest: ~/.bashrc

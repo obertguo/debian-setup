@@ -1,6 +1,6 @@
 #!/bin/bash
 PLAYBOOKS_TO_RUN=("apt.yml" "user.yml")
-PLAYBOOKS_TO_RUN=("test-playbook.yml")
+# PLAYBOOKS_TO_RUN=("test-playbook.yml")
 
 call_playbook() {
   PLAYBOOK=$1

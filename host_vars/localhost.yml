@@ -17,6 +17,7 @@ apt_packages_to_install:
 - git
 - bash-completion
 - code
+- texlive
 - python3
 - nodejs
 - npm
