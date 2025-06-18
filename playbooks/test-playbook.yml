@@ -6,4 +6,4 @@
     - name: Test
       ansible.builtin.include_role:
         name: programs
-        tasks_from: texlive
+        tasks_from: intellij

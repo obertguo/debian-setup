@@ -10,6 +10,7 @@
     cmd: wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
   args: 
     chdir: ./tmp
+  no_log: true
 
 - name: Extract texlive package
   ansible.builtin.shell: 
@@ -26,7 +27,7 @@
 - name: Register texlive folder name
   ansible.builtin.shell: 
     cmd: ls . | grep install-tl-2*
-  register: texlive_folder_name
+  register: texlive_foldername
   args:
     chdir: ./tmp
 
@@ -35,4 +36,6 @@
     cmd: perl ./install-tl --no-interaction 
   become: true
   args:
-    chdir: "./tmp/{{ texlive_folder_name.stdout }}"
+    chdir: "./tmp/{{ texlive_foldername.stdout }}"
+
+# To do: Follow post installation steps and set PATH as shown in MOP

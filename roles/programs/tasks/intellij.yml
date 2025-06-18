@@ -1,0 +1,33 @@
+---
+- name: Create a tmp directory
+  ansible.builtin.file:
+    path: ./tmp
+    state: directory
+
+- name: Download IntelliJ Idea package to tmp directory
+  ansible.builtin.shell:
+    cmd: wget {{ intellij_download_url }}
+  args:
+    chdir: ./tmp
+  no_log: true
+
+- name: Register IntelliJ Idea package name
+  ansible.builtin.shell:
+    cmd: ls . | grep idea 
+  register: idea_filename
+  args:
+    chdir: ./tmp
+
+- name: Unarchive IntelliJ package
+  ansible.builtin.unarchive:
+    src: ./tmp/{{ idea_filename.stdout }}
+    dest: ./tmp
+
+- name: Register IntelliJ Idea folder name
+  ansible.builtin.shell:
+    cmd: ls -d */ | grep idea 
+  register: idea_foldername
+  args:
+    chdir: ./tmp
+
+# IntelliJ can now be run with bash ./tmp/{{ idea_foldername }}/bin/idea.sh

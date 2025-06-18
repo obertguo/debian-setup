@@ -1,0 +1,22 @@
+---
+- name: Playbook to install user programs
+  hosts: localhost
+
+  tasks: 
+    - name: Install IntelliJ Idea
+      ansible.builtin.include_role:
+        name: programs
+        taks_from: intellij
+
+    - name: Attempt to install TexLive for LaTeX support (may take hours)
+      block:
+        - name: Install TexLive
+          ansible.builtin.include_role:
+            name: programs
+            tasks_from: texlive
+      rescue:
+        - name: Remove failed TexLive installation
+          ansible.builtin.file:
+            path: /usr/local/texlive
+            state: absent
+    
