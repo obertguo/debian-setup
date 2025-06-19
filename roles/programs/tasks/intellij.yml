@@ -13,36 +13,30 @@
 
 - name: Register IntelliJ Idea package name
   ansible.builtin.shell:
-    cmd: ls . | grep idea 
+    cmd: ls . | grep idea.*\.tar\.gz
   register: idea_filename
   args:
     chdir: ./tmp
 
-- name: Unarchive IntelliJ package
+- name: Unarchive IntelliJ package to /usr/local
   ansible.builtin.unarchive:
     src: ./tmp/{{ idea_filename.stdout }}
-    dest: ./tmp
+    dest: /usr/local
+  become: true
 
 - name: Register IntelliJ Idea folder name
   ansible.builtin.shell:
-    cmd: ls -d */ | grep idea 
+    cmd: ls -d */ | grep idea
   register: idea_foldername
   args:
-    chdir: ./tmp
-
-- name: Move IntelliJ folder to /usr/local
-  ansible.builtin.copy:
-    src: ./tmp/{{ idea_foldername.stdout }}/
-    dest: /usr/local/{{ idea_foldername.stdout }}/
-  become: true
+    chdir: /usr/local
 
 - name: Check if IntelliJ bin folder is in user .env PATH
   ansible.builtin.lineinfile:
     state: absent
     path: ~/.env
-    regexp: "^export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
   check_mode: true
-  changed_when: false
   register: intellij_path_check
 
 - name: Add IntelliJ bin folder to user .env PATH if not present
@@ -52,4 +46,4 @@
     line: export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin
   when: intellij_path_check.found == 0
 
-# IntelliJ can now be run with bash ./tmp/{{ idea_foldername }}/bin/idea.sh
+# IntelliJ can be run by executing `idea` in a shell. (Requires a new terminal session)

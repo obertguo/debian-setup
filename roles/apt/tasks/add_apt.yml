@@ -6,7 +6,7 @@
       - item.key_url is defined and item.key_url | length > 0
       - item.source_list_name is defined and item.source_list_name | length > 0
 
-- name: Determine if apt repository needs to be added for package "{{ item.package_name}}"
+- name: Determine if apt repository needs to be added for package {{ item.package_name}}
   ansible.builtin.shell:
     cmd: apt list -qq {{ item.package_name }}
   register: apt_output

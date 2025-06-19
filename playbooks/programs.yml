@@ -3,10 +3,18 @@
   hosts: localhost
 
   tasks: 
-    - name: Install IntelliJ Idea
-      ansible.builtin.include_role:
-        name: programs
-        taks_from: intellij
+    - name: Install IntelliJ Idea if not installed
+      block:
+        - name: Check if IntelliJ Idea is already installed
+          ansible.builtin.shell:
+            cmd: which idea | wc -l
+          register: intellij_installed_check
+
+        - name: Install IntelliJ Idea
+          ansible.builtin.include_role:
+            name: programs
+            tasks_from: intellij
+          when: intellij_installed_check.stdout | int == 0
 
     - name: Attempt to install TexLive for LaTeX support (may take hours)
       block:
