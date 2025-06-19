@@ -22,12 +22,6 @@
     - item.key_url is defined and item.key_url | length > 0
     - item.key_filename is defined and item.key_filename | length > 0
 
-- name: Register architechture version
-  ansible.builtin.shell:
-    cmd: dpkg --print-architecture
-  register: arch
-  when: apt_output.stdout | length == 0
-
 - name: Add apt repository to sources list (no key)
   ansible.builtin.apt_repository:
     repo: deb {{ item.apt_repo_url }} {{ item.sources_list_suite_name | default(ansible_distribution_release, true) }} {{ item.sources_list_components }}
@@ -40,7 +34,7 @@
 
 - name: Add apt repository to sources list (with key)
   ansible.builtin.apt_repository:
-    repo: "deb [arch={{ arch.stdout }} signed-by=/etc/apt/keyrings/{{ item.key_filename }}] {{ item.apt_repo_url }} {{ item.sources_list_suite_name | default(ansible_distribution_release, true) }} {{ item.sources_list_components }}"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/{{ item.key_filename }}] {{ item.apt_repo_url }} {{ item.sources_list_suite_name | default(ansible_distribution_release, true) }} {{ item.sources_list_components }}"
     filename: "{{ item.source_list_name }}"    
     state: present
   become: true

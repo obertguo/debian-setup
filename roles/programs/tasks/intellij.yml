@@ -30,4 +30,26 @@
   args:
     chdir: ./tmp
 
+- name: Move IntelliJ folder to /usr/local
+  ansible.builtin.copy:
+    src: ./tmp/{{ idea_foldername.stdout }}/
+    dest: /usr/local/{{ idea_foldername.stdout }}/
+  become: true
+
+- name: Check if IntelliJ bin folder is in user .env PATH
+  ansible.builtin.lineinfile:
+    state: absent
+    path: ~/.env
+    regexp: "^export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
+  check_mode: true
+  changed_when: false
+  register: intellij_path_check
+
+- name: Add IntelliJ bin folder to user .env PATH if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin
+  when: intellij_path_check.found == 0
+
 # IntelliJ can now be run with bash ./tmp/{{ idea_foldername }}/bin/idea.sh
