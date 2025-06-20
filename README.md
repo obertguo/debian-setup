@@ -7,3 +7,10 @@ A collection of Ansible and bash scripts for setting up a personal Debian enviro
 4. Configure `host_vars/localhost.yml` if needed, and configure `.env` with user related configuration/credentials.
 5. Run `pipeline.sh` with bash to begin running Ansible playbooks. The playbooks are executed in order as defined in the `PLAYBOOKS_TO_RUN` array in the pipeline script.
 
+# To-Dos
+- Consolidate setup scripts into one master setup script
+- Add maintanence scripts (e.g., package updates, archiving/backups, regular config syncing, add some cron jobs, etc)
+- Look into Ansible vault for better credential management
+- Utilize Ansible tags to run certain playbooks
+- Run Ansible tasks in parallel and run playbooks in parallel through bash
+- Add handlers, rescues/always, etc, for cleanup and redundancy
