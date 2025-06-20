@@ -12,12 +12,12 @@ call_playbook() {
   then
     echo "Failed to run ${PLAYBOOK}"
     rm $PLAYBOOK
-    # if [ -d ./tmp ]; then rm -rf ./tmp; fi
+    if [ -d ./tmp ]; then rm -rf ./tmp; fi
     exit 1
   fi
   
   echo "Succesfully ran ${PLAYBOOK}"
-  # if [ -d ./tmp ]; then rm -rf ./tmp; fi
+  if [ -d ./tmp ]; then rm -rf ./tmp; fi
   rm $PLAYBOOK 
 }
 

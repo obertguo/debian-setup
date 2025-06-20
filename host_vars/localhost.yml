@@ -24,6 +24,10 @@ apt_packages_to_install:
 - git
 - code
 - python3
+- nautilus
+- nautilus-extension-gnome-terminal
+- gnome-text-editor
+- chromium
 # - nodejs
 # - npm
 # - default-jdk
@@ -31,16 +35,16 @@ apt_packages_to_install:
 # VS Code extension names can be listed by running `code --list-extensions` and 
 # be placed here to be installed with `code --install-extension EXTENSION_NAME` 
 vscode_extensions:
-# - akamud.vscode-theme-onedark
-# - james-yu.latex-workshop
-# - streetsidesoftware.code-spell-checker
-# - ms-python.debugpy
-# - ms-python.isort
-# - ms-python.python
-# - ms-python.vscode-pylance
-# - ms-vscode.cpptools
-# - ms-vscode.cpptools-extension-pack
-# - ms-vscode.cpptools-themes
-# - ms-vscode.cmake-tools
-# - redhat.ansible
-# - redhat.vscode-yaml
+- akamud.vscode-theme-onedark
+- james-yu.latex-workshop
+- streetsidesoftware.code-spell-checker
+- ms-python.debugpy
+- ms-python.isort
+- ms-python.python
+- ms-python.vscode-pylance
+- ms-vscode.cpptools
+- ms-vscode.cpptools-extension-pack
+- ms-vscode.cpptools-themes
+- ms-vscode.cmake-tools
+- redhat.ansible
+- redhat.vscode-yaml

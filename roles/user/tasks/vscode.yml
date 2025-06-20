@@ -10,6 +10,11 @@
   loop: "{{ vscode_extensions | default([], true) }}"
   when: vscode_extensions is defined
 
+- name: Create VSCode config folder if it does not exist
+  ansible.builtin.file:
+    path: ~/.config/Code/
+    state: directory
+
 - name: Copy user settings.json for VS code
   ansible.builtin.copy:
     src: "./files/vscode-settings-final.json"
