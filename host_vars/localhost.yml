@@ -11,31 +11,36 @@ apt_repos_to_add:
   sources_list_suite_name: stable
   sources_list_components: main
 
+# Remove any pre-installed apt pacakges
+apt_packages_to_remove:
+- gnome-games
+- libreoffice*
+
+# Install user apt packages
 apt_packages_to_install:
 - curl
 - wget
-- git
 - bash-completion
+- git
 - code
-- texlive
 - python3
-- nodejs
-- npm
-- default-jdk
+# - nodejs
+# - npm
+# - default-jdk
 
 # VS Code extension names can be listed by running `code --list-extensions` and 
 # be placed here to be installed with `code --install-extension EXTENSION_NAME` 
 vscode_extensions:
-- akamud.vscode-theme-onedark
-- james-yu.latex-workshop
-- streetsidesoftware.code-spell-checker
-- ms-python.debugpy
-- ms-python.isort
-- ms-python.python
-- ms-python.vscode-pylance
-- ms-vscode.cpptools
-- ms-vscode.cpptools-extension-pack
-- ms-vscode.cpptools-themes
-- ms-vscode.cmake-tools
-- redhat.ansible
-- redhat.vscode-yaml
+# - akamud.vscode-theme-onedark
+# - james-yu.latex-workshop
+# - streetsidesoftware.code-spell-checker
+# - ms-python.debugpy
+# - ms-python.isort
+# - ms-python.python
+# - ms-python.vscode-pylance
+# - ms-vscode.cpptools
+# - ms-vscode.cpptools-extension-pack
+# - ms-vscode.cpptools-themes
+# - ms-vscode.cmake-tools
+# - redhat.ansible
+# - redhat.vscode-yaml

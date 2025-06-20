@@ -1,5 +1,5 @@
 ---
-- name: Playbook to add apt repos and install apt packages
+- name: Playbook for apt setup (add repos, remove and install packages)
   hosts: localhost
 
   tasks:
@@ -8,7 +8,16 @@
         update_cache: true
       become: true
 
-    - name: Add apt repos
+    - name: Remove pre-installed apt packages and its dependencies
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: absent
+        purge: true
+        autoremove: true
+      become: true
+      loop: "{{ hostvars.localhost.apt_packages_to_remove }}"
+
+    - name: Add user apt repos
       ansible.builtin.include_role:
         name: apt
         tasks_from: add_apt
@@ -16,12 +25,12 @@
       loop_control:
         label: "{{ item.package_name }}"
 
-    - name: Update apt repositories after adding apt repos
+    - name: Update apt repositories after adding user apt repos
       ansible.builtin.apt:
         update_cache: true
       become: true
 
-    - name: Install apt packages
+    - name: Install user apt packages
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present

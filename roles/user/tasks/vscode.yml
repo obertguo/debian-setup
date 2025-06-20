@@ -7,8 +7,8 @@
 
 - name: Install VS code extensions
   ansible.builtin.command: code --install-extension "{{ item }}"
-  loop: "{{ vscode_extensions }}"
-  when: "vscode_extensions is defined"
+  loop: "{{ vscode_extensions | default([], true) }}"
+  when: vscode_extensions is defined
 
 - name: Copy user settings.json for VS code
   ansible.builtin.copy:

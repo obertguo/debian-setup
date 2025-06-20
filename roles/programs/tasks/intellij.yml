@@ -6,7 +6,7 @@
 
 - name: Download IntelliJ Idea package to tmp directory
   ansible.builtin.shell:
-    cmd: wget {{ intellij_download_url }}
+    cmd: wget --no-check-certificate {{ intellij_download_url }}
   args:
     chdir: ./tmp
   no_log: true

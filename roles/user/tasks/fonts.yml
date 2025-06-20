@@ -8,4 +8,5 @@
 - name: Force reload font cache
   ansible.builtin.command: fc-cache -f -v
   become: true
+  no_log: true
   
