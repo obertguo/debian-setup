@@ -1,2 +1,64 @@
 ---
-- name: Fetch
+- name: Create a tmp directory
+  ansible.builtin.file:
+    path: ./tmp
+    state: directory
+
+- name: Download OpenJDK package to tmp directory
+  ansible.builtin.shell:
+    cmd: wget --no-check-certificate {{ openjdk_download_url }}
+  args:
+    chdir: ./tmp
+  no_log: true
+
+- name: Register OpenJDK package name
+  ansible.builtin.shell:
+    cmd: ls . | grep openjdk.*\.tar\.gz
+  register: openjdk_filename
+  args:
+    chdir: ./tmp
+
+- name: Unarchive OpenJDK package to /usr/local
+  ansible.builtin.unarchive:
+    src: ./tmp/{{ openjdk_filename.stdout }}
+    dest: /usr/local
+  become: true
+
+- name: Register OpenJDK folder name
+  ansible.builtin.shell:
+    cmd: ls -d */ | grep jdk
+  register: openjdk_folder_name
+  args:
+    chdir: /usr/local
+
+- name: Check if OpenJDK bin folder is in user .env PATH
+  ansible.builtin.lineinfile:
+    state: absent
+    path: ~/.env
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ openjdk_folder_name.stdout }}/bin"
+  check_mode: true
+  register: openjdk_path_check
+
+- name: Add OpenJDK bin folder to user .env PATH if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export PATH=$PATH:/usr/local/{{ openjdk_folder_name.stdout }}/bin
+  when: openjdk_path_check.found == 0
+
+- name: Check if JAVA_HOME is in user .env
+  ansible.builtin.lineinfile:
+    state: absent
+    path: ~/.env
+    regexp: "^export JAVA_HOME=/usr/local/{{ openjdk_folder_name.stdout }}"
+  check_mode: true
+  register: openjdk_path_check
+
+- name: Add JAVA_HOME to user .env if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export JAVA_HOME=/usr/local/{{ openjdk_folder_name.stdout }}
+  when: openjdk_path_check.found == 0
+
+# OpenJDK is now installed - try running java -version (Requires a new terminal session)
