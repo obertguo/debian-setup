@@ -24,7 +24,9 @@ apt_packages_to_install:
 - git
 - code
 - python3
-- shutter # screenshot tool
+- flameshot # screenshot tool
+- xdg-desktop-portal-gnome
+- xdg-desktop-portal
 - nautilus # files app
 - nautilus-extension-gnome-terminal # adds show in terminal context menu
 - gnome-text-editor
