@@ -1,0 +1,37 @@
+---
+- name: Write keyboard shortcut {{ item.name }} name to dconf
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/name \"'{{ item.name }}'\"
+
+- name: Write keyboard shortcut {{ item.name }} binding to dconf
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/binding \"'{{ item.binding }}'\"
+
+- name: Write keyboard shortcut {{ item.name }} command to dconf
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/command \"'{{ item.command }}'\"
+
+
+- name: Check if existing custom shortcuts exist in shortcuts array
+  ansible.builtin.shell:
+    cmd: dconf read /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings | wc -c
+  register: emptyarray_check
+
+- name: Write a new dconf custom shortcuts array
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings \"['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/']\"
+  when: emptyarray_check.stdout | int == 0
+
+- name: Get existing entries in dconf custom shortcuts array
+  ansible.builtin.shell:
+    cmd: dconf read /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings | tr -d '[]'
+  register: existing_array_entries
+  when: emptyarray_check.stdout | int > 0
+
+- name: Append to exiting dconf custom shortcuts array
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "[{{ existing_array_entries.stdout }}, '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/']"
+  when: emptyarray_check.stdout | int > 0
+
+# Verify dconf output by running 
+# `dconf dump /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/`

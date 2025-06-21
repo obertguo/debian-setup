@@ -2,3 +2,4 @@ ansible-venv/*
 .ansible/*
 .env
 tmp/*
+.vscode/*
