@@ -6,9 +6,16 @@
     - name: Add custom keyboard shortcuts
       block:
         # Hacky way to avoid duplicate entries if this gets re-run
-      - name: Reset any custom shortcuts 
+        # A proper removal/reset would be dconf write KEY "@as []" which is done below. 
+        # This just sets the KEY to an empty string "" instead of "@as []" for an empty array. But, the logic becomes nicer when we call the keyboard_shortcuts role
+      - name: Reset custom shortcuts 
         ansible.builtin.shell:
           cmd: dconf reset /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
+
+        # We'll bind PrintScreen to Flameshot as a custom keyboard shortcut later instead
+      - name: Disable default Gnome Screenshot PrintScreen shortcut
+        ansible.builtin.shell:
+          cmd: dconf write /org/gnome/shell/keybindings/show-screenshot-ui '@as []'
 
       - name: Add custom shortcuts
         ansible.builtin.include_role:
@@ -18,4 +25,13 @@
         loop_control:
           index_var: index_var
           label: "{{ item.name }}"
+
+      - name: Set user desktop preferences
+        ansible.builtin.include_role:
+          name: gsettings
+          tasks_from: desktop
+        vars:
+          wallpaper_filename: "{{ hostvars.localhost.desktop.wallpaper_filename }}"
+          screensaver_filename:  "{{ hostvars.localhost.desktop.screensaver_filename }}"
+          preferDarkTheme: "{{ hostvars.localhost.desktop.preferDarkTheme default(false) | bool }}"
     

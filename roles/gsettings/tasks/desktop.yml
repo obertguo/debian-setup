@@ -1,0 +1,33 @@
+---
+- name: Copy wallpapers folder to usr share directory
+  ansible.builtin.copy:
+    src: ./roles/gsettings/files/wallpapers/
+    dest: /usr/share/backgrounds/wallpapers
+  become: true
+
+- name: Wallpaper filename check
+  ansible.builtin.stat:
+    path: /usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}
+  register: wallpaper_filename_check
+
+- name: Set user wallpaper
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/background/picture-uri{{ item }} \"'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'\"
+  loop:
+    - ''
+    - '-dark'
+
+- name: Set user theme
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/interface/color-scheme \"{{ "'prefer-dark'" if preferDarkTheme else "'prefer-light'" }}\"
+  loop:
+    - ''
+    - '-dark'
+
+
+- ansible.builtin.debug:
+    msg: "{{ wallpaper_filename_check.stat.exists }}"
+
+
+# More misc dconf desktop settings can be found 
+# by running `dconf dump / | grep background -C 7``

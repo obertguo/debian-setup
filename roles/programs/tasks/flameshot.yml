@@ -1,0 +1,41 @@
+---
+- name: Ensure Flameshot is installed
+  ansible.builtin.apt:
+    name: flameshot
+    state: present
+  become: true
+
+# https://flameshot.org/docs/guide/wayland-help/
+- name: Install fixes for Gnome on Wayland
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - xdg-desktop-portal-gnome
+    - xdg-desktop-portal
+
+# Also part of Gnome on Wayland fixes
+- name: Check if QT_QPA_PLATFORM var is in user .env
+  ansible.builtin.lineinfile:
+    state: absent
+    path: ~/.env
+    regexp: "^export QT_QPA_PLATFORM=wayland"
+  check_mode: true
+  register: var_check
+
+- name: Add QT_QPA_PLATFORM var to user .env if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export QT_QPA_PLATFORM=wayland
+  when: var_check.found == 0
+
+- name: Reset Gnome shortcut permissions if needed
+  ansible.builtin.shell:
+    cmd: >
+      dbus-send --session --print-reply=literal 
+      --dest=org.freedesktop.impl.portal.PermissionStore 
+      /org/freedesktop/impl/portal/PermissionStore 
+      org.freedesktop.impl.portal.PermissionStore.DeletePermission string:'screenshot' string:'screenshot' string:''
+  ignore_errors: true

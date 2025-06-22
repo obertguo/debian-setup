@@ -33,5 +33,5 @@
     cmd: dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "[{{ existing_array_entries.stdout }}, '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ index_var }}/']"
   when: emptyarray_check.stdout | int > 0
 
-# Verify dconf output by running 
+# One can manually verify the dconf output by running 
 # `dconf dump /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/`

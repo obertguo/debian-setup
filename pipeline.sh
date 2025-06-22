@@ -1,6 +1,16 @@
 #!/bin/bash
-# PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml")
-PLAYBOOKS_TO_RUN=("gnome.yml")
+
+# For now, we can either run a single playbook by passing in the playbook 
+# by passing in the playbook name, or fallback to a list of playbooks to run if 
+# a playbook is not specified
+PLAYBOOKS_TO_RUN=$1
+
+if [ -z "$1" ]; then
+  PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml")
+else
+  PLAYBOOKS_TO_RUN=$(ls ./playbooks | grep -i "$PLAYBOOKS_TO_RUN" | head -n 1)
+  stat "./playbooks/$PLAYBOOKS_TO_RUN" 1> /dev/null || exit 1
+fi
 
 call_playbook() {
   PLAYBOOK=$1

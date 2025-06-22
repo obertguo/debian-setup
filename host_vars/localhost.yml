@@ -24,9 +24,6 @@ apt_packages_to_install:
 - git
 - code
 - python3
-- flameshot # screenshot tool
-- xdg-desktop-portal-gnome
-- xdg-desktop-portal
 - nautilus # files app
 - nautilus-extension-gnome-terminal # adds show in terminal context menu
 - gnome-text-editor
@@ -59,3 +56,8 @@ gnome_keyboard_shortcuts:
 - name: Flameshot
   binding: Print
   command: flameshot gui
+
+desktop:
+  wallpaper_filename: vista.jpg
+  screensaver_filename: vista.jpg
+  preferDarkTheme: true

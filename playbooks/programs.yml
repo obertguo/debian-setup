@@ -16,6 +16,11 @@
             tasks_from: intellij
           when: intellij_installed_check.stdout | int == 0
 
+    - name: Install and configure Flameshot
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: flameshot
+
     - name: Attempt to install TexLive for LaTeX support (may take hours)
       block:
         - name: Install TexLive
