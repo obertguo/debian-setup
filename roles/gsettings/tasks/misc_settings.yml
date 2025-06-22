@@ -1,0 +1,19 @@
+---
+- name: Override Alt-Tab keybindings
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/wm/keybindings/{{ item.key }} \"{{ item.value }}\"
+  loop:
+    - key: switch-windows
+      value: "['<Alt>Tab']" # default is "@as []"
+    - key: switch-applications
+      value: "['<Super>Tab']" # default is "['<Super>Tab', '<Alt>Tab']"
+    - key: switch-windows-backward
+      value: "['<Shift><Alt>Tab']" # default is "@as []"
+    - key: switch-applications-backward
+      value: "['<Shift><Super>Tab']" # default is "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
+
+- name: Add minimize, maximize, close buttons to window
+  ansible.builtin.shell:
+    # default is "'appmenu:close'"
+    cmd: >-
+      dconf write /org/gnome/desktop/wm/preferences/button-layout \"'appmenu:minimize,maximize,close'\" 
