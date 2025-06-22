@@ -1,7 +1,7 @@
 ---
 - name: Override Alt-Tab keybindings
   ansible.builtin.shell:
-    cmd: dconf write /org/gnome/desktop/wm/keybindings/{{ item.key }} \"{{ item.value }}\"
+    cmd: dconf write /org/gnome/desktop/wm/keybindings/{{ item.key }} "{{ item.value }}"
   loop:
     - key: switch-windows
       value: "['<Alt>Tab']" # default is "@as []"
