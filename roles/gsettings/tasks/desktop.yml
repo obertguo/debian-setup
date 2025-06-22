@@ -10,24 +10,28 @@
     path: /usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}
   register: wallpaper_filename_check
 
+- name: Screensaver filename check
+  ansible.builtin.stat:
+    path: /usr/share/backgrounds/wallpapers/{{ screensaver_filename }}
+  register: screensaver_filename_check
+
 - name: Set user wallpaper
   ansible.builtin.shell:
     cmd: dconf write /org/gnome/desktop/background/picture-uri{{ item }} \"'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'\"
   loop:
     - ''
     - '-dark'
+  when: wallpaper_filename_check.stat.exists
+
+- name: Set user screensaver
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/screensaver/picture-uri \"'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'\"
+  when: screensaver_filename_check.stat.exists
 
 - name: Set user theme
   ansible.builtin.shell:
     cmd: dconf write /org/gnome/desktop/interface/color-scheme \"{{ "'prefer-dark'" if preferDarkTheme else "'prefer-light'" }}\"
-  loop:
-    - ''
-    - '-dark'
-
-
-- ansible.builtin.debug:
-    msg: "{{ wallpaper_filename_check.stat.exists }}"
-
+  when: preferDarkTheme is boolean
 
 # More misc dconf desktop settings can be found 
 # by running `dconf dump / | grep background -C 7``
