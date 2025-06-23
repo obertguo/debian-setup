@@ -1,8 +1,14 @@
 ---
+- name: Check if IntelliJ is already installed
+  ansible.builtin.shell:
+    cmd: which idea | wc -c
+  register: intellij_installed_check
+
 - name: Create a tmp directory
   ansible.builtin.file:
     path: ./tmp
     state: directory
+  when: intellij_installed_check.stdout | int == 0
 
 - name: Download IntelliJ Idea package to tmp directory
   ansible.builtin.shell:
@@ -10,6 +16,7 @@
   args:
     chdir: ./tmp
   no_log: true
+  when: intellij_installed_check.stdout | int == 0
 
 - name: Register IntelliJ Idea package name
   ansible.builtin.shell:
@@ -17,12 +24,14 @@
   register: idea_filename
   args:
     chdir: ./tmp
+  when: intellij_installed_check.stdout | int == 0
 
 - name: Unarchive IntelliJ package to /usr/local
   ansible.builtin.unarchive:
     src: ./tmp/{{ idea_filename.stdout }}
     dest: /usr/local
   become: true
+  when: intellij_installed_check.stdout | int == 0
 
 - name: Register IntelliJ Idea folder name
   ansible.builtin.shell:
@@ -46,4 +55,11 @@
     line: export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin
   when: intellij_path_check.found == 0
 
-# IntelliJ can be run by executing `idea` in a shell. (Requires a new terminal session)
+- name: Add IntelliJ .desktop file 
+  ansible.builtin.template:
+    src: ./templates/idea.desktop.j2
+    dest: /usr/share/applications/idea.desktop
+  vars:
+    intellij_bin_absolute_path: /usr/local/{{ idea_foldername.stdout }}/bin
+  # automatically registers the .dekstop file as trusted. Otherwise, needs executable permissions
+  become: true

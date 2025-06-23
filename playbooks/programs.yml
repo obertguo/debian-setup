@@ -4,17 +4,9 @@
 
   tasks: 
     - name: Install IntelliJ Idea if not installed
-      block:
-        - name: Check if IntelliJ Idea is already installed
-          ansible.builtin.shell:
-            cmd: which idea | wc -l
-          register: intellij_installed_check
-
-        - name: Install IntelliJ Idea
-          ansible.builtin.include_role:
-            name: programs
-            tasks_from: intellij
-          when: intellij_installed_check.stdout | int == 0
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: intellij
 
     - name: Install and configure Flameshot
       ansible.builtin.include_role:
