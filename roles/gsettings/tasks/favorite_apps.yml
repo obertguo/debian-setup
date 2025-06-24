@@ -1,0 +1,25 @@
+---
+- name: Check if favorite-apps array exists
+  ansible.builtin.shell:
+    cmd: dconf read /org/gnome/shell/favorite-apps | wc -c
+  register: favoriteapps_check
+
+- name: Write a new favorite-apps array
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/shell/favorite-apps \"['{{ item }}']\"
+  when: favoriteapps_check.stdout | int == 0
+
+- name: Get existing entries in favorite-apps array
+  ansible.builtin.shell:
+    cmd: dconf read /org/gnome/shell/favorite-apps | tr -d '[]'
+  register: existing_array_entries
+  when: favoriteapps_check.stdout | int > 0
+
+- name: Append to existing favorite-apps array
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/shell/favorite-apps "[{{ existing_array_entries.stdout }}, '{{ item }}']"
+  when: favoriteapps_check.stdout | int > 0
+
+# [org/gnome/shell]
+# app-picker-layout=[{'nm-connection-editor.desktop': <{'position': <0>}>, 'org.flameshot.Flameshot.desktop': <{'position': <1>}>, 'org.gnome.Extensions.desktop': <{'position': <2>}>, 'yelp.desktop': <{'position': <3>}>, 'im-config.desktop': <{'position': <4>}>, 'idea.desktop': <{'position': <5>}>, 'system-config-printer.desktop': <{'position': <6>}>, 'org.gnome.Settings.desktop': <{'position': <7>}>, 'org.gnome.TextEditor.desktop': <{'position': <8>}>}]
+# favorite-apps=['org.gnome.Terminal.desktop', 'code.desktop', 'org.gnome.Nautilus.desktop', 'chromium.desktop']

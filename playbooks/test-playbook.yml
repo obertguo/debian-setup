@@ -3,7 +3,10 @@
   hosts: localhost
 
   tasks:
-    - name: Set misc Gnome settings
-      ansible.builtin.include_role:
-        name: gsettings
-        tasks_from: misc_settings
+    - name: Test
+      ansible.builtin.shell:
+        cmd: dconf read /org/gnome/shell/app-picker-layout | tr -d '[]{}<>'
+      register: my_arr
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ my_arr.stdout | split(',') | sort }}"

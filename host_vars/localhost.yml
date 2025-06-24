@@ -61,3 +61,9 @@ desktop:
   wallpaper_filename: vista.jpg
   screensaver_filename: vista.jpg
   preferDarkTheme: true
+
+favorite_apps:
+  - org.gnome.Terminal.desktop
+  - code.desktop
+  - org.gnome.Nautilus.desktop
+  - chromium.desktop

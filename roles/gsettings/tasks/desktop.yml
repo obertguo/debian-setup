@@ -34,4 +34,4 @@
   when: preferDarkTheme is boolean
 
 # More misc dconf desktop settings can be found 
-# by running `dconf dump / | grep background -C 7``
+# by running `dconf dump / | grep background -C 7`

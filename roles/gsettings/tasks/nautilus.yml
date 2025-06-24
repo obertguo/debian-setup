@@ -1,10 +1,13 @@
-[org/gnome/nautilus/list-view]
-default-zoom-level='small'
+---
+- name: Change Nautilus preferences
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/nautilus/preferences/{{ item.key }} \"{{ item.value }}\"
+  loop:
+    - key: default-folder-viewer
+      value: "'list-view'"
+    - key: search-filter-time-type
+      value: "'last_modified'"
 
-[org/gnome/nautilus/preferences]
-default-folder-viewer='list-view'
-migrated-gtk-settings=true
-search-filter-time-type='last_modified'
-
-[org/gnome/nautilus/window-state]
-initial-size=(890, 550)
+- name: Change Nautilus list view
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/nautilus/list-view/default-zoom-level \"'small'\"
