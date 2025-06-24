@@ -6,7 +6,7 @@
 PLAYBOOKS_TO_RUN=$1
 
 if [ -z "$1" ]; then
-  PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml")
+  PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml" "gnome.yml")
 else
   PLAYBOOKS_TO_RUN=$(ls ./playbooks | grep -i "$PLAYBOOKS_TO_RUN" | head -n 1)
   stat "./playbooks/$PLAYBOOKS_TO_RUN" 1> /dev/null || exit 1
