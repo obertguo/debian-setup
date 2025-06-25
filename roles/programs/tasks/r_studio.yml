@@ -1,6 +1,0 @@
----
-# MOP found at https://cran.r-project.org
-- name: Verify and install R from apt
-  ansible.builtin.apt:
-    name: r-base
-    state: present

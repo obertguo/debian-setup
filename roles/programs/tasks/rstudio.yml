@@ -1,0 +1,72 @@
+---
+# MOP found at https://cran.r-project.org
+- name: Install R from apt if needed
+  ansible.builtin.apt:
+    name: r-base
+    state: present
+  become: true
+
+- name: Check if R-Studio is already installed
+  ansible.builtin.shell:
+    cmd: which rstudio | wc -c
+  register: rstudio_installed_check
+
+- name: Create a tmp directory
+  ansible.builtin.file:
+    path: ./tmp
+    state: directory
+  when: rstudio_installed_check.stdout | int == 0
+
+- name: Download R-Studio package to tmp directory
+  ansible.builtin.shell:
+    cmd: wget --no-check-certificate {{ rstudio_download_url }}
+  args:
+    chdir: ./tmp
+  no_log: true
+  when: rstudio_installed_check.stdout | int == 0
+
+- name: Register R-Studio package name
+  ansible.builtin.shell:
+    cmd: ls . | grep rstudio.*\.tar\.gz
+  register: rstudio_filename
+  args:
+    chdir: ./tmp
+  when: rstudio_installed_check.stdout | int == 0
+
+- name: Unarchive R-Studio package to /usr/local
+  ansible.builtin.unarchive:
+    src: ./tmp/{{ rstudio_filename.stdout }}
+    dest: /usr/local
+  become: true
+  when: rstudio_installed_check.stdout | int == 0
+
+- name: Register R-Studio folder name
+  ansible.builtin.shell:
+    cmd: ls -d */ | grep rstudio
+  register: rstudio_foldername
+  args:
+    chdir: /usr/local
+
+- name: Check if R-Studio folder is in user .env PATH
+  ansible.builtin.lineinfile:
+    state: absent
+    path: ~/.env
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ rstudio_foldername.stdout }}"
+  check_mode: true
+  register: rstudio_path_check
+
+- name: Add R-Studio folder to user .env PATH if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export PATH=$PATH:/usr/local/{{ rstudio_foldername.stdout }}
+  when: rstudio_path_check.found == 0
+
+- name: Add R-Studio .desktop file 
+  ansible.builtin.template:
+    src: ./templates/rstudio.desktop.j2
+    dest: /usr/share/applications/rstudio.desktop
+  vars:
+    rstudio_absolute_path: /usr/local/{{ rstudio_foldername.stdout }}
+  # automatically registers the .dekstop file as trusted. Otherwise, needs executable permissions
+  become: true

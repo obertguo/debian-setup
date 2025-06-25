@@ -5,4 +5,4 @@ intellij_download_url: https://download.jetbrains.com/idea/ideaIC-2025.1.2.tar.g
 openjdk_download_url: https://download.java.net/java/GA/jdk24.0.1/24a58e0e276943138bf3e963e6291ac2/9/GPL/openjdk-24.0.1_linux-x64_bin.tar.gz
 
 # This R-Studio Desktop download URL may have to be updated. Check https://posit.co/download/rstudio-desktop/
-r_studio_download_url: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.05.1-513-amd64.deb
+rstudio_download_url: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.05.1-513-amd64.deb
