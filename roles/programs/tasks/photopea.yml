@@ -1,0 +1,21 @@
+---
+- name: Register chromium absolute path
+  ansible.builtin.shell:
+    cmd: which chromium
+  register: chromium_path
+
+- name: Copy PhotoPea icon
+  ansible.builtin.copy:
+    src: ./files/photopea.png
+    dest: /usr/share/applications/photopea.png
+  become: true
+
+- name: Add Photopea as a Progressive Web App (PWA) in a .desktop file
+  ansible.builtin.template:
+    src: ./templates/photopea.desktop.j2
+    dest: /usr/share/applications/photopea.desktop
+  vars:
+    chromium_absolute_path: "{{ chromium_path.stdout }}"
+    photopea_icon_path: /usr/share/applications/photopea.png
+  become: true
+  

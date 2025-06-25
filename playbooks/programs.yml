@@ -3,7 +3,7 @@
   hosts: localhost
 
   tasks: 
-    - name: Install IntelliJ Idea if not installed
+    - name: Install and configure IntelliJ Idea
       ansible.builtin.include_role:
         name: programs
         tasks_from: intellij
@@ -12,6 +12,21 @@
       ansible.builtin.include_role:
         name: programs
         tasks_from: flameshot
+    
+    - name: Install and configure OpenJDK
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: OpenJDK
+    
+    - name: Install R and R-Studio
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: rstudio
+
+    - name: Add R PhotoPea as a Progressive Web App (PWA)
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: photopea
 
     - name: Attempt to install TexLive for LaTeX support (may take hours)
       block:

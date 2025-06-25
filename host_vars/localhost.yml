@@ -21,6 +21,7 @@ apt_packages_to_install:
 - curl
 - wget
 - bash-completion
+- linux-headers-amd64 # needed for future driver installations
 - git
 - code
 - python3
