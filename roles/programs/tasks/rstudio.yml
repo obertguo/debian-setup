@@ -42,7 +42,7 @@
 
 - name: Register R-Studio folder name
   ansible.builtin.shell:
-    cmd: ls -d */ | grep rstudio
+    cmd: ls -d */ | grep rstudio | head -n 1
   register: rstudio_foldername
   args:
     chdir: /usr/local

@@ -35,7 +35,7 @@
 
 - name: Register IntelliJ Idea folder name
   ansible.builtin.shell:
-    cmd: ls -d */ | grep idea
+    cmd: ls -d */ | grep idea | head -n 1
   register: idea_foldername
   args:
     chdir: /usr/local

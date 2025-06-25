@@ -1,9 +1,0 @@
----
-- name: Test
-  hosts: localhost
-
-  tasks:
-    - name: Install R and R-Studio
-      ansible.builtin.include_role:
-        name: programs
-        tasks_from: rstudio
