@@ -11,6 +11,14 @@ apt_repos_to_add:
   sources_list_suite_name: stable
   sources_list_components: main
 
+- package_name: miktex 
+  key_url: https://miktex.org/download/key
+  key_filename: miktex.asc
+  apt_repo_url: https://miktex.org/download/debian
+  source_list_name: miktex
+  sources_list_suite_name: ''       # defaults to ansible_distribution_release
+  sources_list_components: universe
+
 # Remove any pre-installed apt pacakges
 apt_packages_to_remove:
 - gnome-games
@@ -24,6 +32,7 @@ apt_packages_to_install:
 - linux-headers-amd64 # needed for future driver installations
 - git
 - code
+- miktex
 - python3
 - nautilus # files app
 - nautilus-extension-gnome-terminal # adds show in terminal context menu
@@ -59,8 +68,8 @@ gnome_keyboard_shortcuts:
   command: flameshot gui
 
 desktop:
-  wallpaper_filename: vista.jpg
-  screensaver_filename: vista.jpg
+  wallpaper_filename: space-gooose-spacehawks.jpg
+  screensaver_filename: space-gooose-spacehawks.jpg
   preferDarkTheme: true
 
 favorite_apps:

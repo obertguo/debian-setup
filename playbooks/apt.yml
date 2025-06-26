@@ -34,7 +34,7 @@
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present
-      loop: "{{ hostvars.localhost.apt_packages_to_install }}"
+      loop: "{{ hostvars.localhost.apt_packages_to_install | default([], true) }}"
       loop_control: 
         label: "{{ item }}"
       become: true
