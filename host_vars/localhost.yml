@@ -31,6 +31,7 @@ apt_packages_to_install:
 - bash-completion
 - linux-headers-amd64 # needed for future driver installations
 - git
+- perl # needed for miktex to install
 - code
 - miktex
 - python3

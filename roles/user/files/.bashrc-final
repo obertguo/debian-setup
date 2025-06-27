@@ -137,7 +137,9 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Custom aliases
+# Custom aliases begin -------------------
+
+# cd and ls into directory
 function cs() {
     cd "$@" && ls
 }
@@ -146,6 +148,12 @@ alias gs='git status'
 alias ga='git add'
 alias gc='git commit -m'
 alias gp='git push -u origin'
+
+# Might come in handy when downloading files online 
+# to replace Windows CLRF with Unix LF
+alias dos2unix="sed -i -e 's/\r//g'"
+
+# Custom aliases end -------------------
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

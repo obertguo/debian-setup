@@ -28,16 +28,8 @@
         name: programs
         tasks_from: photopea
 
-    - name: Attempt to install TexLive for LaTeX support (may take hours)
-      block:
-        - name: Install TexLive
-          ansible.builtin.include_role:
-            name: programs
-            tasks_from: texlive
-          when: false
-      rescue:
-        - name: Remove failed TexLive installation
-          ansible.builtin.file:
-            path: /usr/local/texlive
-            state: absent
+    - name: Install MikTeX for LaTeX support
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: miktex
     

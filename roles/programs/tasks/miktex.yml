@@ -1,1 +1,28 @@
 ---
+- name: Check if miktex installation has already finished
+  ansible.builtin.shell:
+    cmd: cat /var/lib/miktex-texmf/miktex/config/miktex.ini 2> /dev/null | grep 'AutoInstall=1' | wc -l
+  become: true
+  register: miktex_finish_check
+
+- name: Ensure Perl and Miktex are installed
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - perl
+    - miktex
+  when: miktex_finish_check.stdout | int == 0
+  
+- name: Finish system wide Miktex installation
+  ansible.builtin.shell: 
+    cmd: miktexsetup --shared=yes finish
+  become: true
+  when: miktex_finish_check.stdout | int == 0
+
+- name: Enable Miktek automatic package installation
+  ansible.builtin.shell:
+    cmd: initexmf --admin --set-config-value [MPM]AutoInstall=1
+  become: true
+  when: miktex_finish_check.stdout | int == 0

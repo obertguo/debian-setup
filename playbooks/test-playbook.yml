@@ -3,7 +3,7 @@
   hosts: localhost
 
   tasks:
-    - name: Install R and R-Studio
+    - name: Finish Miktex installation
       ansible.builtin.include_role:
         name: programs
-        tasks_from: photopea
+        tasks_from: miktex
