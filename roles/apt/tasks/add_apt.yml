@@ -12,6 +12,10 @@
   register: apt_output
   ignore_errors: true
 
+- name: End add_apt role if apt repository is already present
+  ansible.builtin.meta: end_role
+  when: apt_output.stdout | length > 0
+
 - name: Add key for the apt repository
   ansible.builtin.get_url:
     url: "{{ item.key_url }}"
@@ -19,7 +23,6 @@
     validate_certs: false
   become: true
   when: 
-    - apt_output.stdout | length == 0
     - item.key_url is defined and item.key_url | length > 0
     - item.key_filename is defined and item.key_filename | length > 0
 
@@ -29,7 +32,6 @@
     cmd: sed -i -e 's/\r//g' /etc/apt/keyrings/{{ item.key_filename }}
   become: true
   when: 
-    - apt_output.stdout | length == 0
     - item.key_url is defined and item.key_url | length > 0
     - item.key_filename is defined and item.key_filename | length > 0
 
@@ -39,9 +41,7 @@
     filename: "{{ item.source_list_name }}"
     state: present
   become: true
-  when:
-    - apt_output.stdout | length == 0
-    - item.key_filename is undefined or item.key_filename | length == 0
+  when: item.key_filename is undefined or item.key_filename | length == 0
 
 - name: Add apt repository to sources list (with key)
   ansible.builtin.apt_repository:
@@ -49,6 +49,4 @@
     filename: "{{ item.source_list_name }}"    
     state: present
   become: true
-  when: 
-    - apt_output.stdout | length == 0
-    - item.key_filename is defined and item.key_filename | length > 0
+  when: item.key_filename is defined and item.key_filename | length > 0
