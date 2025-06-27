@@ -11,3 +11,8 @@
 - name: Change Nautilus list view
   ansible.builtin.shell:
     cmd: dconf write /org/gnome/nautilus/list-view/default-zoom-level \"'small'\"
+
+- name: Copy Nautlius Templates folder to user home directory
+  ansible.builtin.copy:
+    src: ./roles/gsettings/files/nautilus_templates/
+    dest: ~/Templates
