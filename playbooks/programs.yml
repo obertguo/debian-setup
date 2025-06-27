@@ -16,14 +16,14 @@
     - name: Install and configure OpenJDK
       ansible.builtin.include_role:
         name: programs
-        tasks_from: OpenJDK
+        tasks_from: openjdk
     
     - name: Install R and R-Studio
       ansible.builtin.include_role:
         name: programs
         tasks_from: rstudio
 
-    - name: Add R PhotoPea as a Progressive Web App (PWA)
+    - name: Add PhotoPea as a Progressive Web App (PWA)
       ansible.builtin.include_role:
         name: programs
         tasks_from: photopea

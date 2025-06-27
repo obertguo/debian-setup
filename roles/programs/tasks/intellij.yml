@@ -4,11 +4,14 @@
     cmd: which idea | wc -c
   register: intellij_installed_check
 
+- name: End intellij role if IntelliJ is installed
+  ansible.builtin.meta: end_role
+  when: intellij_installed_check.stdout | length > 0
+
 - name: Create a tmp directory
   ansible.builtin.file:
     path: ./tmp
     state: directory
-  when: intellij_installed_check.stdout | int == 0
 
 - name: Download IntelliJ Idea package to tmp directory
   ansible.builtin.shell:
@@ -16,7 +19,6 @@
   args:
     chdir: ./tmp
   no_log: true
-  when: intellij_installed_check.stdout | int == 0
 
 - name: Register IntelliJ Idea package name
   ansible.builtin.shell:
@@ -24,14 +26,12 @@
   register: idea_filename
   args:
     chdir: ./tmp
-  when: intellij_installed_check.stdout | int == 0
 
 - name: Unarchive IntelliJ package to /usr/local
   ansible.builtin.unarchive:
     src: ./tmp/{{ idea_filename.stdout }}
     dest: /usr/local
   become: true
-  when: intellij_installed_check.stdout | int == 0
 
 - name: Register IntelliJ Idea folder name
   ansible.builtin.shell:

@@ -16,6 +16,7 @@
   ansible.builtin.get_url:
     url: "{{ item.key_url }}"
     dest: /etc/apt/keyrings/{{ item.key_filename }}
+    validate_certs: false
   become: true
   when: 
     - apt_output.stdout | length == 0

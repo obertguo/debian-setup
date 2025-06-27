@@ -1,4 +1,13 @@
 ---
+- name: Check if OpenJDK is already installed
+  ansible.builtin.shell:
+    cmd: echo $JAVA_HOME | tr -d '[:space:]' 
+  register: openjdk_check
+
+- name: End openjdk role if OpenJDK is installed
+  ansible.builtin.meta: end_role
+  when: openjdk_check.stdout | length > 0
+
 - name: Create a tmp directory
   ansible.builtin.file:
     path: ./tmp

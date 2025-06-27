@@ -8,14 +8,17 @@
 
 - name: Check if R-Studio is already installed
   ansible.builtin.shell:
-    cmd: which rstudio | wc -c
+    cmd: which rstudio
   register: rstudio_installed_check
+
+- name: End rstudio role if R-Studio is installed
+  ansible.builtin.meta: end_role
+  when: rstudio_installed_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:
     path: ./tmp
     state: directory
-  when: rstudio_installed_check.stdout | int == 0
 
 - name: Download R-Studio package to tmp directory
   ansible.builtin.shell:
@@ -23,7 +26,6 @@
   args:
     chdir: ./tmp
   no_log: true
-  when: rstudio_installed_check.stdout | int == 0
 
 - name: Register R-Studio package name
   ansible.builtin.shell:
@@ -31,14 +33,12 @@
   register: rstudio_filename
   args:
     chdir: ./tmp
-  when: rstudio_installed_check.stdout | int == 0
 
 - name: Unarchive R-Studio package to /usr/local
   ansible.builtin.unarchive:
     src: ./tmp/{{ rstudio_filename.stdout }}
     dest: /usr/local
   become: true
-  when: rstudio_installed_check.stdout | int == 0
 
 - name: Register R-Studio folder name
   ansible.builtin.shell:

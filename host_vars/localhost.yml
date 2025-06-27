@@ -39,8 +39,8 @@ apt_packages_to_install:
 - nautilus-extension-gnome-terminal # adds show in terminal context menu
 - gnome-text-editor
 - chromium
-# - nodejs
-# - npm
+- nodejs
+- npm
 
 # VS Code extension names can be listed by running `code --list-extensions` and 
 # be placed here to be installed with `code --install-extension EXTENSION_NAME` 
