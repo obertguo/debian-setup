@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,enumerate,nicefrac,fancyhdr,hyperref,graphicx,adjustbox,longtable}
+\hypersetup{colorlinks=true,urlcolor=blue,citecolor=blue,linkcolor=blue}
+\usepackage[left=2.6cm, right=2.6cm, top=1.5cm, includehead, includefoot]{geometry}
+% \usepackage[dvipsnames]{xcolor}
+% \usepackage[d]{esvect}
+
+\begin{document}
+
+\let\olddiv\div
+\newcommand{\defn}{\textbf{Definition: }}
+\newcommand{\soln}{\textbf{Solution: }}
+\newcommand{\pf}{\textbf{Proof: }}
+\renewcommand{\bold}{\boldmath\bf}
+\renewcommand{\line}{\noindent\rule{\textwidth}{1pt}\\}
+\newcommand{\remark}{\textsl{Remark: }}
+\renewcommand{\div}{\; | \;}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Zx}{\mathbb{Z}[x]}
+\newcommand{\Fx}{\mathbb{F}[x]}
+\newcommand{\Rx}{R[x]}
+\newcommand{\ideal}[1]{\left\langle #1 \right\rangle}
+\newcommand{\degg}[2]{[{#1} : {#2}]}
+\newcommand{\ch}[1]{\text{ch}({#1})}
+\newcommand{\normal}{\unlhd}
+\newcommand{\aut}[1]{\text{Aut}({#1})}
+\newcommand{\gal}[1]{\text{Gal}({#1})}
+\renewcommand{\int}[1]{\text{Int}({#1})}
+\newcommand{\sub}[1]{\text{Sub}({#1})}
+\setlength\parindent{0pt}
+
+\newcommand{\lemm}[2]{\textbf{#1 Lemma:} 
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\newcommand{\thm}[2]{\textbf{#1 Theorem:} 
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\newcommand{\cor}[2]{ 
+\ifx&#1&%
+  % #1 is empty
+  \textbf{Corollary:}
+\else
+  % #1 is nonempty
+  \textbf{#1 Corollary:}
+\fi
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\newcommand{\examp}[2]{ 
+\ifx&#1&%
+  % #1 is empty
+  \textbf{Example:}
+\else
+  % #1 is nonempty
+  \textbf{#1 Example:}
+\fi
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\newcommand{\prop}[2]{\textbf{#1 Proposition:} 
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\newcommand{\exer}[2]{\textbf{#1 Exercise:} 
+\ifx&#2&%
+  % #2 is empty
+\else
+  % #2 is nonempty
+  \textsl{(#2)}
+\fi
+}
+
+\renewenvironment{proof}[1][]
+  {\begin{center}
+    \begin{longtable}{|p{\textwidth}|}
+    \hline\\
+  }
+  { 
+  \\\hline
+  \end{longtable} 
+  \end{center}
+}
+
+\noindent {\Large \bf COURSE_NAME - COURSE_SEMESTER \quad \quad CHAPTER-XX. CHAPTER/TITLE }\\
+
+
+\end{document}
