@@ -30,6 +30,7 @@ apt_packages_to_install:
 - wget
 - bash-completion
 - linux-headers-amd64 # needed for future driver installations
+- software-properties-common # provides an easier way to edit entries in /etc/apt/sources.list
 - git
 - perl # needed for miktex to install
 - code
@@ -49,9 +50,9 @@ vscode_extensions:
 - akamud.vscode-theme-onedark
 - james-yu.latex-workshop
 - streetsidesoftware.code-spell-checker
+- ms-python.python
 - ms-python.debugpy
 - ms-python.isort
-- ms-python.python
 - ms-python.vscode-pylance
 - ms-vscode.cpptools
 - ms-vscode.cpptools-extension-pack

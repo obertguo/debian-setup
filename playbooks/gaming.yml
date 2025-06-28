@@ -1,0 +1,9 @@
+---
+- name: Playbook to configure GPU drivers and games
+  hosts: localhost
+
+  tasks:
+    - name: Install Steam
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: steam
