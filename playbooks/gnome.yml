@@ -21,7 +21,7 @@
         ansible.builtin.include_role:
           name: gsettings
           tasks_from: keyboard_shortcuts
-        loop: "{{ hostvars.localhost.gnome_keyboard_shortcuts }}"
+        loop: "{{ hostvars.localhost.gnome.keyboard_shortcuts }}"
         loop_control:
           index_var: index_var
           label: "{{ item.name }}"
@@ -31,9 +31,9 @@
         name: gsettings
         tasks_from: desktop
       vars:
-        wallpaper_filename: "{{ hostvars.localhost.desktop.wallpaper_filename | default('') }}"
-        screensaver_filename:  "{{ hostvars.localhost.desktop.screensaver_filename | default('') }}"
-        preferDarkTheme: "{{ hostvars.localhost.desktop.preferDarkTheme |default(false) | bool }}"
+        wallpaper_filename: "{{ hostvars.localhost.gnome.desktop.wallpaper_filename | default('') }}"
+        screensaver_filename:  "{{ hostvars.localhost.gnome.desktop.screensaver_filename | default('') }}"
+        preferDarkTheme: "{{ hostvars.localhost.gnome.desktop.preferDarkTheme | default(false) | bool }}"
     
     - name: Configure Nautilus preferences
       ansible.builtin.include_role:

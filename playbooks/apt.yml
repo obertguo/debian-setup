@@ -15,13 +15,13 @@
         purge: true
         autoremove: true
       become: true
-      loop: "{{ hostvars.localhost.apt_packages_to_remove }}"
+      loop: "{{ hostvars.localhost.apt.packages_to_remove | default([], true) }}"
 
     - name: Add user apt repos
       ansible.builtin.include_role:
         name: apt
         tasks_from: add_apt
-      loop: "{{ hostvars.localhost.apt_repos_to_add }}"
+      loop: "{{ hostvars.localhost.apt.add_apt.repos }}"
       loop_control:
         label: "{{ item.package_name }}"
 
@@ -34,7 +34,7 @@
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present
-      loop: "{{ hostvars.localhost.apt_packages_to_install | default([], true) }}"
+      loop: "{{ hostvars.localhost.apt.packages_to_install | default([], true) }}"
       loop_control: 
         label: "{{ item }}"
       become: true

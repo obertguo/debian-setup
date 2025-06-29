@@ -13,9 +13,9 @@
         name: user
         tasks_from: gitconfig
       vars:
-        GITHUB_USERNAME: "{{ lookup('ansible.builtin.env', 'GITHUB_USERNAME') }}"
-        GITHUB_PAT: "{{ lookup('ansible.builtin.env', 'GITHUB_PAT') }}"
-        GITHUB_EMAIL: "{{ lookup('ansible.builtin.env', 'GITHUB_EMAIL') }}"
+        GITHUB_USERNAME: "{{ hostvars.localhost.github.username }}"
+        GITHUB_PAT: "{{ hostvars.localhost.github.pat }}"
+        GITHUB_EMAIL: "{{ hostvars.localhost.github.email }}"
 
     - name: Add additional fonts
       ansible.builtin.include_role:
@@ -27,4 +27,4 @@
         name: user
         tasks_from: vscode
       vars:
-        vscode_extensions: "{{ hostvars.localhost.vscode_extensions }}"
+        vscode_extensions: "{{ hostvars.localhost.user.vscode_extensions }}"

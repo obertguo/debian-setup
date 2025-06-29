@@ -35,18 +35,17 @@ run_pipeline() {
   # Load Ansible
   . ./ansible-venv/bin/activate || exit 1
 
-  # Load .env into current shell session (required to load in sensitive variables)
-  . ./.env || exit 1;
-  
-  # Copy .env over to user's home directory if it does not exist.
-  # This is to prevent overwriting since we will dynamically add PATH variables to the .env file later
-  if [ ! -f ~/.env ]; then cp ./.env ~/.env; fi
+  #  Load user .env into shell session if it exists
+  if [ -f ~/.env ]; then . ~/.env; fi
+
 
   SUDO_PASSWORD=""
   read -s -p "Enter sudo password to allow privileged playbook execution: " SUDO_PASSWORD
 
   for PLAYBOOK in ${PLAYBOOKS_TO_RUN[@]}; do
     call_playbook $PLAYBOOK $SUDO_PASSWORD
+    #  Reload user .env into shell session after playbook finishes
+    if [ -f ~/.env ]; then . ~/.env; fi
   done
 }
 

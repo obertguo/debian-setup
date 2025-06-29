@@ -1,5 +1,6 @@
 ansible-venv/*
 .ansible/*
 .env
+host_vars/localhost.yml
 tmp/*
 .vscode/*

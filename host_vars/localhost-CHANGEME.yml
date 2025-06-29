@@ -1,0 +1,98 @@
+---
+# Feel free to modify the localhost host_vars
+# You will need to modify GITHUB_CREDENTIALS here for a proper .gitconfig  
+
+# After modifying, rename this file to localhost.yml so that Ansible picks up the host_vars. 
+# The renamed localhost.yml file is included in this project's .gitignore and will NOT be committed
+
+ansible_connection: local
+
+apt:
+  add_apt:
+    # Used for adding apt repos and their signing keys if a package cannot be found in existing apt repositories
+    repos:
+      - package_name: code 
+        key_url: https://packages.microsoft.com/keys/microsoft.asc
+        key_filename: microsoft-archive-keyring.asc
+        apt_repo_url: https://packages.microsoft.com/repos/code
+        source_list_name: vscode
+        sources_list_suite_name: stable
+        sources_list_components: main
+
+      - package_name: miktex 
+        key_url: https://miktex.org/download/key
+        key_filename: miktex.asc
+        apt_repo_url: https://miktex.org/download/debian
+        source_list_name: miktex
+        sources_list_suite_name: ''       # defaults to ansible_distribution_release
+        sources_list_components: universe
+
+  # Remove any pre-installed apt packages
+  packages_to_remove:
+    - gnome-games
+    - libreoffice*
+
+  # Install user apt packages after removing and adding apt repos above 
+  packages_to_install:
+    - curl
+    - wget
+    - bash-completion
+    - linux-headers-amd64 # needed for future driver installations
+    - software-properties-common # provides an easier way to edit entries in /etc/apt/sources.list
+    - git
+    - perl # needed for miktex installer
+    - code
+    - miktex
+    - python3
+    - nautilus # default Gnome files app
+    - nautilus-extension-gnome-terminal # adds show in terminal context menu
+    - gnome-text-editor
+    - chromium
+    - nodejs
+    - npm
+    - shotcut # video editor
+
+
+user:
+  github:
+    username: ''
+    email: ''
+    pat: ''
+
+    # VS Code extension names can be listed by running `code --list-extensions`
+    # and be placed here to be installed with `code --install-extension EXTENSION_NAME` 
+  vscode_extensions:
+    - akamud.vscode-theme-onedark
+    - james-yu.latex-workshop
+    - streetsidesoftware.code-spell-checker
+    - ms-python.python
+    - ms-python.debugpy
+    - ms-python.isort
+    - ms-python.vscode-pylance
+    - ms-vscode.cpptools
+    - ms-vscode.cpptools-extension-pack
+    - ms-vscode.cpptools-themes
+    - ms-vscode.cmake-tools
+    - redhat.ansible
+    - redhat.vscode-yaml
+
+gnome:
+  keyboard_shortcuts:
+    - name: Terminal
+      binding: <Control><Alt>t
+      command: gnome-terminal
+
+    - name: Flameshot
+      binding: Print
+      command: flameshot gui
+
+  desktop:
+    wallpaper_filename: space-gooose-spacehawks.jpg
+    screensaver_filename: space-gooose-spacehawks.jpg
+    preferDarkTheme: true
+
+  favorite_apps:
+    - org.gnome.Terminal.desktop
+    - code.desktop
+    - org.gnome.Nautilus.desktop
+    - chromium.desktop
