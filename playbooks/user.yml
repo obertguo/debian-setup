@@ -13,9 +13,9 @@
         name: user
         tasks_from: gitconfig
       vars:
-        GITHUB_USERNAME: "{{ hostvars.localhost.github.username }}"
-        GITHUB_PAT: "{{ hostvars.localhost.github.pat }}"
-        GITHUB_EMAIL: "{{ hostvars.localhost.github.email }}"
+        GITHUB_USERNAME: "{{ hostvars.localhost.user.gitconfig.username }}"
+        GITHUB_PAT: "{{ hostvars.localhost.user.gitconfig.pat }}"
+        GITHUB_EMAIL: "{{ hostvars.localhost.user.gitconfig.email }}"
 
     - name: Add additional fonts
       ansible.builtin.include_role:

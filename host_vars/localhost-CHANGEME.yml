@@ -54,7 +54,7 @@ apt:
 
 
 user:
-  github:
+  gitconfig:
     username: ''
     email: ''
     pat: ''

@@ -9,6 +9,20 @@
   ansible.builtin.command: code --install-extension "{{ item }}"
   loop: "{{ vscode_extensions | default([], true) }}"
   when: vscode_extensions is defined
+  register: vscode_extension_install
+  ignore_errors: true
+  no_log: true # suppress output since its long 
+
+- name: Fail when a VS code extension failed to install
+  ansible.builtin.fail:
+    msg: The VS code extension {{ result.item }} failed to install. Error is {{ result.stdout }}
+  when: 
+    - result.rc != 0
+    - result.stdout is not search('is already installed')
+  loop: "{{ vscode_extension_install.results }}"
+  loop_control:
+    loop_var: result
+    label: "{{ result.item }}"
 
 - name: Create VSCode config folder if it does not exist
   ansible.builtin.file:
