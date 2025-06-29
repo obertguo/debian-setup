@@ -75,6 +75,10 @@ user:
     - ms-vscode.cmake-tools
     - redhat.ansible
     - redhat.vscode-yaml
+  
+  chromium_extensions:
+    - extension_id: ddkjiahejlhfcafbddmgiahcphecmpfh
+      extension_name: 'uBlock Origin Lite'
 
 gnome:
   keyboard_shortcuts:

@@ -27,4 +27,12 @@
         name: user
         tasks_from: vscode
       vars:
-        vscode_extensions: "{{ hostvars.localhost.user.vscode_extensions }}"
+        vscode_extensions: "{{ hostvars.localhost.user.vscode_extensions | default([], true) }}"
+    
+    - name: Install Chromium extensions
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: chromium_extensions
+      loop: "{{ hostvars.localhost.user.chromium_extensions | default([], true) }}"
+      loop_control:
+        label: item.extension_name
