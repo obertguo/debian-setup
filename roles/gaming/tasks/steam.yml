@@ -1,0 +1,73 @@
+---
+# MOP: https://wiki.debian.org/Steam
+- name: Check if Steam is already installed and configured by checking if 'false' is written to the Steam install script
+  ansible.builtin.shell:
+    cmd: cat $(which steam || echo '.') 2> /dev/null | grep 'false' | wc -c
+  register: steam_installed_check
+
+- name: End steam role if Steam is already installed and configured
+  ansible.builtin.meta: end_role
+  when: steam_installed_check.stdout | int > 0
+
+- name: Ensure software-properties-common is installed
+  ansible.builtin.apt:
+    name: software-properties-common
+    state: present
+  become: true
+
+- name: Check if contrib is enabled in Debian apt sources
+  ansible.builtin.shell:
+    cmd: cat /etc/apt/sources.list | grep -v '^#' | grep -i 'contrib' | wc -l
+  register: contrib_enabled_check
+  become: true
+
+# Avoids manual writes to sources list: https://linuxcapable.com/how-to-enable-contrib-and-non-free-repos-on-debian-linux/
+- name: Enable contrib and non-free-firmware for Debian apt sources
+  ansible.builtin.shell:
+    cmd: apt-add-repository -y contrib non-free-firmware 
+  become: true
+  when: contrib_enabled_check.stdout | int == 0
+
+- name: Enable Multi-Arch for amd64 systems
+  ansible.builtin.shell:
+    cmd: dpkg --add-architecture i386
+  become: true
+  when: contrib_enabled_check.stdout | int == 0
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+
+- name: Get the Steam installer
+  ansible.builtin.apt:
+    name: steam-installer
+    state: present
+  become: true
+
+- name: Install additional libraries for Vulkan and 32-bit titles
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - mesa-vulkan-drivers
+    - libglx-mesa0:i386
+    - mesa-vulkan-drivers:i386
+    - libgl1-mesa-dri:i386
+
+- name: Register Steam installer script location
+  ansible.builtin.shell:
+    cmd: which steam
+  register: steam_install_location
+
+- name: Bypass Zenity GUI installation prompt in the Steam installer
+  ansible.builtin.lineinfile:
+    path: "{{ steam_install_location.stdout }}"
+    line: 'if false && ! "$zenityish" \'
+    regexp: 'if ! "\$zenityish"'
+  become: true
+
+- name: Install Steam using the steam-installer
+  ansible.builtin.shell:
+    cmd: steam
