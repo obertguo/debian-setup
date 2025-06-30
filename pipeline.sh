@@ -35,8 +35,9 @@ run_pipeline() {
   # Load Ansible
   . ./ansible-venv/bin/activate || exit 1
 
-  #  Load user .env into shell session if it exists
+  #  Load user .env into shell session if it exists, and reload bashrc
   if [ -f ~/.env ]; then . ~/.env; fi
+  . ~/.bashrc
 
 
   SUDO_PASSWORD=""
@@ -44,8 +45,9 @@ run_pipeline() {
 
   for PLAYBOOK in ${PLAYBOOKS_TO_RUN[@]}; do
     call_playbook $PLAYBOOK $SUDO_PASSWORD
-    #  Reload user .env into shell session after playbook finishes
+    #  Reload user .env into shell session after playbook finishes, and reload bashrc
     if [ -f ~/.env ]; then . ~/.env; fi
+    . ~/.bashrc
   done
 }
 

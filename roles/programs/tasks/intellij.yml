@@ -3,10 +3,11 @@
   ansible.builtin.shell:
     cmd: which idea | wc -c
   register: intellij_installed_check
+  changed_when: false
 
 - name: End intellij role if IntelliJ is installed
   ansible.builtin.meta: end_role
-  when: intellij_installed_check.stdout | length > 0
+  when: false and intellij_installed_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:
@@ -40,20 +41,13 @@
   args:
     chdir: /usr/local
 
-- name: Check if IntelliJ bin folder is in user .env PATH
-  ansible.builtin.lineinfile:
-    state: absent
-    path: ~/.env
-    regexp: "^export PATH=\\$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
-  check_mode: true
-  register: intellij_path_check
-
-- name: Add IntelliJ bin folder to user .env PATH if not present
+- name: Add IntelliJ bin folder to user .bashrc PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.env
+    path: ~/.bashrc
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
+    insertafter: '^# USER VARIABLES BEGIN'
     line: export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin
-  when: intellij_path_check.found == 0
 
 - name: Add IntelliJ .desktop file 
   ansible.builtin.template:

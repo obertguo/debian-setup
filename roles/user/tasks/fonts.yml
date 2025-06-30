@@ -9,4 +9,5 @@
   ansible.builtin.command: fc-cache -f -v
   become: true
   no_log: true
+  changed_when: false
   

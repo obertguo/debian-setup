@@ -10,10 +10,11 @@
   ansible.builtin.shell:
     cmd: which rstudio
   register: rstudio_installed_check
+  changed_when: false
 
 - name: End rstudio role if R-Studio is installed
   ansible.builtin.meta: end_role
-  when: rstudio_installed_check.stdout | length > 0
+  when: false and rstudio_installed_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:
@@ -47,20 +48,13 @@
   args:
     chdir: /usr/local
 
-- name: Check if R-Studio folder is in user .env PATH
-  ansible.builtin.lineinfile:
-    state: absent
-    path: ~/.env
-    regexp: "^export PATH=\\$PATH:/usr/local/{{ rstudio_foldername.stdout }}"
-  check_mode: true
-  register: rstudio_path_check
-
-- name: Add R-Studio folder to user .env PATH if not present
+- name: Add R-Studio folder to user .bashrc PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.env
+    path: ~/.bashrc
     line: export PATH=$PATH:/usr/local/{{ rstudio_foldername.stdout }}
-  when: rstudio_path_check.found == 0
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ rstudio_foldername.stdout }}"
+    insertafter: '^# USER VARIABLES BEGIN'
 
 - name: Add R-Studio .desktop file 
   ansible.builtin.template:

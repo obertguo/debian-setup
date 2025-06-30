@@ -16,20 +16,13 @@
     - xdg-desktop-portal
 
 # Also part of Gnome on Wayland fixes
-- name: Check if QT_QPA_PLATFORM var is in user .env
-  ansible.builtin.lineinfile:
-    state: absent
-    path: ~/.env
-    regexp: "^export QT_QPA_PLATFORM=wayland"
-  check_mode: true
-  register: var_check
-
-- name: Add QT_QPA_PLATFORM var to user .env if not present
+- name: Add QT_QPA_PLATFORM var to user .bashrc if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.env
+    path: ~/.bashrc
     line: export QT_QPA_PLATFORM=wayland
-  when: var_check.found == 0
+    regexp: "^export QT_QPA_PLATFORM=wayland"
+    insertafter: '^# USER VARIABLES BEGIN'
 
 - name: Reset Gnome shortcut permissions if needed
   ansible.builtin.shell:

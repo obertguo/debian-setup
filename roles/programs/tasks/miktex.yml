@@ -4,10 +4,11 @@
     cmd: cat /var/lib/miktex-texmf/miktex/config/miktex.ini 2> /dev/null | grep 'AutoInstall=1' | wc -l
   become: true
   register: miktex_finish_check
+  changed_when: false
 
 - name: End miktex role if post MikTeX installation already finished
   ansible.builtin.meta: end_role
-  when: miktex_finish_check.stdout | length > 0
+  when: false and miktex_finish_check.stdout | length > 0
 
 - name: Ensure Perl and Miktex are installed
   ansible.builtin.apt:

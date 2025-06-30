@@ -11,6 +11,7 @@
     cmd: apt list -qq {{ item.package_name }}
   register: apt_output
   ignore_errors: true
+  changed_when: false
 
 - name: End add_apt role if apt repository is already present
   ansible.builtin.meta: end_role

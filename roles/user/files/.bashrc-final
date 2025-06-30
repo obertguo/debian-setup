@@ -137,8 +137,7 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Custom aliases begin -------------------
-
+# CUSTOM ALIASES BEGIN -------------------
 # cd and ls into directory
 function cs() {
     cd "$@" && ls
@@ -152,8 +151,10 @@ alias gp='git push -u origin'
 # Might come in handy when downloading files online 
 # to replace Windows CLRF with Unix LF
 alias dos2unix="sed -i -e 's/\r//g'"
+# CUSTOM ALIASES END -------------------
 
-# Custom aliases end -------------------
+# USER VARIABLES BEGIN -------------------
+# USER VARIABLES END -------------------
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -168,9 +169,6 @@ fi
 if [ -f ~/.env ]; then
   . ~/.env
 fi
-
-# For Flameshot on GNOME
-export QT_QPA_PLATFORM=wayland
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

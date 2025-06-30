@@ -1,5 +1,5 @@
 ---
-- name: Register chromium absolute path
+- name: Register Chromium absolute path
   ansible.builtin.shell:
     cmd: which chromium
   register: chromium_path
