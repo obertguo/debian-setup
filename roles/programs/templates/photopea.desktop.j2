@@ -3,15 +3,15 @@ Type=Application
 Terminal=false
 {# 
 This --user-data-dir and --class switch is needed to register a new separate WM_CLASS
-for chromium windows. This allows PhotoPea to show up as a separate app
+for Chrome windows. This allows PhotoPea to show up as a separate app
 in the Gnome shell. 
-The --user-data-dir is a hacky workaround this bug in chromium that still has
+The --user-data-dir is a hacky workaround for this bug in Chrome that still has
 not been fixed as of June 2025
 
 https://superuser.com/questions/1457060/how-can-you-start-two-chrome-windows-with-different-wm-class-attributes
 
 https://issues.chromium.org/issues/40172351
 #}
-Exec={{ chromium_absolute_path }} --user-data-dir=/tmp/photopea --class=photopea --app=https://photopea.com/?utm_source=homescreen
-Name=PhotoPea
+Exec={{ chrome_absolute_path }} --no-default-browser-check --no-first-run --disable-fre --user-data-dir=/tmp/photopea --class=photopea --app=https://photopea.com/?utm_source=homescreen
+Name=Photopea
 Icon={{ photopea_icon_path }}

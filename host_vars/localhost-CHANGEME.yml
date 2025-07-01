@@ -26,6 +26,14 @@ apt:
         source_list_name: miktex
         sources_list_suite_name: ''       # defaults to ansible_distribution_release
         sources_list_components: universe
+      
+      - package_name: google-chrome-stable
+        key_url: https://dl.google.com/linux/linux_signing_key.pub
+        key_filename: google-chrome.asc
+        apt_repo_url: https://dl.google.com/linux/chrome/deb/
+        source_list_name: google-chrome
+        sources_list_suite_name: stable
+        sources_list_components: main
 
   # Remove any pre-installed apt packages
   packages_to_remove:
@@ -34,6 +42,7 @@ apt:
 
   # Install user apt packages after removing and adding apt repos above 
   packages_to_install:
+    - sudo
     - curl
     - wget
     - bash-completion
@@ -47,7 +56,7 @@ apt:
     - nautilus # default Gnome files app
     - nautilus-extension-gnome-terminal # adds show in terminal context menu
     - gnome-text-editor
-    - chromium
+    - google-chrome-stable
     - nodejs
     - npm
     - shotcut # video editor
@@ -76,7 +85,7 @@ user:
     - redhat.ansible
     - redhat.vscode-yaml
   
-  chromium_extensions:
+  chrome_extensions:
     - extension_id: ddkjiahejlhfcafbddmgiahcphecmpfh
       extension_name: 'uBlock Origin Lite'
 
@@ -99,4 +108,4 @@ gnome:
     - org.gnome.Terminal.desktop
     - code.desktop
     - org.gnome.Nautilus.desktop
-    - chromium.desktop
+    - google-chrome.desktop

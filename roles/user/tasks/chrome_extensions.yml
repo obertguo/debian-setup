@@ -9,15 +9,15 @@
       - item.extension_id is defined and item.extension_id | length > 0
       - item.extension_name is defined and item.extension_name | length > 0
 
-- name: Ensure the Chromium extensions directory is present
+- name: Ensure the Chrome extensions directory is present
   ansible.builtin.file:
-    path: /usr/share/chromium/extensions/
+    path: /usr/share/google-chrome/extensions/
     state: directory
   become: true
 
-- name: Copy extension template to Chromium extensions directory for extension {{ item.extension_name }}
+- name: Copy extension template to Chrome extensions directory for extension {{ item.extension_name }}
   ansible.builtin.template:
-    src: ./templates/chromium_extension.json.j2
-    dest: /usr/share/chromium/extensions/{{ item.extension_id }}.json
+    src: ./templates/chrome_extension.json.j2
+    dest: /usr/share/google-chrome/extensions/{{ item.extension_id }}.json
   become: true
 

@@ -8,13 +8,13 @@
 
 - name: Check if R-Studio is already installed
   ansible.builtin.shell:
-    cmd: which rstudio
+    cmd: which rstudio | wc -c
   register: rstudio_installed_check
   changed_when: false
 
 - name: End rstudio role if R-Studio is installed
   ansible.builtin.meta: end_role
-  when: rstudio_installed_check.stdout | length > 0
+  when: rstudio_installed_check.stdout | int > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:
