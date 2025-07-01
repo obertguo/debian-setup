@@ -33,7 +33,8 @@
       vars:
         wallpaper_filename: "{{ hostvars.localhost.gnome.desktop.wallpaper_filename | default('') }}"
         screensaver_filename:  "{{ hostvars.localhost.gnome.desktop.screensaver_filename | default('') }}"
-        preferDarkTheme: "{{ hostvars.localhost.gnome.desktop.preferDarkTheme | default(false) | bool }}"
+        prefer_dark_theme: "{{ hostvars.localhost.gnome.desktop.prefer_dark_theme | default(false) | bool }}"
+        enable_hot_corners: "{{ hostvars.localhost.gnome.desktop.enable_hot_corners | default(true) | bool }}"
     
     - name: Configure Nautilus preferences
       ansible.builtin.include_role:
@@ -50,5 +51,5 @@
           ansible.builtin.include_role:
             name: gsettings
             tasks_from: favorite_apps
-          loop: "{{ favorite_apps }}"
-          when: favorite_apps | default([], true) | length > 0
+          loop: "{{ hostvars.localhost.gnome.favorite_apps }}"
+          when: hostvars.localhost.gnome.favorite_apps | default([], true) | length > 0

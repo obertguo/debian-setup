@@ -102,7 +102,8 @@ gnome:
   desktop:
     wallpaper_filename: space-gooose-spacehawks.jpg
     screensaver_filename: space-gooose-spacehawks.jpg
-    preferDarkTheme: true
+    prefer_dark_theme: true
+    enable_hot_corners: false
 
   favorite_apps:
     - org.gnome.Terminal.desktop

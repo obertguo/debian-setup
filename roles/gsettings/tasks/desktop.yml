@@ -35,13 +35,13 @@
 
 - name: Set user terminal theme
   ansible.builtin.shell:
-    cmd: dconf write /org/gnome/terminal/legacy/theme-variant \"{{ "'dark'" if preferDarkTheme else "'light'" }}\"
-  when: preferDarkTheme is boolean
+    cmd: dconf write /org/gnome/terminal/legacy/theme-variant \"{{ "'dark'" if prefer_dark_theme else "'light'" }}\"
+  when: prefer_dark_theme is boolean
 
-- name: Disable hot corners
+- name: Enable hot corners
   ansible.builtin.shell:
-    cmd: dconf write /org/gnome/desktop/interface/enable-hot-corners false
-  when: preferDarkTheme is boolean
+    cmd: dconf write /org/gnome/desktop/interface/enable-hot-corners {{ enable_hot_corners | bool | lower }}
+  when: enable_hot_corners is boolean
 
 # More misc dconf desktop settings can be found 
 # by running `dconf dump / | grep background -C 7`
