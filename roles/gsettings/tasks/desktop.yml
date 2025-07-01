@@ -28,9 +28,19 @@
     cmd: dconf write /org/gnome/desktop/screensaver/picture-uri \"'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'\"
   when: screensaver_filename_check.stat.exists
 
-- name: Set user theme
+- name: Set user desktop theme
   ansible.builtin.shell:
     cmd: dconf write /org/gnome/desktop/interface/color-scheme \"{{ "'prefer-dark'" if preferDarkTheme else "'prefer-light'" }}\"
+  when: preferDarkTheme is boolean
+
+- name: Set user terminal theme
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/terminal/legacy/theme-variant \"{{ "'dark'" if preferDarkTheme else "'light'" }}\"
+  when: preferDarkTheme is boolean
+
+- name: Disable hot corners
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/interface/enable-hot-corners false
   when: preferDarkTheme is boolean
 
 # More misc dconf desktop settings can be found 
