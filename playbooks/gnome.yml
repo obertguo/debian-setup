@@ -54,3 +54,8 @@
             tasks_from: favorite_apps
           loop: "{{ hostvars.localhost.gnome.favorite_apps }}"
           when: hostvars.localhost.gnome.favorite_apps | default([], true) | length > 0
+
+    - name: Finalize miscellaneous settings
+      ansible.builtin.include_role:
+        name: gsettings
+        tasks_from: misc_settings  
