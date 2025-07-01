@@ -104,6 +104,10 @@ gnome:
     screensaver_filename: space-gooose-spacehawks.jpg
     prefer_dark_theme: true
     enable_hot_corners: false
+    clock:
+      show_weekday: true
+      show_seconds: false
+      show_date: true
 
   favorite_apps:
     - org.gnome.Terminal.desktop

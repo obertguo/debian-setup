@@ -40,8 +40,17 @@
 
 - name: Enable hot corners
   ansible.builtin.shell:
-    cmd: dconf write /org/gnome/desktop/interface/enable-hot-corners {{ enable_hot_corners | bool | lower }}
+    cmd: dconf write /org/gnome/desktop/interface/enable-hot-corners {{ enable_hot_corners | default(true) | bool | lower }}
   when: enable_hot_corners is boolean
+
+- name: Enable clock settings
+  ansible.builtin.shell:
+    cmd: | 
+      dconf write /org/gnome/desktop/interface/clock-show-weekday {{ clock.show_weekday | default(false) | bool | lower }}
+      dconf write /org/gnome/desktop/interface/clock-show-seconds {{ clock.show_seconds | default(false) | bool | lower }}
+      dconf write /org/gnome/desktop/interface/clock-show-date {{ clock.show_date | default(true) | bool | lower }}
+  when: clock is defined and clock is mapping
+  
 
 # More misc dconf desktop settings can be found 
 # by running `dconf dump / | grep background -C 7`
