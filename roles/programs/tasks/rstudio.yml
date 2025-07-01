@@ -14,7 +14,7 @@
 
 - name: End rstudio role if R-Studio is installed
   ansible.builtin.meta: end_role
-  when: false and rstudio_installed_check.stdout | length > 0
+  when: rstudio_installed_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:

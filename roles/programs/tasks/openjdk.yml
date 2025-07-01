@@ -7,7 +7,7 @@
 
 - name: End openjdk role if OpenJDK is installed
   ansible.builtin.meta: end_role
-  when: false and openjdk_check.stdout | length > 0
+  when: openjdk_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:

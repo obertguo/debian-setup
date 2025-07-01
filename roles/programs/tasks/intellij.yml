@@ -7,7 +7,7 @@
 
 - name: End intellij role if IntelliJ is installed
   ansible.builtin.meta: end_role
-  when: false and intellij_installed_check.stdout | length > 0
+  when: intellij_installed_check.stdout | length > 0
 
 - name: Create a tmp directory
   ansible.builtin.file:
