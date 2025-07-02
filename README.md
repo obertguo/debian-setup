@@ -2,10 +2,9 @@
 A collection of Ansible and bash scripts for setting up a personal Debian environment from scratch.
 ## Overview
 1. Download/clone this repository onto your Debian environment. 
-2. Execute `su -` to login as su, and run `add-to-sudoers.sh YOUR_USERNAME` to add YOUR_USERNAME to the sudoers group. This allows sudo commands to be run when logged in as YOUR_USERNAME.
-3. Run `setup.sh` to install Python and setup an Ansible virtual environment.
-4. Configure `host_vars/localhost.yml` if needed, and configure `.env` with user related configuration/credentials.
-5. Run `pipeline.sh` with bash to begin running Ansible playbooks. The playbooks are executed in order as defined in the `PLAYBOOKS_TO_RUN` array in the pipeline script.
+2. Execute `bash init.sh` to run first-time initialization, which is mostly intended for a "minimal" Debian install (i.e., no DE selected during a first time Debian install). This will install and setup a Gnome DE and add your user to the sudoers group. This allows sudo commands to be run then next time you re-login in as your user.
+3. Configure `host_vars/localhost-CHANGEME.yml` as needed (note: you will need to include github credentials), and rename it to `host_vars/localhost.yml`. Note that the re-named localhost.yml file is excluded from git as part of this repository's .gitignore file.
+4. Run `bash pipeline.sh` to install Python and setup an Ansible virtual environment if it has not been set up yet. If a playbook name is passed in as an argument to the pipeline script, then the corresponding Ansible playbook is run. Otherwise, by default, the playbooks listed in the pipeline script `PLAYBOOKS_TO_RUN` array are run in order, and is intended to provide everything needed for a full setup.
 
 ## To-Dos
 - Consolidate setup scripts into one master setup script
