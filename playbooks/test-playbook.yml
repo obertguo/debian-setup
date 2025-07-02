@@ -3,10 +3,7 @@
   hosts: localhost
 
   tasks:
-    - name: Install Chrome extensions
+    - name: Install Cemu
       ansible.builtin.include_role:
-        name: user
-        tasks_from: chrome_extensions
-      loop: "{{ hostvars.localhost.user.chrome_extensions | default([], true) }}"
-      loop_control:
-        label: item.extension_name
+        name: gaming
+        tasks_from: cemu

@@ -7,3 +7,8 @@
       ansible.builtin.include_role:
         name: gaming
         tasks_from: steam
+    
+    - name: Install Cemu
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: cemu

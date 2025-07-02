@@ -23,7 +23,7 @@
 
 - name: Register IntelliJ Idea package name
   ansible.builtin.shell:
-    cmd: ls . | grep idea.*\.tar\.gz
+    cmd: ls . | grep idea.*\.tar\.gz | head -n 1
   register: idea_filename
   args:
     chdir: ./tmp

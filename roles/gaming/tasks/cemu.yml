@@ -1,0 +1,75 @@
+---
+- name: Check if Cemu is installed
+  ansible.builtin.shell:
+    cmd: which cemu | wc -c
+  register: cemu_installed_check
+
+- name: End cemu role if installed
+  ansible.builtin.meta: end_role
+  when: cemu_installed_check.stdout | int > 0
+
+- name: Create a tmp directory
+  ansible.builtin.file:
+    path: ./tmp
+    state: directory
+
+- name: Download Cemu AppImage to tmp directory
+  ansible.builtin.shell:
+    cmd: wget --no-check-certificate {{ cemu_appimage_download_url }}
+  args:
+    chdir: ./tmp
+  no_log: true
+
+- name: Register Cemu AppImage name
+  ansible.builtin.shell:
+    cmd: ls . | grep -i cemu | head -n 1
+  register: cemu_appimage_name
+  args:
+    chdir: ./tmp
+
+- name: Set Cemu folder name and appimage name
+  ansible.builtin.set_fact:
+    cemu_folder_name: "{{ '.'.join(cemu_appimage_name.stdout.split('.')[:-1]) }}"
+    cemu_appimage_name: "{{ cemu_appimage_name.stdout }}"
+
+- name: Copy Cemu AppImage to /usr/local/{{ cemu_folder_name }}
+  ansible.builtin.copy:
+    src: ./tmp/{{ cemu_appimage_name }}
+    dest: /usr/local/{{ cemu_folder_name }}/
+  become: true
+
+- name: Rename Cemu AppImage {{ cemu_appimage_name }} to cemu and make it executable
+  ansible.builtin.copy:
+    src: /usr/local/{{ cemu_folder_name }}/{{ cemu_appimage_name }}
+    dest: /usr/local/{{ cemu_folder_name }}/cemu
+    mode: a+x
+  become: true
+
+- name: Remove old Cemu AppImage {{ cemu_appimage_name }}
+  ansible.builtin.file:
+    path: /usr/local/{{ cemu_folder_name }}/{{ cemu_appimage_name }}
+    state: absent
+  become: true
+
+- name: Add {{ cemu_folder_name }} folder to user .bashrc PATH if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.bashrc
+    line: export PATH=$PATH:/usr/local/{{ cemu_folder_name }}
+    regexp: "^export PATH=\\$PATH:/usr/local/{{ cemu_folder_name }}"
+    insertafter: '^# USER VARIABLES BEGIN'
+
+- name: Copy Cemu icon
+  ansible.builtin.copy:
+    src: ./files/cemu.png
+    dest: /usr/local/{{ cemu_folder_name }}/cemu.png
+  become: true
+
+- name: Add Cemu .desktop file 
+  ansible.builtin.template:
+    src: ./templates/cemu.desktop.j2
+    dest: /usr/share/applications/cemu.desktop
+  vars:
+    cemu_absolute_path: /usr/local/{{ cemu_folder_name }}
+  # automatically registers the .dekstop file as trusted. Otherwise, needs executable permissions
+  become: true
