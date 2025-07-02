@@ -41,12 +41,11 @@
   args:
     chdir: /usr/local
 
-- name: Add IntelliJ bin folder to user .bashrc PATH if not present
+- name: Add IntelliJ bin folder to user .env PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.bashrc
+    path: ~/.env
     regexp: "^export PATH=\\$PATH:/usr/local/{{ idea_foldername.stdout }}/bin"
-    insertafter: '^# USER VARIABLES BEGIN'
     line: export PATH=$PATH:/usr/local/{{ idea_foldername.stdout }}/bin
 
 - name: Add IntelliJ .desktop file 

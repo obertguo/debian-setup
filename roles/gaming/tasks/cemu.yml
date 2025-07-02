@@ -51,13 +51,12 @@
     state: absent
   become: true
 
-- name: Add {{ cemu_folder_name }} folder to user .bashrc PATH if not present
+- name: Add {{ cemu_folder_name }} folder to user .env PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.bashrc
+    path: ~/.env
     line: export PATH=$PATH:/usr/local/{{ cemu_folder_name }}
     regexp: "^export PATH=\\$PATH:/usr/local/{{ cemu_folder_name }}"
-    insertafter: '^# USER VARIABLES BEGIN'
 
 - name: Copy Cemu icon
   ansible.builtin.copy:

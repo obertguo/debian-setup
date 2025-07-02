@@ -41,20 +41,18 @@
   args:
     chdir: /usr/local
 
-- name: Add OpenJDK bin folder to user .bashrc PATH if not present
+- name: Add OpenJDK bin folder to user .env PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.bashrc
+    path: ~/.env
     line: export PATH=$PATH:/usr/local/{{ openjdk_folder_name.stdout }}/bin
     regexp: "^export PATH=\\$PATH:/usr/local/{{ openjdk_folder_name.stdout }}/bin"
-    insertafter: '^# USER VARIABLES BEGIN'
 
-- name: Add JAVA_HOME to user .bashrc if not present
+- name: Add JAVA_HOME to user .env if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.bashrc
+    path: ~/.env
     line: export JAVA_HOME=/usr/local/{{ openjdk_folder_name.stdout }}
     regexp: "^export JAVA_HOME=/usr/local/{{ openjdk_folder_name.stdout }}"
-    insertafter: '^# USER VARIABLES BEGIN'
 
 # OpenJDK is now installed - try running java -version (Requires a new terminal session)

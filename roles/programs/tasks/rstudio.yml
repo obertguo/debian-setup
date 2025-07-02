@@ -48,13 +48,12 @@
   args:
     chdir: /usr/local
 
-- name: Add R-Studio folder to user .bashrc PATH if not present
+- name: Add R-Studio folder to user .env PATH if not present
   ansible.builtin.lineinfile:
     state: present
-    path: ~/.bashrc
+    path: ~/.env
     line: export PATH=$PATH:/usr/local/{{ rstudio_foldername.stdout }}
     regexp: "^export PATH=\\$PATH:/usr/local/{{ rstudio_foldername.stdout }}"
-    insertafter: '^# USER VARIABLES BEGIN'
 
 - name: Add R-Studio .desktop file 
   ansible.builtin.template:
