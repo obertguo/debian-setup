@@ -1,4 +1,10 @@
 #!/bin/sh
+
+# This script installs and enables the Gnome DE
+# and is intended to be used after a "minimal" installation
+# of Debian (i.e., no selected DE through the Debian installer)
+# Pretty much gets a Gnome DE up and running.
+
 USERNAME=$1
 
 install_gnome() {
