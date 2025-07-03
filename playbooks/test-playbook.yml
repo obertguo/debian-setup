@@ -7,4 +7,3 @@
       ansible.builtin.include_role:
         name: gaming
         tasks_from: nvidia_drivers
-        
