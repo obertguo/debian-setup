@@ -115,3 +115,7 @@ gnome:
     - code.desktop
     - org.gnome.Nautilus.desktop
     - google-chrome.desktop
+
+gaming:
+  nvidia_drivers:
+    bypass_secureboot_fail_reason: null

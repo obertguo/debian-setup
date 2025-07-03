@@ -21,7 +21,8 @@
   register: contrib_enabled_check
   become: true
 
-# Avoids manual writes to sources list: https://linuxcapable.com/how-to-enable-contrib-and-non-free-repos-on-debian-linux/
+# Just a quick easy way to avoid additional Ansible tasks 
+# to write to the sources list manually: https://linuxcapable.com/how-to-enable-contrib-and-non-free-repos-on-debian-linux/
 - name: Enable contrib and non-free-firmware for Debian apt sources
   ansible.builtin.shell:
     cmd: apt-add-repository -y contrib non-free-firmware 

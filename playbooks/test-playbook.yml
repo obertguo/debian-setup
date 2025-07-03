@@ -3,7 +3,8 @@
   hosts: localhost
 
   tasks:
-    - name: Install Cemu
+    - name: Install Nvidia drivers
       ansible.builtin.include_role:
         name: gaming
-        tasks_from: cemu
+        tasks_from: nvidia_drivers
+        

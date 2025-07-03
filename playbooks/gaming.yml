@@ -7,6 +7,11 @@
       ansible.builtin.include_role:
         name: gaming
         tasks_from: steam
+
+    - name: Install Nvidia drivers
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: nvidia_drivers
     
     - name: Install Cemu
       ansible.builtin.include_role:

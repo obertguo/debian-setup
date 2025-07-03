@@ -1,0 +1,103 @@
+---
+# MOP: https://wiki.debian.org/NvidiaGraphicsDrivers
+- name: Determine if Nvidia GPU is present
+  ansible.builtin.shell:
+    cmd: lspci -nn | egrep -i '3d|display|vga' | grep -i 'NVIDIA' | wc -c
+  register: nvidia_gpu_check
+
+- name: End nvidia_driver role if Nvidia GPU is not present
+  ansible.builtin.meta: end_role
+  when: nvidia_gpu_check.stdout | int == 0
+
+- name: Nvidia Wayland post-installation
+  block:
+    - name: Check if Nvidia Wayland post-installation configuration is required
+      ansible.builtin.set_fact:
+        nvidia_drm_kernel_modeset: "{{ lookup('ansible.builtin.file', '/sys/module/nvidia_drm/parameters/modeset') }}"
+      become: true
+      ignore_errors: true
+
+    - name: Do Nvidia Wayland post-installation
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/nvidia-options.conf
+        state: present
+        line: options nvidia-drm modeset=1
+      become: true
+      when: 
+        - nvidia_drm_kernel_modeset is defined
+        - nvidia_drm_kernel_modeset | lower == 'n'
+
+    - name: Reboot system for Nvidia Wayland post-installation
+      ansible.builtin.reboot:
+        msg: Rebooting in 60s for Nvidia Wayland post-installation to take affect
+        pre_reboot_delay: 60
+      when: 
+      - nvidia_drm_kernel_modeset is defined
+      - nvidia_drm_kernel_modeset | lower == 'n'
+
+    - name: End nvidia_driver role if Nvidia Wayland post-installation is already done 
+      ansible.builtin.meta: end_role
+      when:
+        - nvidia_drm_kernel_modeset is defined
+        - nvidia_drm_kernel_modeset | lower == 'y'
+
+# Continue on with main installation
+
+- name: Ensure mokutil is installed
+  ansible.builtin.apt:
+    name: mokutil
+    state: present
+  become: true
+
+- name: Check if SecureBoot is enabled
+  ansible.builtin.shell:
+    cmd: mokutil --sb-state 2> /dev/null | grep -i enabled | wc -c
+  become: true
+  register: secureboot_enabled_check
+
+- name: Fail if SecureBoot is enabled and MOK is not enrolled
+  ansible.builtin.fail:
+    msg: | 
+      Ensure that your machine owner's key (MOK) is enrolled before installing Nvidia drivers. 
+
+      Check https://wiki.debian.org/NvidiaGraphicsDrivers and https://wiki.debian.org/SecureBoot for instructions
+
+      After completing, edit your localhost.yml to set the field gaming.nvidia_drivers.bypass_secureboot_fail_reason to 'mok_enrolled' to continue installation of Nvidia drivers.
+  when: 
+    - secureboot_enabled_check | int > 0
+    - bypass_secureboot_fail_reason is defined
+    - bypass_secureboot_fail_reason == 'mok_enrolled'
+
+- name: Check if contrib is enabled in Debian apt sources
+  ansible.builtin.shell:
+    cmd: cat /etc/apt/sources.list | grep -v '^#' | grep -i 'contrib' | wc -l
+  register: contrib_enabled_check
+  become: true
+
+# Just a quick easy way to avoid additional Ansible tasks 
+# to write to the sources list manually: https://linuxcapable.com/how-to-enable-contrib-and-non-free-repos-on-debian-linux/
+- name: Enable contrib and non-free-firmware for Debian apt sources
+  ansible.builtin.shell:
+    cmd: apt-add-repository -y contrib non-free-firmware 
+  become: true
+  when: contrib_enabled_check.stdout | int == 0
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+
+- name: Install Nvidia drivers ("open" flavor)
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - nvidia-open-kernel-dkms
+    - nvidia-driver
+    - firmware-misc-nonfree
+
+- name: Reboot system for Nvidia drivers to take affect
+  ansible.builtin.reboot:
+    msg: Rebooting in 60s for Nvidia drivers to take affect
+    pre_reboot_delay: 60
