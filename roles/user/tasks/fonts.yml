@@ -5,9 +5,25 @@
     dest: '/usr/local/share/fonts/'
   become: true
 
+- name: Install Google Noto Color Emoji for emoji support in fonts
+  ansible.builtin.apt:
+    name: fonts-noto-color-emoji
+    state: present
+  become: true
+
 - name: Force reload font cache
   ansible.builtin.command: fc-cache -f -v
   become: true
   no_log: true
   changed_when: false
-  
+
+- name: Apply Gnome font settings
+  ansible.builtin.shell:
+    cmd: | 
+      dconf write /org/gnome/desktop/interface/font-antialiasing "'{{ font.antialiasing | default('grayscale', true) }}'"
+      dconf write /org/gnome/desktop/interface/font-hinting "'{{ font.hinting | default('slight', true) }}'"
+      dconf write /org/gnome/desktop/interface/font-name "'{{ font.font_name | default('Cantarell 11', true) }}'"
+      dconf write /org/gnome/desktop/interface/document-font-name "'{{ font.document_font_name | default('Cantarell 11', true) }}'"
+      dconf write /org/gnome/desktop/interface/monospace-font-name "'{{ font.monospace_font_name | default('Monospace 11', true) }}'"
+      dconf write /org/gnome/desktop/wm/preferences/titlebar-font "'{{ font.titlebar_font | default('Cantarell Bold 11', true) }}'"
+  when: font is defined and font is mapping

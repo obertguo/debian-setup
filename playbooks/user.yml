@@ -21,6 +21,8 @@
       ansible.builtin.include_role:
         name: user
         tasks_from: fonts
+      vars:
+        font: "{{ hostvars.localhost.gnome.desktop.font }}"
 
     - name: Add VS code extensions and settings
       ansible.builtin.include_role:
@@ -36,3 +38,4 @@
       loop: "{{ hostvars.localhost.user.chrome_extensions | default([], true) }}"
       loop_control:
         label: item.extension_name
+        

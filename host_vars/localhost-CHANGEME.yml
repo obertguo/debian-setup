@@ -61,6 +61,7 @@ apt:
     - npm
     - shotcut # video editor
     - dolphin-emu
+    - fonts-noto-color-emoji # adds emoji support in fonts  
 
 
 user:
@@ -109,13 +110,23 @@ gnome:
       show_weekday: true
       show_seconds: false
       show_date: true
+    font:
+      antialiasing: rgba            #  Gnome default is 'grayscale'
+      hinting: slight               # Gnome default is 'slight'
+
+      # https://rsms.me/inter/download/ for Inter font download. 
+      # Apparently this will be Gnome's new default font going forward as of Gnome 47: https://www.omglinux.com/gnome-may-switch-to-inter-font/
+      font_name: Inter 11           # Gnome default is 'Cantarell 11'
+      document_font_name: Inter 11  # Gnome default is 'Cantarell 11'
+      monospace_font_name: JetBrains Mono 11  # Gnome default is 'Monospace 11'
+      titlebar_font: Inter Display Bold 11    # Gnome default is 'Cantarell Bold 11'
 
   favorite_apps:
+    - google-chrome.desktop
+    - org.gnome.Nautilus.desktop
     - org.gnome.Terminal.desktop
     - code.desktop
-    - org.gnome.Nautilus.desktop
-    - google-chrome.desktop
-
+    
 gaming:
   nvidia_drivers:
     bypass_secureboot_fail_reason: null
