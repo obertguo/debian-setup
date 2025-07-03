@@ -60,6 +60,7 @@ apt:
     - nodejs
     - npm
     - shotcut # video editor
+    - dolphin-emu
 
 
 user:
