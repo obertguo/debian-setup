@@ -36,7 +36,14 @@
         prefer_dark_theme: "{{ hostvars.localhost.gnome.desktop.prefer_dark_theme | default(false) | bool }}"
         enable_hot_corners: "{{ hostvars.localhost.gnome.desktop.enable_hot_corners | default(true) | bool }}"
         clock: "{{ hostvars.localhost.gnome.desktop.clock }}"
-    
+
+    - name: Set user night light preferences
+      ansible.builtin.include_role:
+        name: gsettings
+        tasks_from: night_light
+      vars:
+        night_light: "{{ hostvars.localhost.gnome.night_light }}"
+
     - name: Configure Nautilus preferences
       ansible.builtin.include_role:
         name: gsettings

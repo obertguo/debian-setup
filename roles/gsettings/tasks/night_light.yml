@@ -1,0 +1,10 @@
+---
+- name: Add user night light preferences
+  ansible.builtin.shell:
+    cmd: dconf write /org/gnome/settings-daemon/plugins/color/{{ item.key }} '{{ item.value }}'
+  loop:
+    - key: night-light-enabled
+      value: "{{ night_light.enabled | default(false) | bool | lower }}"
+    - key: night-light-temperature
+      value: "uint32 {{ night_light.temperature | default(4700, true) | int }}"
+  when: night_light is defined and night_light is mapping

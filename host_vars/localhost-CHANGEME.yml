@@ -101,6 +101,10 @@ gnome:
       binding: Print
       command: flameshot gui
 
+  night_light:
+    enabled: true
+    temperature: 4500 # ranges from 1700 (very warm) to 4700 (less warm)
+
   desktop:
     wallpaper_filename: space-gooose-spacehawks.jpg
     screensaver_filename: space-gooose-spacehawks.jpg
@@ -116,10 +120,10 @@ gnome:
 
       # https://rsms.me/inter/download/ for Inter font download. 
       # Apparently this will be Gnome's new default font going forward as of Gnome 47: https://www.omglinux.com/gnome-may-switch-to-inter-font/
-      font_name: Inter 11           # Gnome default is 'Cantarell 11'
-      document_font_name: Inter 11  # Gnome default is 'Cantarell 11'
-      monospace_font_name: JetBrains Mono 11  # Gnome default is 'Monospace 11'
-      titlebar_font: Inter Display Bold 11    # Gnome default is 'Cantarell Bold 11'
+      font_name: Inter 12           # Gnome default is 'Cantarell 11'
+      document_font_name: Inter 12  # Gnome default is 'Cantarell 11'
+      monospace_font_name: JetBrains Mono 12  # Gnome default is 'Monospace 11'
+      titlebar_font: Inter Display Bold 12    # Gnome default is 'Cantarell Bold 11'
 
   favorite_apps:
     - google-chrome.desktop
