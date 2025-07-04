@@ -61,7 +61,13 @@ apt:
     - npm
     - shotcut # video editor
     - dolphin-emu
-    - fonts-noto-color-emoji # adds emoji support in fonts  
+    - fonts-noto-color-emoji # adds emoji support in fonts 
+    - gnome-logs # Gnome systemd journalctl viewer
+    - gnome-disk-utility
+    - baobab # Gnome disk usage analyzer. It's pretty cool
+    - file-roller # Gnome archive manager
+    - qimgv # Lightweight image viewer
+    - vlc
 
 
 user:
