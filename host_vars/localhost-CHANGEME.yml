@@ -56,6 +56,8 @@ apt:
     - nautilus # default Gnome files app
     - nautilus-extension-gnome-terminal # adds show in terminal context menu
     - gnome-text-editor
+    - qimgv # Lightweight image viewer
+    - vlc
     - google-chrome-stable
     - nodejs
     - npm
@@ -66,9 +68,7 @@ apt:
     - gnome-disk-utility
     - baobab # Gnome disk usage analyzer. It's pretty cool
     - file-roller # Gnome archive manager
-    - qimgv # Lightweight image viewer
-    - vlc
-
+    - dconf-editor
 
 user:
   gitconfig:
