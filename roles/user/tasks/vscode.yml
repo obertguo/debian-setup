@@ -24,17 +24,13 @@
     loop_var: result
     label: "{{ result.item }}"
 
-- name: Create VSCode config folder if it does not exist
-  ansible.builtin.file:
-    path: ~/.config/Code/
-    state: directory
-
 - name: Copy user settings.json for VS code
   ansible.builtin.copy:
     src: "./files/vscode-settings-final.json"
-    dest: "~/.config/Code/User/settings.json"
+    dest: "~/.config/Code/User/settings.json/"
+    
 
 - name: Copy user keybindings.json for VS code
   ansible.builtin.copy:
     src: "./files/vscode-keybindings-final.json"
-    dest: "~/.config/Code/User/keybindings.json"
+    dest: "~/.config/Code/User/keybindings.json/"
