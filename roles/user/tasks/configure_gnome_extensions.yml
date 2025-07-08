@@ -1,0 +1,48 @@
+---
+- name: Get details about extension {{ item.name }}
+  ansible.builtin.shell:
+    cmd: curl -s -k https://extensions.gnome.org/extension-query/?search={{ item.name }} | jq -c '.extensions[] | select(.uuid | contains("{{ item.name }}"))'
+    # jq '.extensions[0].uuid' | tr -d '"'
+  register: gnome_extension_details
+
+- name: Set Gnome extension details as a dictionary
+  ansible.builtin.set_fact:
+    gnome_extension_details: "{{ gnome_extension_details.stdout | from_json }}"
+
+- name: Check if Gnome extension {{ gnome_extension_details.uuid }} is already installed
+  ansible.builtin.shell:
+    cmd: gnome-extensions list | grep '{{ gnome_extension_details.uuid }}' | wc -c
+  register: gnome_extension_installed_check
+
+- name: Fail if Gnome extension {{ gnome_extension_details.uuid }} is not installed
+  ansible.builtin.fail:
+  when: gnome_extension_installed_check.stdout | int == 0
+
+- name: Enable Gnome extension {{ gnome_extension_details.uuid }} if already installed
+  ansible.builtin.shell:
+    cmd: gnome-extensions enable '{{ gnome_extension_details.uuid }}'
+  when: gnome_extension_installed_check.stdout | int > 0
+
+- name: Check if dconf file exists for extension {{ item.name }}
+  ansible.builtin.stat:
+    path: ./roles/user/files/{{ item.dconf_file }}
+  register: dconf_file_check
+
+- name: Override dconf settings for extension {{ item.name }}
+  block:
+    - name: Backup existing user dconf settings for {{ item.name }} 
+      ansible.builtin.shell:
+        cmd: |
+          mkdir -p ~/gnome_extensions_dconf_backup/
+          dconf dump /org/gnome/shell/extensions/{{ item.dconf_entry }}/ > ~/gnome_extensions_dconf_backup/{{ item.dconf_entry }}.ini
+
+    - name: Reset dconf settings for {{ item.name }}
+      ansible.builtin.shell:
+        cmd: dconf reset -f /org/gnome/shell/extensions/{{ item.dconf_entry }}/
+    
+    - name: Write user dconf settings for {{ item.name }}
+      ansible.builtin.shell:
+        cmd: dconf load /org/gnome/shell/extensions/{{ item.dconf_entry }}/ < ./roles/user/files/{{ item.dconf_file }}
+  when: 
+    - dconf_file_check.stat.exists
+    - item.dconf_entry is defined and item.dconf_entry | length > 0

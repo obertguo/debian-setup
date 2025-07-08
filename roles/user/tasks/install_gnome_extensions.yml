@@ -2,9 +2,9 @@
 # Commands were pretty much yoinked from 
 # - https://unix.stackexchange.com/questions/617288/command-line-tool-to-install-gnome-shell-extensions
 # and https://github.com/essembeh/gnome-extensions-cli/tree/main
-- name: Get details about extension {{ item }}
+- name: Get details about extension {{ item.name }}
   ansible.builtin.shell:
-    cmd: curl -s -k https://extensions.gnome.org/extension-query/?search={{ item }} | jq -c '.extensions[] | select(.uuid | contains("{{ item }}"))'
+    cmd: curl -s -k https://extensions.gnome.org/extension-query/?search={{ item.name }} | jq -c '.extensions[] | select(.uuid | contains("{{ item.name }}"))'
     # jq '.extensions[0].uuid' | tr -d '"'
   register: gnome_extension_details
 

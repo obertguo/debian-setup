@@ -62,6 +62,19 @@
           loop: "{{ hostvars.localhost.gnome.favorite_apps }}"
           when: hostvars.localhost.gnome.favorite_apps | default([], true) | length > 0
 
+    - name: Install Gnome extensions
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: install_gnome_extensions
+      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
+      when: false
+
+    - name: Configure Gnome extensions
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: configure_gnome_extensions
+      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
+
     - name: Finalize miscellaneous settings
       ansible.builtin.include_role:
         name: gsettings

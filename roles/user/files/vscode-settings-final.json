@@ -8,6 +8,7 @@
         120
     ],
     "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
     "editor.stickyScroll.enabled": false,
     "terminal.integrated.fontFamily": "JetBrains Mono",
     "editor.fontFamily": "JetBrains Mono",

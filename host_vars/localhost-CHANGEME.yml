@@ -138,9 +138,22 @@ gnome:
     - code.desktop
     
   gnome_extensions:
-    - blur-my-shell@aunetx
-    - dash-to-panel@jderose9.github.com
-    - openweather-extension@jenslody.de
+  # dconf settings for XYZ_name Gnome extension can be loaded with `dconf load /org/gnome/shell/extensions/XYZ_name/ < XYZ_name.ini`
+
+  # dconf settings for XYZ_name Gnome extension can be dumped to an ini file with `dconf dump /org/gnome/shell/extensions/XYZ_name/ > XYZ_name.ini`
+
+    - name: blur-my-shell@aunetx
+      dconf_file: gnome_extensions_dconf/blur-my-shell.ini
+      dconf_entry: blur-my-shell
+
+    - name: dash-to-panel@jderose9.github.com
+      dconf_file: gnome_extensions_dconf/dash-to-panel.ini
+      dconf_entry: dash-to-panel
+
+    - name: openweather-extension@jenslody.de
+      dconf_file: gnome_extensions_dconf/openweather.ini
+      dconf_entry: openweather
+    
     
 gaming:
   nvidia_drivers:

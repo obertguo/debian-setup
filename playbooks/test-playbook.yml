@@ -7,4 +7,11 @@
       ansible.builtin.include_role:
         name: user
         tasks_from: install_gnome_extensions
-      loop: "{{ hostvars.localhost.gnome.gnome_extensions }}"
+      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
+      when: false
+
+    - name: Configure Gnome Extensions
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: configure_gnome_extensions
+      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
