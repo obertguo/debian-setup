@@ -3,7 +3,8 @@
   hosts: localhost
 
   tasks:
-    - name: Install Nvidia drivers
+    - name: Install Gnome Extensions
       ansible.builtin.include_role:
-        name: gaming
-        tasks_from: nvidia_drivers
+        name: user
+        tasks_from: install_gnome_extensions
+      loop: "{{ hostvars.localhost.gnome.gnome_extensions }}"

@@ -137,6 +137,11 @@ gnome:
     - org.gnome.Terminal.desktop
     - code.desktop
     
+  gnome_extensions:
+    - blur-my-shell@aunetx
+    - dash-to-panel@jderose9.github.com
+    - openweather-extension@jenslody.de
+    
 gaming:
   nvidia_drivers:
     bypass_secureboot_fail_reason: null

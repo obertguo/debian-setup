@@ -1,0 +1,54 @@
+---
+- name: Get details about extension {{ item }}
+  ansible.builtin.shell:
+    cmd: curl -s -k https://extensions.gnome.org/extension-query/?search={{ item }} | jq -c '.extensions[] | select(.uuid | contains("{{ item }}"))'
+    # jq '.extensions[0].uuid' | tr -d '"'
+  register: gnome_extension_details
+
+- name: Set Gnome extension details as a dictionary
+  ansible.builtin.set_fact:
+    gnome_extension_details: "{{ gnome_extension_details.stdout | from_json }}"
+
+- name: Check if Gnome extension {{ gnome_extension_details.uuid }} is already installed
+  ansible.builtin.shell:
+    cmd: gnome-extensions list | grep '{{ gnome_extension_details.uuid }}' | wc -c
+  register: gnome_extension_installed_check
+
+- name: Enable Gnome extension {{ gnome_extension_details.uuid }} if already installed
+  ansible.builtin.shell:
+    cmd: gnome-extensions enable '{{ gnome_extension_details.uuid }}'
+  when: gnome_extension_installed_check.stdout | int > 0
+
+- name: End role if Gnome extension {{ gnome_extension_details.uuid }} is already installed
+  ansible.builtin.meta: end_role
+  when: gnome_extension_installed_check.stdout | int > 0
+
+- name: Determine current Gnome shell (major) version
+  ansible.builtin.shell:
+    cmd: gnome-shell --version | grep -o '[0-9].*' | cut -d '.' -f 1
+  register: gnome_shell_version
+
+- name: Get extension version available for current Gnome shell version {{ gnome_shell_version.stdout }}
+  ansible.builtin.set_fact:
+    gnome_extension_pk_version: "{{ gnome_extension_details.shell_version_map[gnome_shell_version.stdout].pk }}"
+
+- name: Create a tmp directory
+  ansible.builtin.file:
+    path: ./tmp
+    state: directory
+
+- name: Download extension zip {{ gnome_extension_details.uuid }} to tmp directory
+  ansible.builtin.shell:
+    cmd: wget --no-check-certificate -O {{ gnome_extension_details.uuid }}.zip https://extensions.gnome.org/download-extension/{{ gnome_extension_details.uuid }}.shell-extension.zip?version_tag={{ gnome_extension_pk_version }}
+  args:
+    chdir: ./tmp
+
+- name: Install Gnome extension {{ gnome_extension_details.uuid }} from the zip file
+  ansible.builtin.shell:
+    cmd: gnome-extensions install {{ gnome_extension_details.uuid  }}.zip
+  args:
+    chdir: ./tmp
+
+# Gnome shell needs to be restarted in order for the extension to be listed in gnome-extensions list 
+# (i.e., log out and log in. Can be done in GUI or with gnome-session-quit in CLI) 
+# This is because the extensions are cached in the current user's DE session
