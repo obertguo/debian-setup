@@ -96,6 +96,8 @@ user:
   chrome_extensions:
     - extension_id: ddkjiahejlhfcafbddmgiahcphecmpfh
       extension_name: 'uBlock Origin Lite'
+  
+  profile_picture: 'kazuha.png'
 
 gnome:
   keyboard_shortcuts:

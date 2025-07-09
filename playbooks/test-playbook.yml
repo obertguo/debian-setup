@@ -3,15 +3,9 @@
   hosts: localhost
 
   tasks:
-    - name: Install Gnome Extensions
+    - name: Add user profile picture
       ansible.builtin.include_role:
         name: user
-        tasks_from: install_gnome_extensions
-      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
-      when: false
-
-    - name: Configure Gnome Extensions
-      ansible.builtin.include_role:
-        name: user
-        tasks_from: configure_gnome_extensions
-      loop: "{{ hostvars.localhost.gnome.gnome_extensions | default([], true) }}"
+        tasks_from: profile_picture
+      vars:
+        profile_picture: "{{ hostvars.localhost.user.profile_picture | default('') }}"

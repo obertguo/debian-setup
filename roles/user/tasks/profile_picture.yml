@@ -1,0 +1,40 @@
+---
+- name: Check if profile picture exists
+  ansible.builtin.stat:
+    path: ./roles/user/files/profile_picture/{{ profile_picture }}
+  register: profile_picture_check
+
+- name: End profile_picture role if profile picture does not exist
+  ansible.builtin.meta: end_role
+  when: not profile_picture_check.stat.exists
+
+- name: Register current user
+  ansible.builtin.shell:
+    cmd: whoami
+  register: username
+
+- name: Ensure the following AccountsService folders exist
+  ansible.builtin.file:
+    path: /var/lib/AccountsService/{{ item }}/
+    state: directory
+  become: true
+  loop:
+    - icons
+    - users
+
+- name: Copy profile picture to AccountsService icons folder
+  ansible.builtin.copy:
+    src: ./roles/user/files/profile_picture/{{ profile_picture }}
+    dest: /var/lib/AccountsService/icons/{{ profile_picture }}
+  become: true
+
+- name: Template account entry for user {{ username.stdout }} 
+  ansible.builtin.template:
+    src: ./templates/profile_picture_entry.j2
+    dest: /var/lib/AccountsService/users/{{ username.stdout }}
+  become: true
+
+- name: Finish adding profile picture
+  ansible.builtin.debug:
+    msg: Profile picture {{ profile_picture }} will be applied upon next re-login.
+# Or manually restart Gnome shell to update cache
