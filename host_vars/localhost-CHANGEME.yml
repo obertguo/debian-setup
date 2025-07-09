@@ -69,6 +69,7 @@ apt:
     - baobab # Gnome disk usage analyzer. It's pretty cool
     - file-roller # Gnome archive manager
     - dconf-editor
+    - jq
 
 user:
   gitconfig:
