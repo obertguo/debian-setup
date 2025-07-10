@@ -1,0 +1,17 @@
+---
+- name: Assert package_list is defined and is a list
+  ansible.builtin.assert:
+    that:
+      - package_list is defined
+      - package_list is not mapping
+      - package_list is not string
+      - package_list is iterable
+
+- name: Install list of apt packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop: "{{ package_list }}"
+  loop_control:
+    label: "{{ item }}"

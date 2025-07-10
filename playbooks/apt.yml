@@ -1,6 +1,9 @@
 ---
 - name: Playbook for apt setup (add repos, remove and install packages)
   hosts: localhost
+  vars_files:
+    - ./playbook_vars/apt_vars.yml
+    - ./playbook_vars/apt_packages_list_vars.yml
 
   tasks:
     - name: Update apt repositories
@@ -15,13 +18,13 @@
         purge: true
         autoremove: true
       become: true
-      loop: "{{ hostvars.localhost.apt.packages_to_remove | default([], true) }}"
+      loop: "{{ apt_vars.packages_to_remove | default([], true) }}"
 
     - name: Add user apt repos
       ansible.builtin.include_role:
         name: apt
-        tasks_from: add_apt
-      loop: "{{ hostvars.localhost.apt.add_apt.repos }}"
+        tasks_from: add_apt_repos
+      loop: "{{ apt_vars.add_apt_repos }}"
       loop_control:
         label: "{{ item.package_name }}"
 
@@ -30,11 +33,15 @@
         update_cache: true
       become: true
 
-    - name: Install user apt packages
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-      loop: "{{ hostvars.localhost.apt.packages_to_install | default([], true) }}"
-      loop_control: 
-        label: "{{ item }}"
-      become: true
+    - name: Install some lists of apt packages
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: install_apt_package_list
+      loop:
+        - "{{ apt_packages_list_vars.core }}"
+        - "{{ apt_packages_list_vars.programming }}"
+        - "{{ apt_packages_list_vars.files }}"
+        - "{{ apt_packages_list_vars.browser }}"
+        - "{{ apt_packages_list_vars.misc }}"
+      loop_control:
+        loop_var: package_list

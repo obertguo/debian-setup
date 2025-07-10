@@ -1,0 +1,38 @@
+---
+apt_packages_list_vars:
+  core:
+    - sudo
+    - curl
+    - wget
+    - bash-completion
+    - linux-headers-amd64 # needed for future driver installations
+    - software-properties-common # provides an easier way to edit entries in /etc/apt/sources.list
+    - perl # needed for miktex installer, and likely for other software that need a perl interpreter
+    - jq
+  programming: 
+    - git
+    - code
+    - python3
+    - nodejs
+    - npm
+  school:
+    - miktex
+  gnome:
+    - dconf-editor
+    - nautilus # default Gnome files app
+    - nautilus-extension-gnome-terminal # adds show in terminal context menu
+    - gnome-text-editor
+    - baobab # Gnome disk usage analyzer. It's pretty cool
+    - file-roller # Gnome archive manager
+    - gnome-logs # Gnome systemd journalctl viewer
+    - gnome-disk-utility
+  files:
+    - qimgv # Lightweight image viewer
+    - vlc
+    - shotcut # video editor
+  browser:
+    - google-chrome-stable
+  gaming:
+    - dolphin-emu
+  misc:
+    - fonts-noto-color-emoji # adds emoji support in fonts    

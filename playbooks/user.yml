@@ -1,8 +1,13 @@
 ---
 - name: Playbook to setup user configurations
   hosts: localhost
+  vars_files:
+  - ./playbook_vars/user_vars.yml
+  - ./playbook_vars/apt_packages_list.yml
+  - ./playbook_vars/sensitive_vars.yml
 
   tasks:
+
     - name: Backup existing user bashrc and copy over an updated one
       ansible.builtin.include_role:
         name: user
@@ -13,35 +18,33 @@
         name: user
         tasks_from: gitconfig
       vars:
-        GITHUB_USERNAME: "{{ hostvars.localhost.user.gitconfig.username }}"
-        GITHUB_PAT: "{{ hostvars.localhost.user.gitconfig.pat }}"
-        GITHUB_EMAIL: "{{ hostvars.localhost.user.gitconfig.email }}"
+        GITHUB_USERNAME: "{{ senstive_vars.gitconfig.username }}"
+        GITHUB_PAT: "{{ senstive_vars.gitconfig.pat }}"
+        GITHUB_EMAIL: "{{ senstive_vars.gitconfig.email }}"
 
-    - name: Add additional fonts
+    - name: Install additional fonts inside the fonts folder
       ansible.builtin.include_role:
         name: user
         tasks_from: fonts
-      vars:
-        font: "{{ hostvars.localhost.gnome.desktop.font }}"
 
     - name: Add VS code extensions and settings
       ansible.builtin.include_role:
         name: user
         tasks_from: vscode
       vars:
-        vscode_extensions: "{{ hostvars.localhost.user.vscode_extensions | default([], true) }}"
+        vscode_extensions: "{{ user_vars.vscode_extensions | default([], true) }}"
     
     - name: Install Chrome extensions
       ansible.builtin.include_role:
         name: user
         tasks_from: chrome_extensions
-      loop: "{{ hostvars.localhost.user.chrome_extensions | default([], true) }}"
+      loop: "{{ user_vars.chrome_extensions | default([], true) }}"
       loop_control:
         label: item.extension_name
     
-    - name: Add user profile picture
+    - name: Register user profile picture in AccountsService
       ansible.builtin.include_role:
         name: user
         tasks_from: profile_picture
       vars:
-        profile_picture: "{{ hostvars.localhost.user.profile_picture | default('') }}"
+        profile_picture: "{{ user_vars.profile_picture | default('') }}"

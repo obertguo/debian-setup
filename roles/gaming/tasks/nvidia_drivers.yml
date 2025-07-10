@@ -61,11 +61,11 @@
 
       Check https://wiki.debian.org/NvidiaGraphicsDrivers and https://wiki.debian.org/SecureBoot for instructions
 
-      After completing, edit your localhost.yml to set the field gaming.nvidia_drivers.bypass_secureboot_fail_reason to 'mok_enrolled' to continue installation of Nvidia drivers.
+      After completing, edit playbook_vars/gaming_vars.yml by setting the field gaming_vars.nvidia_drivers.bypass_secureboot_fail_reason to 'mok_enrolled' to continue installation of Nvidia drivers.
   when: 
     - secureboot_enabled_check | int > 0
-    - bypass_secureboot_fail_reason is defined
-    - bypass_secureboot_fail_reason == 'mok_enrolled'
+    - gaming_vars.nvidia_drivers.bypass_secureboot_fail_reason is defined
+    - gaming_vars.nvidia_drivers.bypass_secureboot_fail_reason == 'mok_enrolled'
 
 - name: Check if contrib, non-free, and non-free-firmware is enabled in Debian apt sources
   ansible.builtin.shell:

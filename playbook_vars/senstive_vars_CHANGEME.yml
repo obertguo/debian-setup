@@ -1,0 +1,6 @@
+---
+senstive_vars:
+  gitconfig:
+    username: ''
+    email: ''
+    pat: ''

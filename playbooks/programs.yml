@@ -1,8 +1,20 @@
 ---
 - name: Playbook to install user programs
   hosts: localhost
+  vars_files:
+    - ./playbook_vars/programs_vars.yml
+    - ./playbook_vars/apt_packages_list.yml
 
   tasks: 
+     - name: Install programs apt packages
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: install_apt_packages_list
+      loop:
+        - "{{ apt_packages_list_vars.school }}"
+      loop_control:
+        loop_var: package_list
+
     - name: Install and configure IntelliJ Idea
       ansible.builtin.include_role:
         name: programs

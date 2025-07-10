@@ -14,5 +14,5 @@
 
 - name: Copy Nautlius Templates folder to user home directory
   ansible.builtin.copy:
-    src: ./roles/gsettings/files/nautilus_templates/
+    src: ./roles/gnome/files/nautilus_templates/
     dest: ~/Templates

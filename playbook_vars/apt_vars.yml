@@ -1,0 +1,32 @@
+---
+apt_vars:
+  # Used for adding apt repos and their signing keys if a package cannot be found in existing apt repositories
+  add_apt_repos:
+    - package_name: code 
+      key_url: https://packages.microsoft.com/keys/microsoft.asc
+      key_filename: microsoft-archive-keyring.asc
+      apt_repo_url: https://packages.microsoft.com/repos/code
+      source_list_name: vscode
+      sources_list_suite_name: stable
+      sources_list_components: main
+
+    - package_name: miktex 
+      key_url: https://miktex.org/download/key
+      key_filename: miktex.asc
+      apt_repo_url: https://miktex.org/download/debian
+      source_list_name: miktex
+      sources_list_suite_name: ''       # defaults to ansible_distribution_release
+      sources_list_components: universe
+
+    - package_name: google-chrome-stable
+      key_url: https://dl.google.com/linux/linux_signing_key.pub
+      key_filename: google-chrome.asc
+      apt_repo_url: https://dl.google.com/linux/chrome/deb/
+      source_list_name: google-chrome
+      sources_list_suite_name: stable
+      sources_list_components: main
+
+    # Remove any pre-installed apt packages
+  packages_to_remove:
+    - gnome-games
+    - libreoffice*

@@ -1,11 +1,13 @@
 ---
 - name: Test
   hosts: localhost
+  vars_files:
+    - ./playbook_vars/user_vars.yml
 
   tasks:
-    - name: Add user profile picture
+    - name: Register user profile picture in AccountsService
       ansible.builtin.include_role:
         name: user
         tasks_from: profile_picture
       vars:
-        profile_picture: "{{ hostvars.localhost.user.profile_picture | default('') }}"
+        profile_picture: "{{ user_vars.profile_picture | default('') }}"

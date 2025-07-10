@@ -1,8 +1,20 @@
 ---
 - name: Playbook to configure GPU drivers and games
   hosts: localhost
+  vars_files:
+    - ./playbook_vars/gaming_vars.yml
+    - ./playbook_vars/apt_packages_list_vars.yml
 
   tasks:
+    - name: Install gaming apt packages
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: install_apt_packages_list
+      loop:
+        - "{{ apt_packages_list_vars.gaming }}"
+      loop_control:
+        loop_var: package_list
+      
     - name: Install Steam
       ansible.builtin.include_role:
         name: gaming
