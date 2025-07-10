@@ -38,4 +38,10 @@
       loop: "{{ hostvars.localhost.user.chrome_extensions | default([], true) }}"
       loop_control:
         label: item.extension_name
-        
+    
+    - name: Add user profile picture
+      ansible.builtin.include_role:
+        name: user
+        tasks_from: profile_picture
+      vars:
+        profile_picture: "{{ hostvars.localhost.user.profile_picture | default('') }}"
