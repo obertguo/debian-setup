@@ -1,0 +1,3 @@
+---
+nvidia_drivers:
+  bypass_secureboot_fail_reason: null
