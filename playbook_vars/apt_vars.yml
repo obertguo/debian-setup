@@ -10,7 +10,7 @@ apt_vars:
       sources_list_suite_name: stable
       sources_list_components: main
 
-    - package_name: miktex 
+    - package_name: miktex
       key_url: https://miktex.org/download/key
       key_filename: miktex.asc
       apt_repo_url: https://miktex.org/download/debian
@@ -30,3 +30,4 @@ apt_vars:
   packages_to_remove:
     - gnome-games
     - libreoffice*
+    - firefox*

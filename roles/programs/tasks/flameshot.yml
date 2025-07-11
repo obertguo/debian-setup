@@ -5,8 +5,23 @@
     state: present
   become: true
 
+- name: Register current desktop session
+  ansible.builtin.shell:
+    cmd: echo $DESKTOP_SESSION
+  register: desktop_session
+
 # https://flameshot.org/docs/guide/wayland-help/
-- name: Install fixes for Gnome on Wayland
+- name: Install Flameshot fixes for KDE Wayland
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - xdg-desktop-portal-kde
+    - xdg-desktop-portal
+  when: desktop_session.stdout is search('plasma') or desktop_session.stdout is search('kde')
+
+- name: Install Flameshot fixes for Gnome Wayland
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -14,8 +29,9 @@
   loop:
     - xdg-desktop-portal-gnome
     - xdg-desktop-portal
+  when: desktop_session.stdout is search('gnome')
 
-# Also part of Gnome on Wayland fixes
+# Also part of Wayland fixes
 - name: Add QT_QPA_PLATFORM var to user .env if not present
   ansible.builtin.lineinfile:
     state: present
@@ -23,7 +39,14 @@
     line: export QT_QPA_PLATFORM=wayland
     regexp: "^export QT_QPA_PLATFORM=wayland"
 
-- name: Reset Gnome shortcut permissions if needed
+- name: Add QT_SCREEN_SCALE_FACTORS var to user .env if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    line: export QT_SCREEN_SCALE_FACTORS="1;1"
+    regexp: ^export QT_SCREEN_SCALE_FACTORS="1;1"
+
+- name: Reset Flameshot shortcut permissions if needed
   ansible.builtin.shell:
     cmd: >
       dbus-send --session --print-reply=literal 

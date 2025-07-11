@@ -6,7 +6,7 @@
     - ./playbook_vars/apt_packages_list.yml
 
   tasks: 
-     - name: Install programs apt packages
+    - name: Install programs apt packages
       ansible.builtin.include_role:
         name: apt
         tasks_from: install_apt_packages_list
@@ -44,4 +44,4 @@
       ansible.builtin.include_role:
         name: programs
         tasks_from: miktex
-        
+

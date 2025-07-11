@@ -6,7 +6,7 @@ set -oe pipefail
 # of Debian (i.e., no selected DE through the Debian installer)
 # Pretty much gets a DE up and running.
 
-USERNAME=""
+USERNAME=$1
 DESKTOP_ENVIRONMENT=""
 
 install_gnome() {
@@ -42,12 +42,11 @@ add_to_sudoers() {
 }
 
 run_init() {
-    if [ -z "$USERNAME" ]
-    then
+    if [ -z "$USERNAME" ]; then
         read -p "Enter your account's username to add to sudoers: " USERNAME
     fi
 
-    read -p "Enter what DE you would like. Valid choices are 'gnome' or 'kde' " DESKTOP_ENVIRONMENT
+    read -p $'Enter what DE you would like. Valid choices are "gnome" or "kde"\n' DESKTOP_ENVIRONMENT
     if [ "$DESKTOP_ENVIRONMENT" != "kde" ] && [ "$DESKTOP_ENVIRONMENT" != "gnome" ]; then
         echo "Unknown DE. Rerun the setup again." && exit 1
     fi
@@ -64,11 +63,10 @@ run_init() {
     sleep 5 && reboot
 }
 
-if [ "$(whoami)" != 'root' ]
-then
+if [ "$(whoami)" != 'root' ]; then
     USERNAME=$(whoami)
-    echo "This init script needs to be run as a root user:"
-    su - root -c "bash $(pwd)/init.sh"
+    echo "This init script needs to be run as a root user. Enter root password below."
+    su - root -c "bash $(pwd)/init.sh ${USERNAME}"
 else
     run_init
 fi

@@ -7,7 +7,6 @@
   - ./playbook_vars/sensitive_vars.yml
 
   tasks:
-
     - name: Backup existing user bashrc and copy over an updated one
       ansible.builtin.include_role:
         name: user
@@ -18,9 +17,9 @@
         name: user
         tasks_from: gitconfig
       vars:
-        GITHUB_USERNAME: "{{ senstive_vars.gitconfig.username }}"
-        GITHUB_PAT: "{{ senstive_vars.gitconfig.pat }}"
-        GITHUB_EMAIL: "{{ senstive_vars.gitconfig.email }}"
+        GITHUB_USERNAME: "{{ senstive_vars.gitconfig.username | default('', true) }}"
+        GITHUB_PAT: "{{ senstive_vars.gitconfig.pat | default('', true) }}"
+        GITHUB_EMAIL: "{{ senstive_vars.gitconfig.email | default('', true) }}"
 
     - name: Install additional fonts inside the fonts folder
       ansible.builtin.include_role:
