@@ -1,4 +1,5 @@
 #!/bin/bash
+set -oe pipefail
 
 # It is expected that this pipeline script is run at the root of this 
 # repo's folder
