@@ -62,6 +62,13 @@
         tasks_from: fonts
       vars:
         font: "{{ gnome_vars.desktop.font }}"
+    
+    - name: Install and set user cursor theme
+      ansible.builtin.include_role:
+        name: gnome
+        tasks_from: cursor.yml
+      vars:
+        cursor: "{{ gnome_vars.desktop.cursor }}"
 
     - name: Configure Nautilus preferences
       ansible.builtin.include_role:

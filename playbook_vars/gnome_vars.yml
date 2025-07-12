@@ -18,6 +18,9 @@ gnome_vars:
     screensaver_filename: space-gooose-spacehawks.jpg
     prefer_dark_theme: true
     enable_hot_corners: false
+    cursor:
+      size: 30 # Gnome default is 24
+      theme: Bibata-Modern-Classic # Gnome default is Adwaita
     clock:
       show_weekday: true
       show_seconds: false

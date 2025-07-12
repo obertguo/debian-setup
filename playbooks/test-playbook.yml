@@ -5,8 +5,9 @@
     - ./playbook_vars/gnome_vars.yml
 
   tasks:
-    - name: Configure Gnome extensions
+    - name: Install and set default cursor
       ansible.builtin.include_role:
         name: gnome
-        tasks_from: configure_gnome_extensions
-      loop: "{{ gnome_vars.gnome_extensions }}"
+        tasks_from: cursor.yml
+      vars:
+        cursor: "{{ gnome_vars.desktop.cursor }}"

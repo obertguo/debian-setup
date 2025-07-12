@@ -1,0 +1,28 @@
+---
+- name: Copy files in gnome_cursors to /usr/share/icons
+  ansible.builtin.copy:
+    src: ./roles/gnome/files/gnome_cursors/
+    dest: /usr/share/icons/
+  become: true
+
+- name: Find any tar files to unarchive
+  ansible.builtin.find:
+    paths: /usr/share/icons
+    patterns: '*.tar*'
+    recurse: false
+  register: tar_files
+
+- name: Unarchive each tar file
+  ansible.builtin.unarchive:
+    src: "{{ item.path }}"
+    dest: /usr/share/icons/
+  loop: "{{ tar_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  become: true
+
+- name: Set default cursor
+  ansible.builtin.shell:
+    cmd: | 
+      dconf write /org/gnome/desktop/interface/cursor-size {{ cursor.size | default(24, true) }}
+      dconf write /org/gnome/desktop/interface/cursor-theme "'{{ cursor.theme | default('Adwaita', true) }}'"
