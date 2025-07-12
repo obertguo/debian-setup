@@ -28,10 +28,10 @@ gnome_vars:
 
       # https://rsms.me/inter/download/ for Inter font download. 
       # Apparently this will be Gnome's new default font going forward as of Gnome 47: https://www.omglinux.com/gnome-may-switch-to-inter-font/
-      font_name: Inter 12           # Gnome default is 'Cantarell 11'
-      document_font_name: Inter 12  # Gnome default is 'Cantarell 11'
-      monospace_font_name: JetBrains Mono 12  # Gnome default is 'Monospace 11'
-      titlebar_font: Inter Display Bold 12    # Gnome default is 'Cantarell Bold 11'
+      font_name: Inter 10           # Gnome default is 'Cantarell 11'
+      document_font_name: Inter 10  # Gnome default is 'Cantarell 11'
+      monospace_font_name: JetBrains Mono 10  # Gnome default is 'Monospace 11'
+      titlebar_font: Inter Display Bold 10    # Gnome default is 'Cantarell Bold 11'
 
   favorite_apps:
     - google-chrome.desktop
@@ -44,6 +44,8 @@ gnome_vars:
 
   # dconf settings for XYZ_name Gnome extension can be dumped to an ini file with `dconf dump /org/gnome/shell/extensions/XYZ_name/ > XYZ_name.ini`
 
+  # extensions below will be enabled by default, unless if enabled is set to false
+
     - name: blur-my-shell@aunetx
       dconf_file: gnome_extensions_dconf/blur-my-shell.ini
       dconf_entry: blur-my-shell
@@ -51,8 +53,12 @@ gnome_vars:
     - name: dash-to-panel@jderose9.github.com
       dconf_file: gnome_extensions_dconf/dash-to-panel.ini
       dconf_entry: dash-to-panel
+      enabled: false
 
     - name: openweather-extension@jenslody.de
       dconf_file: gnome_extensions_dconf/openweather.ini
       dconf_entry: openweather
     
+    - name: dash-to-dock@micxgx.gmail.com
+      dconf_file: gnome_extensions_dconf/dash-to-dock.ini
+      dconf_entry: dash-to-dock

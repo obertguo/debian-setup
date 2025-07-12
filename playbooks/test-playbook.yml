@@ -2,12 +2,11 @@
 - name: Test
   hosts: localhost
   vars_files:
-    - ./playbook_vars/user_vars.yml
+    - ./playbook_vars/gnome_vars.yml
 
   tasks:
-    - name: Register user profile picture in AccountsService
+    - name: Configure Gnome extensions
       ansible.builtin.include_role:
-        name: user
-        tasks_from: profile_picture
-      vars:
-        profile_picture: "{{ user_vars.profile_picture | default('') }}"
+        name: gnome
+        tasks_from: configure_gnome_extensions
+      loop: "{{ gnome_vars.gnome_extensions }}"

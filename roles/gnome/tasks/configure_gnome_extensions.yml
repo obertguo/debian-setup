@@ -20,7 +20,10 @@
 
 - name: Enable Gnome extension {{ gnome_extension_details.uuid }} if already installed
   ansible.builtin.shell:
-    cmd: gnome-extensions enable '{{ gnome_extension_details.uuid }}'
+    cmd: >
+      gnome-extensions {% if item.enabled is defined %}
+      {{ 'enable' if item.enabled else 'disable' }}
+      {% else %}enable{% endif %} '{{ gnome_extension_details.uuid }}'
   when: gnome_extension_installed_check.stdout | int > 0
 
 - name: Check if dconf file exists for extension {{ item.name }}
