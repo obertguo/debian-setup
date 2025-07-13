@@ -21,6 +21,7 @@ gnome_vars:
     cursor:
       size: 30 # Gnome default is 24
       theme: Bibata-Modern-Classic # Gnome default is Adwaita
+    icon_theme: WhiteSur-dark # Gnome default is Adwaita
     clock:
       show_weekday: true
       show_seconds: false
@@ -50,18 +51,18 @@ gnome_vars:
   # extensions below will be enabled by default, unless if enabled is set to false
 
     - name: blur-my-shell@aunetx
-      dconf_file: gnome_extensions_dconf/blur-my-shell.ini
+      dconf_file: blur-my-shell.ini
       dconf_entry: blur-my-shell
 
     - name: dash-to-panel@jderose9.github.com
-      dconf_file: gnome_extensions_dconf/dash-to-panel.ini
+      dconf_file: dash-to-panel.ini
       dconf_entry: dash-to-panel
       enabled: false
 
     - name: openweather-extension@jenslody.de
-      dconf_file: gnome_extensions_dconf/openweather.ini
+      dconf_file: openweather.ini
       dconf_entry: openweather
     
     - name: dash-to-dock@micxgx.gmail.com
-      dconf_file: gnome_extensions_dconf/dash-to-dock.ini
+      dconf_file: dash-to-dock.ini
       dconf_entry: dash-to-dock

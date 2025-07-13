@@ -69,6 +69,13 @@
         tasks_from: cursor.yml
       vars:
         cursor: "{{ gnome_vars.desktop.cursor }}"
+      
+    - name: Install and set user icon theme
+      ansible.builtin.include_role:
+        name: gnome
+        tasks_from: icon.yml
+      vars:
+        icon_theme: "{{ gnome_vars.desktop.icon_theme }}"
 
     - name: Configure Nautilus preferences
       ansible.builtin.include_role:

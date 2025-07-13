@@ -5,9 +5,14 @@
     - ./playbook_vars/gnome_vars.yml
 
   tasks:
-    - name: Install and set default cursor
+    - name: Install and set default icons
       ansible.builtin.include_role:
         name: gnome
-        tasks_from: cursor.yml
+        tasks_from: icon.yml
       vars:
-        cursor: "{{ gnome_vars.desktop.cursor }}"
+        icon_theme: "{{ gnome_vars.desktop.icon_theme }}"
+    # - name: test
+    #   ansible.builtin.include_role:
+    #     name: gnome
+    #     tasks_from: configure_gnome_extensions
+    #   loop: "{{ gnome_vars.gnome_extensions }}"

@@ -1,7 +1,7 @@
 ---
-- name: Copy files in gnome_cursors to /usr/share/icons
+- name: Copy files in gnome_icons to /usr/share/icons
   ansible.builtin.copy:
-    src: ./roles/gnome/files/gnome_cursors/
+    src: ./roles/gnome/files/gnome_icons/
     dest: /usr/share/icons/
   become: true
 
@@ -21,8 +21,6 @@
     label: "{{ item.path }}"
   become: true
 
-- name: Set default cursor theme
+- name: Set default icon theme
   ansible.builtin.shell:
-    cmd: | 
-      dconf write /org/gnome/desktop/interface/cursor-size {{ cursor.size | default(24, true) }}
-      dconf write /org/gnome/desktop/interface/cursor-theme "'{{ cursor.theme | default('Adwaita', true) }}'"
+    cmd: dconf write /org/gnome/desktop/interface/icon-theme "'{{ icon_theme | default('Adwaita', true) }}'"

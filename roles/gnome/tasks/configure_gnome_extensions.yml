@@ -28,7 +28,7 @@
 
 - name: Check if dconf file exists for extension {{ item.name }}
   ansible.builtin.stat:
-    path: ./roles/user/files/{{ item.dconf_file }}
+    path: ./roles/gnome/files/gnome_extensions_dconf/{{ item.dconf_file }}
   register: dconf_file_check
 
 - name: Override dconf settings for extension {{ item.name }}
@@ -45,7 +45,7 @@
     
     - name: Write user dconf settings for {{ item.name }}
       ansible.builtin.shell:
-        cmd: dconf load /org/gnome/shell/extensions/{{ item.dconf_entry }}/ < ./roles/gnome/files/{{ item.dconf_file }}
+        cmd: dconf load /org/gnome/shell/extensions/{{ item.dconf_entry }}/ < ./roles/gnome/files/gnome_extensions_dconf/{{ item.dconf_file }}
   when: 
     - dconf_file_check.stat.exists
     - item.dconf_entry is defined and item.dconf_entry | length > 0
