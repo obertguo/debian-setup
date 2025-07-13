@@ -9,8 +9,12 @@
       ansible.builtin.include_role:
         name: gnome
         tasks_from: icon.yml
+        apply: 
+          tags: ['mytag']
       vars:
         icon_theme: "{{ gnome_vars.desktop.icon_theme }}"
+      tags:
+        - mytag
     # - name: test
     #   ansible.builtin.include_role:
     #     name: gnome

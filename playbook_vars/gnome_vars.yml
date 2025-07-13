@@ -14,18 +14,25 @@ gnome_vars:
     temperature: 4500 # ranges from 1700 (very warm) to 4700 (less warm)
 
   desktop:
-    wallpaper_filename: space-gooose-spacehawks.jpg
-    screensaver_filename: space-gooose-spacehawks.jpg
+    # note: only wallpaper_filename is needed. 
+    # If wallpaper_dark_filename is omitted, then wallpaper_filename is used for the dark theme wallpaper as well 
+    wallpaper_filename: life_waves/life_waves_light_00.jpg # space-gooose-spacehawks.jpg
+    wallpaper_dark_filename: life_waves/life_waves_dark_00.jpg # space-gooose-spacehawks.jpg
+    screensaver_filename: life_waves/life_waves_light_00.jpg
+
     prefer_dark_theme: true
     enable_hot_corners: false
+
+    icon_theme: WhiteSur-dark # Gnome default is Adwaita
     cursor:
       size: 30 # Gnome default is 24
       theme: Bibata-Modern-Classic # Gnome default is Adwaita
-    icon_theme: WhiteSur-dark # Gnome default is Adwaita
+
     clock:
       show_weekday: true
       show_seconds: false
       show_date: true
+      
     font:
       antialiasing: rgba  # Gnome default is 'grayscale'
       hinting: slight # Gnome default is 'slight'

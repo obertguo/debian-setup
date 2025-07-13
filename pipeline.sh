@@ -23,9 +23,14 @@ fi
 
 # For now, we can either run a single playbook by passing in the playbook name, 
 # or fallback to a list of playbooks to run if a playbook is not specified
-PLAYBOOKS_TO_RUN=$1
+PLAYBOOKS_TO_RUN=$1; shift
 
-if [ -z "$1" ]; then
+# After shifting the playbook argument, the remaining arguments are to be used as tags to be passed to the playbook
+# The tags is a string array joined by a comma
+ANSIBLE_TAGS=$(printf ",%s" "$@")
+ANSIBLE_TAGS=${ANSIBLE_TAGS:1} 
+
+if [ -z "$PLAYBOOKS_TO_RUN" ]; then
   PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml" "gnome.yml" "gaming.yml")
 else
   PLAYBOOKS_TO_RUN=$(ls ./playbooks | grep -i "$PLAYBOOKS_TO_RUN" | head -n 1)
@@ -35,9 +40,16 @@ fi
 call_playbook() {
   PLAYBOOK=$1
   SUDO_PASSWORD=$2
+  ANSIBLE_TAGS=$3
 
   cp "./playbooks/${PLAYBOOK}" .
-  ansible-playbook -v -i ./inventory/inventory.ini $PLAYBOOK --extra-vars ansible_sudo_pass=${SUDO_PASSWORD}
+
+  if [ -z "$ANSIBLE_TAGS" ]; then
+    ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD"
+  else
+    ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD" --tags="$ANSIBLE_TAGS"
+  fi
+  
   if [ $? -ne 0 ]
   then
     echo "Failed to run ${PLAYBOOK}"
@@ -66,7 +78,7 @@ run_pipeline() {
   read -s -p "Enter sudo password to allow privileged playbook execution: " SUDO_PASSWORD
 
   for PLAYBOOK in ${PLAYBOOKS_TO_RUN[@]}; do
-    call_playbook $PLAYBOOK $SUDO_PASSWORD
+    call_playbook "$PLAYBOOK" "$SUDO_PASSWORD" "$ANSIBLE_TAGS"
     #  Reload user .env into shell session after playbook finishes
     if [ -f ~/.env ]; then . ~/.env; fi
   done

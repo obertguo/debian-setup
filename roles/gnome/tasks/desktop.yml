@@ -10,6 +10,11 @@
     path: /usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}
   register: wallpaper_filename_check
 
+- name: Wallpaper dark filename check
+  ansible.builtin.stat:
+    path: /usr/share/backgrounds/wallpapers/{{ wallpaper_dark_filename }}
+  register: wallpaper_dark_filename_check
+
 - name: Screensaver filename check
   ansible.builtin.stat:
     path: /usr/share/backgrounds/wallpapers/{{ screensaver_filename }}
@@ -17,11 +22,10 @@
 
 - name: Set user wallpaper
   ansible.builtin.shell:
-    cmd: dconf write /org/gnome/desktop/background/picture-uri{{ item }} \"'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'\"
-  loop:
-    - ''
-    - '-dark'
-  when: wallpaper_filename_check.stat.exists
+    cmd: |
+      dconf write /org/gnome/desktop/background/picture-uri "'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_filename }}'"
+      dconf write /org/gnome/desktop/background/picture-uri-dark "'file:///usr/share/backgrounds/wallpapers/{{ wallpaper_dark_filename }}'"
+  when: wallpaper_filename_check.stat.exists and wallpaper_dark_filename_check.stat.exists
 
 - name: Set user screensaver
   ansible.builtin.shell:
@@ -51,6 +55,5 @@
       dconf write /org/gnome/desktop/interface/clock-show-date {{ clock.show_date | default(true) | bool | lower }}
   when: clock is defined and clock is mapping
   
-
 # More misc dconf desktop settings can be found 
 # by running `dconf dump / | grep background -C 7`
