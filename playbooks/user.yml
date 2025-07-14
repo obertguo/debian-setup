@@ -11,39 +11,57 @@
       ansible.builtin.include_role:
         name: user
         tasks_from: bashrc
+        apply:
+          tags: ['user_bashrc', 'bashrc']
+      tags: ['user_bashrc', 'bashrc']
 
     - name: Template and copy gitconfig to user home directory
       ansible.builtin.include_role:
         name: user
         tasks_from: gitconfig
+        apply:
+          tags: ['user_gitconfig', 'gitconfig']
       vars:
         GITHUB_USERNAME: "{{ senstive_vars.gitconfig.username | default('', true) }}"
         GITHUB_PAT: "{{ senstive_vars.gitconfig.pat | default('', true) }}"
         GITHUB_EMAIL: "{{ senstive_vars.gitconfig.email | default('', true) }}"
+      tags: ['user_gitconfig', 'gitconfig']
 
     - name: Install additional fonts inside the fonts folder
       ansible.builtin.include_role:
         name: user
         tasks_from: fonts
+        apply:
+          tags: ['user_fonts', 'fonts']
+      tags: ['user_fonts', 'fonts']
 
     - name: Add VS code extensions and settings
       ansible.builtin.include_role:
         name: user
         tasks_from: vscode
+        apply:
+          tags: ['user_vscode', 'vscode']
       vars:
         vscode_extensions: "{{ user_vars.vscode_extensions | default([], true) }}"
+      tags: ['user_vscode', 'vscode']
     
     - name: Install Chrome extensions
       ansible.builtin.include_role:
         name: user
         tasks_from: chrome_extensions
+        apply:
+          tags: ['user_chrome_extensions', 'chrome_extensions']
       loop: "{{ user_vars.chrome_extensions | default([], true) }}"
       loop_control:
         label: item.extension_name
+      tags: ['user_chrome_extensions', 'chrome_extensions']
     
     - name: Register user profile picture in AccountsService
       ansible.builtin.include_role:
         name: user
         tasks_from: profile_picture
+        apply:
+          tags: ['user_profile_picture', 'profile_picture', 'profile']
       vars:
         profile_picture: "{{ user_vars.profile_picture | default('') }}"
+      tags: ['user_profile_picture', 'profile_picture', 'profile']

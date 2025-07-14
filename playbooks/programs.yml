@@ -19,29 +19,46 @@
       ansible.builtin.include_role:
         name: programs
         tasks_from: intellij
+        apply:
+          tags: ['gnome_intellij', 'intellij', 'idea']
+      tags: ['programs_intellij', 'intellij', 'idea']
 
     - name: Install and configure Flameshot
       ansible.builtin.include_role:
         name: programs
         tasks_from: flameshot
+        apply:
+          tags: ['programs_flameshot', 'flameshot']
+      tags: ['programs_flameshot', 'flameshot']
     
     - name: Install and configure OpenJDK
       ansible.builtin.include_role:
         name: programs
         tasks_from: openjdk
+        apply:
+          tags: ['programs_openjdk', 'openjdk', 'jdk', 'java']
+      tags: ['programs_openjdk', 'openjdk', 'jdk', 'java']
     
     - name: Install R and R-Studio
       ansible.builtin.include_role:
         name: programs
         tasks_from: rstudio
+        apply:
+          tags: ['programs_r', 'programs_rstudio', 'r', 'rstudio']
+      tags: ['programs_r', 'programs_rstudio', 'r', 'rstudio']
 
     - name: Add PhotoPea as a Progressive Web App (PWA)
       ansible.builtin.include_role:
         name: programs
         tasks_from: photopea
+        apply:
+          tags: ['programs_photopea', 'photopea', 'photoshop']
+      tags: ['programs_photopea', 'photopea', 'photoshop']
 
     - name: Install MikTeX for LaTeX support
       ansible.builtin.include_role:
         name: programs
         tasks_from: miktex
-
+        apply:
+          tags: ['programs_miktex', 'miktex', 'latex']
+      tags: ['programs_miktex', 'miktex', 'latex']
