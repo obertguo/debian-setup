@@ -39,6 +39,14 @@
           tags: ['programs_openjdk', 'openjdk', 'jdk', 'java']
       tags: ['programs_openjdk', 'openjdk', 'jdk', 'java']
     
+    - name: Install and configure Docker
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: docker
+        apply:
+          tags: ['programs_docker', 'docker']
+      tags: ['programs_docker', 'docker']
+    
     - name: Install R and R-Studio
       ansible.builtin.include_role:
         name: programs

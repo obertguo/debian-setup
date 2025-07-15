@@ -1,0 +1,43 @@
+---
+# MOP: https://wiki.debian.org/Docker
+
+# The Docker daemon typically runs under the root account, so access to Docker commands effectively grants full root power. By design, this allows easy access as root to the host filesystem. 
+# Unfortunately, it also makes it trivial for a malicious user to read and alter sensitive system files, or for a careless user to allow a malicious containerized app to do so.
+
+# Docker has no equivalent to sudo's password check, so an arbitrary-code-execution exploit against a user in the docker group effectively grants the attacker root access. 
+# Therefore, the safer choice is to never add a user account — even your own — to the docker group, so that Docker commands can only be used via sudo.
+
+- name: Ensure docker is already installed
+  ansible.builtin.apt:
+    name: docker.io
+    state: present
+  become: true
+
+# https://docs.docker.com/engine/install/linux-postinstall/
+- name: Enable docker and containerd services
+  ansible.builtin.shell:
+    cmd: |
+      systemctl enable docker.service
+      systemctl enable containerd.service
+  become: true
+
+# https://docs.docker.com/engine/logging/drivers/json-file/
+- name: Remove docker daemon.json file if present
+  ansible.builtin.file:
+    path: /etc/docker/daemon.json
+    state: absent
+  become: true
+
+- name: Configure log rotation in the docker daemon.json file
+  ansible.builtin.lineinfile:
+    path: /etc/docker/daemon.json
+    line: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    create: true
+  become: true

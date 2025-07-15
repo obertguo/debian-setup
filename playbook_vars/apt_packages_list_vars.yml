@@ -15,6 +15,7 @@ apt_packages_list_vars:
     - python3
     - nodejs
     - npm
+    - docker.io
   school:
     - miktex
   gnome:
