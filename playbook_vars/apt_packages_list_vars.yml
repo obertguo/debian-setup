@@ -16,6 +16,7 @@ apt_packages_list_vars:
     - nodejs
     - npm
     - docker.io
+    - docker-compose
   school:
     - miktex
   gnome:
