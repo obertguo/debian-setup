@@ -20,12 +20,12 @@
         name: user
         tasks_from: gitconfig
         apply:
-          tags: ['user_gitconfig', 'gitconfig']
+          tags: ['user_gitconfig', 'gitconfig', 'github']
       vars:
         GITHUB_USERNAME: "{{ senstive_vars.gitconfig.username | default('', true) }}"
         GITHUB_PAT: "{{ senstive_vars.gitconfig.pat | default('', true) }}"
         GITHUB_EMAIL: "{{ senstive_vars.gitconfig.email | default('', true) }}"
-      tags: ['user_gitconfig', 'gitconfig']
+      tags: ['user_gitconfig', 'gitconfig', 'github']
 
     - name: Install additional fonts inside the fonts folder
       ansible.builtin.include_role:
