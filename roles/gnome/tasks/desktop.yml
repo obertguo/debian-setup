@@ -1,7 +1,7 @@
 ---
 - name: Copy wallpapers folder to usr share directory
   ansible.builtin.copy:
-    src: ./roles/gnome/files/wallpapers/
+    src: "{{ role_path }}/files/wallpapers/"
     dest: /usr/share/backgrounds/wallpapers
   become: true
 

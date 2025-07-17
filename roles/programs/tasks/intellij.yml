@@ -50,7 +50,7 @@
 
 - name: Add IntelliJ .desktop file 
   ansible.builtin.template:
-    src: ./templates/idea.desktop.j2
+    src: "{{ role_path }}/templates/idea.desktop.j2"
     dest: /usr/share/applications/idea.desktop
   vars:
     intellij_bin_absolute_path: /usr/local/{{ idea_foldername.stdout }}/bin

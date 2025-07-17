@@ -60,13 +60,13 @@
 
 - name: Copy Cemu icon
   ansible.builtin.copy:
-    src: ./files/cemu.png
+    src: "{{ role_path }}/files/cemu.png"
     dest: /usr/local/{{ cemu_folder_name }}/cemu.png
   become: true
 
 - name: Add Cemu .desktop file 
   ansible.builtin.template:
-    src: ./templates/cemu.desktop.j2
+    src: "{{ role_path }}/templates/cemu.desktop.j2"
     dest: /usr/share/applications/cemu.desktop
   vars:
     cemu_absolute_path: /usr/local/{{ cemu_folder_name }}

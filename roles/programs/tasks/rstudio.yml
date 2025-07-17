@@ -57,7 +57,7 @@
 
 - name: Add R-Studio .desktop file 
   ansible.builtin.template:
-    src: ./templates/rstudio.desktop.j2
+    src: "{{ role_path }}/templates/rstudio.desktop.j2"
     dest: /usr/share/applications/rstudio.desktop
   vars:
     rstudio_absolute_path: /usr/local/{{ rstudio_foldername.stdout }}

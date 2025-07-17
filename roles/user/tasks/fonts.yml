@@ -1,7 +1,7 @@
 ---
 - name: Copy over all items inside fonts to the usr fonts folder
   ansible.builtin.copy:
-    src: './files/fonts/'
+    src: "{{ role_path}}/files/fonts/"
     dest: '/usr/local/share/fonts/'
   become: true
 

@@ -17,7 +17,7 @@
 
 - name: Copy extension template to Chrome extensions directory for extension {{ item.extension_name }}
   ansible.builtin.template:
-    src: ./templates/chrome_extension.json.j2
+    src: "{{ role_path }}/templates/chrome_extension.json.j2"
     dest: /usr/share/google-chrome/extensions/{{ item.extension_id }}.json
   become: true
 

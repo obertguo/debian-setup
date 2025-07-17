@@ -44,5 +44,5 @@
 
 - name: Copy dockers folder to user home directory
   ansible.builtin.copy:
-    src: ./roles/programs/files/dockers
+    src: "{{ role_path }}/files/dockers"
     dest: ~/

@@ -1,7 +1,7 @@
 ---
 - name: Copy files in gnome_cursors to /usr/share/icons
   ansible.builtin.copy:
-    src: ./roles/gnome/files/gnome_cursors/
+    src: "{{ role_path }}/files/gnome_cursors/"
     dest: /usr/share/icons/
   become: true
 

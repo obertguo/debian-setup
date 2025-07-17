@@ -31,10 +31,10 @@
 
 - name: Copy user settings.json for VS code
   ansible.builtin.copy:
-    src: "./files/vscode-settings-final.json"
+    src: "{{ role_path }}/files/vscode-settings-final.json"
     dest: "~/.config/Code/User/settings.json"
     
 - name: Copy user keybindings.json for VS code
   ansible.builtin.copy:
-    src: "./files/vscode-keybindings-final.json"
+    src: "{{ role_path }}/files/vscode-keybindings-final.json"
     dest: "~/.config/Code/User/keybindings.json"
