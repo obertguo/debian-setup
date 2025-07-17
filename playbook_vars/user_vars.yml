@@ -13,6 +13,7 @@ user_vars:
     - ms-vscode.cpptools-extension-pack
     - ms-vscode.cpptools-themes
     - ms-vscode.cmake-tools
+    - ms-azuretools.vscode-containers
     - redhat.ansible
     - redhat.vscode-yaml
   
