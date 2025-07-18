@@ -9,7 +9,7 @@
     - name: Install programs apt packages
       ansible.builtin.include_role:
         name: apt
-        tasks_from: install_apt_packages_list
+        tasks_from: install_apt_package_list
       loop:
         - "{{ apt_packages_list_vars.school }}"
       loop_control:

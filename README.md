@@ -14,3 +14,8 @@ A collection of Ansible and bash scripts for setting up a personal Debian enviro
 - Utilize Ansible tags to run certain playbooks
 - Run Ansible tasks in parallel and run playbooks in parallel through bash
 - Add handlers, rescues/always, etc, for cleanup and redundancy
+
+## Known issues with setting up on Trixie
+- Miktex has yet to release a version for Trixie
+- software-properties-common is no longer available in Debian repositories
+- OpenWeather Gnome extension is no longer supported by newer Gnome shells

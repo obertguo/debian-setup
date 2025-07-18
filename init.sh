@@ -5,22 +5,22 @@ set -oe pipefail
 # and is intended to be used after a "minimal" installation
 # of Debian (i.e., no selected DE through the Debian installer)
 # Pretty much gets a DE up and running.
-
 USERNAME=$1
 DESKTOP_ENVIRONMENT=""
+DEBIAN_FRONTEND=noninteractive
 
 install_gnome() {
     apt-get -y update && apt-get -y upgrade
-    apt-get install gdm3 gnome-shell
+    apt-get install -y gdm3 gnome-shell
     # The gnome-shell does not include any applications, so we'll need these later
-    apt-get install gnome-terminal gnome-text-editor
+    apt-get install -y gnome-terminal gnome-text-editor
     # Enable GUI login
     systemctl enable gdm && systemctl set-default graphical.target
 }
 
 install_kde() {
     apt-get -y update && apt-get -y upgrade
-    apt-get install kde-plasma-desktop
+    apt-get install -y kde-plasma-desktop
     # Enable GUI login
     systemctl enable sddm && systemctl set-default graphical.target
 }

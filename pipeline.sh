@@ -23,16 +23,18 @@ fi
 
 # For now, we can either run a single playbook by passing in the playbook name, 
 # or fallback to a list of playbooks to run if a playbook is not specified
-PLAYBOOKS_TO_RUN=$1; shift
-
-# After shifting the playbook argument, the remaining arguments are to be used as tags to be passed to the playbook
-# The tags is a string array joined by a comma
-ANSIBLE_TAGS=$(printf ",%s" "$@")
-ANSIBLE_TAGS=${ANSIBLE_TAGS:1} 
+PLAYBOOKS_TO_RUN=$1
+ANSIBLE_TAGS=""
 
 if [ -z "$PLAYBOOKS_TO_RUN" ]; then
   PLAYBOOKS_TO_RUN=("apt.yml" "user.yml" "programs.yml" "gnome.yml" "gaming.yml")
 else
+  shift
+  # After shifting the playbook argument, the remaining arguments are to be used as tags to be passed to the playbook
+  # The tags is a string array joined by a comma
+  ANSIBLE_TAGS=$(printf ",%s" "$@")
+  ANSIBLE_TAGS=${ANSIBLE_TAGS:1}
+
   PLAYBOOKS_TO_RUN=$(ls ./playbooks | grep -i "$PLAYBOOKS_TO_RUN" | head -n 1)
   stat "./playbooks/$PLAYBOOKS_TO_RUN" 1> /dev/null || exit 1
 fi
@@ -58,7 +60,7 @@ call_playbook() {
     exit 1
   fi
   
-  echo "Succesfully ran ${PLAYBOOK}"
+  echo "Successfully ran ${PLAYBOOK}"
   if [ -d ./tmp ]; then rm -rf ./tmp; fi
   rm $PLAYBOOK 
 }
