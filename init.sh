@@ -11,23 +11,23 @@ DEBIAN_FRONTEND=noninteractive
 
 install_gnome() {
     apt-get -y update && apt-get -y upgrade
-    apt-get install -y gdm3 gnome-shell
+    apt-get -y install gdm3 gnome-shell
     # The gnome-shell does not include any applications, so we'll need these later
-    apt-get install -y gnome-terminal gnome-text-editor
+    apt-get -y install gnome-terminal gnome-text-editor
     # Enable GUI login
     systemctl enable gdm && systemctl set-default graphical.target
 }
 
 install_kde() {
     apt-get -y update && apt-get -y upgrade
-    apt-get install -y kde-plasma-desktop
+    apt-get -y install kde-plasma-desktop
     # Enable GUI login
     systemctl enable sddm && systemctl set-default graphical.target
 }
 
 install_core_packages() {
     apt-get -y update && apt-get -y upgrade
-    apt-get install sudo git
+    apt-get -y install sudo git
 }
 
 add_to_sudoers() {
