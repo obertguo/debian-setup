@@ -13,6 +13,10 @@ fi
 # and configure python3 venv to install Ansible
 if [ ! -d ./ansible-venv ]
 then
+  # Recursively change owner to current user for the debian setup directory 
+  # since it may have been cloned by the root user at first
+  [ $USER == 'root' ] || sudo chmod -R "${USER}:${USER}" .
+
   sudo apt-get -y update
   sudo apt-get -y install git python3 python3-pip python3-venv
 

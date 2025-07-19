@@ -1,4 +1,10 @@
 ---
+- name: TRIXIE WORKAROUND - End role if Gnome extension {{ item.name }} is not supported
+  ansible.builtin.meta: end_role
+  when:
+    - ansible_distribution_release | lower == 'trixie'
+    - item.name | lower is search('openweather')
+
 # Commands were pretty much yoinked from 
 # - https://unix.stackexchange.com/questions/617288/command-line-tool-to-install-gnome-shell-extensions
 # and https://github.com/essembeh/gnome-extensions-cli/tree/main

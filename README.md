@@ -1,5 +1,5 @@
 # Debian-Setup
-A collection of Ansible and bash scripts for setting up a personal Debian environment from scratch.
+A collection of Ansible and bash scripts for setting up a personal Debian 12 Bookworm environment from scratch.
 ## Overview
 1. Download/clone this repository onto your Debian environment. 
 2. Execute `bash init.sh` to run first-time initialization, which is mostly intended for a "minimal" Debian install (i.e., no DE selected during a first time Debian install). This will install and setup a Gnome DE and add your user to the sudoers group. This allows sudo commands to be run then next time you re-login in as your user.
@@ -16,6 +16,6 @@ A collection of Ansible and bash scripts for setting up a personal Debian enviro
 - Add handlers, rescues/always, etc, for cleanup and redundancy
 
 ## Known issues with setting up on Trixie
-- Miktex has yet to release a version for Trixie
-- software-properties-common is no longer available in Debian repositories
-- OpenWeather Gnome extension is no longer supported by newer Gnome shells
+There will be some hardcoded Ansible end_role to skip role execution specifically for issues in Trixie listed below:
+- Miktex has yet to release a version for Trixie (skip is done in both add_apt_repos role and programs playbook)
+- OpenWeather Gnome extension is no longer supported by newer Gnome shells (skip is done in install_gnome_extensions role and configure_gnome_extensions role)

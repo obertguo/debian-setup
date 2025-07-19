@@ -6,7 +6,6 @@ apt_packages_list_vars:
     - wget
     - bash-completion
     - linux-headers-amd64 # needed for future driver installations
-    - software-properties-common # provides an easier way to edit entries in /etc/apt/sources.list
     - perl # needed for miktex installer, and likely for other software that need a perl interpreter
     - jq
   programming: 

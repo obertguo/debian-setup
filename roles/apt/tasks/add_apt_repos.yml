@@ -17,6 +17,12 @@
   ansible.builtin.meta: end_role
   when: apt_output.stdout | length > 0
 
+- name: TRIXIE WORKAROUND - End add_apt role if repository is not available for Trixie
+  ansible.builtin.meta: end_role
+  when: 
+    - ansible_distribution_release | lower == 'trixie'
+    - item.package_name | lower == 'miktex'
+
 - name: Add key for the apt repository
   ansible.builtin.get_url:
     url: "{{ item.key_url }}"

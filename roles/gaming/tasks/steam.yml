@@ -9,31 +9,53 @@
   ansible.builtin.meta: end_role
   when: steam_installed_check.stdout | int > 0
 
-- name: Ensure software-properties-common is installed
-  ansible.builtin.apt:
-    name: software-properties-common
-    state: present
-  become: true
-
-- name: Check if contrib is enabled in Debian apt sources
+- name: Check if contrib, non-free, and non-free-firmware is enabled in Debian apt sources
   ansible.builtin.shell:
-    cmd: cat /etc/apt/sources.list | grep -v '^#' | grep -i 'contrib' | wc -l
+    # The regex patterns used below match entries of this form:
+      # deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
+      # deb-src http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
+      # deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+      # deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+      # deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
+      # deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
+    cmd: >
+      cat /etc/apt/sources.list | grep -v '^#' | grep -iq '^deb.* {{ ansible_distribution_release | lower }}[^ ]* .*contrib' &&
+      cat /etc/apt/sources.list | grep -v '^#' | grep -iq '^deb.* {{ ansible_distribution_release | lower }}[^ ]* .*non-free' &&
+      cat /etc/apt/sources.list | grep -v '^#' | grep -iq '^deb.* {{ ansible_distribution_release | lower }}[^ ]* .*non-free-firmware'
   register: contrib_enabled_check
+  ignore_errors: true
   become: true
 
-# Just a quick easy way to avoid additional Ansible tasks 
-# to write to the sources list manually: https://linuxcapable.com/how-to-enable-contrib-and-non-free-repos-on-debian-linux/
-- name: Enable contrib, non-free, and non-free-firmware for Debian apt sources
-  ansible.builtin.shell:
-    cmd: apt-add-repository -y contrib non-free non-free-firmware 
-  become: true
-  when: contrib_enabled_check.stdout | int == 0
+- name: Enable contrib, non-free, and non-free-firmware for Debian apt sources if needed
+  block:
+    - name: Register current deb sources
+      ansible.builtin.shell:
+        cmd: cat /etc/apt/sources.list | grep -v '^#' | grep -io '^deb.* {{ ansible_distribution_release | lower }}[^ ]*'
+      register: deb_sources
+      become: true
 
-- name: Enable Multi-Arch for amd64 systems
-  ansible.builtin.shell:
-    cmd: dpkg --add-architecture i386
-  become: true
-  when: contrib_enabled_check.stdout | int == 0
+    - name: Remove current deb sources
+      ansible.builtin.lineinfile:
+        state: absent
+        regexp: "{{ item }}"
+        path: /etc/apt/sources.list
+      loop: "{{ deb_sources.stdout_lines }}"
+      become: true
+    
+    - name: Re-add deb sources with main, contrib, non-free, and non-free-firmware
+      ansible.builtin.lineinfile:
+        state: present
+        line: "{{ item }} main contrib non-free non-free-firmware"
+        path: /etc/apt/sources.list
+      loop: "{{ deb_sources.stdout_lines }}"
+      become: true
+
+    - name: Enable Multi-Arch for amd64 systems
+      ansible.builtin.shell:
+        cmd: dpkg --add-architecture i386
+      become: true
+
+  when: contrib_enabled_check is failed
 
 - name: Update apt cache
   ansible.builtin.apt:

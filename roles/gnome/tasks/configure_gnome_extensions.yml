@@ -1,4 +1,10 @@
 ---
+- name: TRIXIE WORKAROUND - End role if Gnome extension {{ item.name }} is not supported
+  ansible.builtin.meta: end_role
+  when:
+    - ansible_distribution_release | lower == 'trixie'
+    - item.name | lower is search('openweather')
+
 - name: Get details about extension {{ item.name }}
   ansible.builtin.shell:
     cmd: curl -s -k https://extensions.gnome.org/extension-query/?search={{ item.name }} | jq -c '.extensions[] | select(.uuid | contains("{{ item.name }}"))'

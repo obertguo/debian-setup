@@ -1,0 +1,40 @@
+---
+- name: Playbook to configure GPU drivers and games
+  hosts: localhost
+  vars_files:
+    - ./playbook_vars/gaming_vars.yml
+    - ./playbook_vars/apt_packages_list_vars.yml
+
+  tasks:
+    - name: Install gaming apt packages
+      ansible.builtin.include_role:
+        name: apt
+        tasks_from: install_apt_package_list
+      loop:
+        - "{{ apt_packages_list_vars.gaming }}"
+      loop_control:
+        loop_var: package_list
+      
+    - name: Install Steam
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: steam
+        apply:
+          tags: ['gaming_steam', 'steam']
+      tags: ['gaming_steam', 'steam']
+
+    - name: Install Nvidia drivers
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: nvidia_drivers
+        apply: 
+          tags: ['gaming_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+      tags: ['gaming_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+    
+    - name: Install Cemu
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: cemu
+        apply:
+          tags: ['gaming_cemu', 'cemu']
+      tags: ['gaming_cemu', 'cemu']
