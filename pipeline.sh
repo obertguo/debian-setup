@@ -50,17 +50,20 @@ call_playbook() {
 
   cp "./playbooks/${PLAYBOOK}" .
 
-  if [ -z "$ANSIBLE_TAGS" ]; then
-    ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD"
-  else
-    ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD" --tags="$ANSIBLE_TAGS"
-  fi
-  
-  if [ $? -ne 0 ]
+  set +e # Disable fail fast when executing the playbook since we want to do post cleanup afterward
+    if [ -z "$ANSIBLE_TAGS" ]; then
+      ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD"
+    else
+      ansible-playbook -v -i ./inventory/inventory.ini "$PLAYBOOK" --extra-vars ansible_sudo_pass="$SUDO_PASSWORD" --tags="$ANSIBLE_TAGS"
+    fi
+    ANSIBLE_RETURN_CODE=$?
+  set -e # Re-enable fail fast
+    
+  if [ $ANSIBLE_RETURN_CODE -ne 0 ]
   then
     echo "Failed to run ${PLAYBOOK}"
-    rm $PLAYBOOK
     if [ -d ./tmp ]; then rm -rf ./tmp; fi
+    rm $PLAYBOOK
     exit 1
   fi
   
