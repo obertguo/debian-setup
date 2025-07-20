@@ -19,7 +19,7 @@ USER 10001:10001
 
 # Enable bash terminal color support
 ENV TERM=xterm-256color
-RUN echo "PS1='\e[92m\u\e[0m@\e[94m\h\e[0m:\e[35m\w\e[0m# '" >> ~/.bashrc
+RUN echo "PS1='\[\e[0;32m\]${debian_chroot:+($debian_chroot)}\[\e[1;32m\]\u\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ '" >> ~/.bashrc
 
 # Hydra's default entrypoint, but we're gonna reset it so that we can use the container interactively
 # ENTRYPOINT ["hydra"]
