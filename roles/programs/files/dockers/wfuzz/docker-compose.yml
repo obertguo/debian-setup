@@ -1,7 +1,7 @@
 ---
 services:
-  kali:
-    container_name: kali
+  wfuzz:
+    container_name: wfuzz
     build: .
     tty: true
     

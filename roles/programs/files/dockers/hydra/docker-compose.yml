@@ -1,0 +1,7 @@
+---
+services:
+  hydra:
+    container_name: hydra
+    build: .
+    tty: true
+    

@@ -1,2 +1,0 @@
-- First time use: docker-compose up --build
-- Afterward, use docker-compose up
