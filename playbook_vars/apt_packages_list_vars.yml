@@ -16,6 +16,8 @@ apt_packages_list_vars:
     - npm
     - docker.io
     - docker-compose
+    - nmap # to scan for exposed ports
+    - nc # to do banner grabbing
   school:
     - miktex
   gnome:
