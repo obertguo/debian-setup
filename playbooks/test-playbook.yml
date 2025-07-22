@@ -22,10 +22,11 @@
     - set_fact:
         test_var: >-
           {% if 'hello' in test_var %}
-            {{ test_var + '\n' + 'append' }}
+          {{ test_var }}
+          append
           {% else %}
             {{ test_var }}
           {% endif %}
 
     - debug:
-        msg: "{{ test_var }}"
+        msg: "{{ test_var | trim }}"
