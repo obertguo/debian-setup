@@ -3,7 +3,7 @@
   hosts: localhost
   vars_files:
     - ./playbook_vars/programs_vars.yml
-    - ./playbook_vars/apt_packages_list.yml
+    - ./playbook_vars/apt_packages_list_vars.yml
 
   tasks: 
     - name: Install programs apt packages
@@ -14,6 +14,8 @@
         - "{{ apt_packages_list_vars.school }}"
       loop_control:
         loop_var: package_list
+      when:
+        - ansible_distribution_release | lower != 'trixie'
 
     - name: Install and configure IntelliJ Idea
       ansible.builtin.include_role:
