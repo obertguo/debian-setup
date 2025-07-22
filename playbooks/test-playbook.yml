@@ -5,18 +5,27 @@
     - ./playbook_vars/gnome_vars.yml
 
   tasks:
-    - name: Install and set default icons
-      ansible.builtin.include_role:
-        name: gnome
-        tasks_from: icon.yml
-        apply: 
-          tags: ['mytag']
-      vars:
-        icon_theme: "{{ gnome_vars.desktop.icon_theme }}"
-      tags:
-        - mytag
-    # - name: test
+    # - name: Install and set default icons
     #   ansible.builtin.include_role:
     #     name: gnome
-    #     tasks_from: configure_gnome_extensions
-    #   loop: "{{ gnome_vars.gnome_extensions }}"
+    #     tasks_from: icon.yml
+    #     apply: 
+    #       tags: ['mytag']
+    #   vars:
+    #     icon_theme: "{{ gnome_vars.desktop.icon_theme }}"
+    #   tags:
+    - set_fact:
+        test_var: |-
+          hello
+          world
+          testing
+    - set_fact:
+        test_var: >-
+          {% if 'hello' in test_var %}
+            {{ test_var + '\n' + 'append' }}
+          {% else %}
+            {{ test_var }}
+          {% endif %}
+
+    - debug:
+        msg: "{{ test_var }}"
