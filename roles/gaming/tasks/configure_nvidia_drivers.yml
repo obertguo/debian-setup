@@ -1,0 +1,41 @@
+---
+- name: Determine if Nvidia GPU is present
+  ansible.builtin.shell:
+    cmd: lspci -nn | egrep -i '3d|display|vga' | grep -i 'NVIDIA' | wc -c
+  register: nvidia_gpu_check
+
+- name: End configure_nvidia_driver role if Nvidia GPU is not present
+  ansible.builtin.meta: end_role
+  when: nvidia_gpu_check.stdout | int == 0
+
+- name: Nvidia Wayland post-installation
+  block:
+    - name: Check if Nvidia Wayland post-installation configuration is required
+      ansible.builtin.shell:
+        cmd: cat /sys/module/nvidia_drm/parameters/modeset
+      register: nvidia_drm_kernel_modeset
+      become: true
+      ignore_errors: true
+    
+    - name: End nvidia_driver role if Nvidia Wayland post-installation is already done 
+      ansible.builtin.meta: end_role
+      when:
+        - not nvidia_drm_kernel_modeset.failed
+        - nvidia_drm_kernel_modeset.stdout | lower == 'y'
+    
+    - name: Do Nvidia Wayland post-installation
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/nvidia-options.conf
+        state: present
+        line: options nvidia-drm modeset=1
+      become: true
+      when: 
+        - not nvidia_drm_kernel_modeset.failed
+        - nvidia_drm_kernel_modeset.stdout | lower == 'n'
+
+    - name: Reboot system for Nvidia Wayland post-installation
+      ansible.builtin.shell:
+        cmd: |
+          echo 'Rebooting in 10s for Nvidia Wayland post-installation to take effect...'
+          sleep 10 && reboot
+      become: true

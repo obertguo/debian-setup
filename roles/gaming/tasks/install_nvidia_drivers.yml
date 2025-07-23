@@ -9,7 +9,7 @@
   ansible.builtin.meta: end_role
   when: nvidia_gpu_check.stdout | int == 0
 
-- name: Nvidia Wayland post-installation
+- name: Nvidia Wayland post-installation check
   block:
     - name: Check if Nvidia Wayland post-installation configuration is required
       ansible.builtin.shell:
@@ -18,28 +18,11 @@
       become: true
       ignore_errors: true
     
-    - name: End nvidia_driver role if Nvidia Wayland post-installation is already done 
+    - name: End install_nvidia_driver role if Nvidia Wayland post-installation is already done 
       ansible.builtin.meta: end_role
       when:
         - not nvidia_drm_kernel_modeset.failed
         - nvidia_drm_kernel_modeset.stdout | lower == 'y'
-    
-    - name: Do Nvidia Wayland post-installation
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/nvidia-options.conf
-        state: present
-        line: options nvidia-drm modeset=1
-      become: true
-      when: 
-        - not nvidia_drm_kernel_modeset.failed
-        - nvidia_drm_kernel_modeset.stdout | lower == 'n'
-
-    - name: Reboot system for Nvidia Wayland post-installation
-      ansible.builtin.shell:
-        cmd: |
-          echo 'Rebooting in 10s for Nvidia Wayland post-installation to take effect...'
-          sleep 10 && reboot
-      become: true
 
 # Continue on with main installation
 - name: Ensure mokutil is installed

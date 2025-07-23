@@ -26,10 +26,19 @@
     - name: Install Nvidia drivers
       ansible.builtin.include_role:
         name: gaming
-        tasks_from: nvidia_drivers
+        tasks_from: install_nvidia_drivers
         apply: 
-          tags: ['gaming_nvidia_drivers', 'nvidia_drivers', 'nvidia']
-      tags: ['gaming_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+          tags: ['gaming_install_nvidia_drivers', 'install_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+      tags: ['gaming_install_nvidia_drivers', 'install_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+
+    - name: Configure Nvidia drivers
+      ansible.builtin.include_role:
+        name: gaming
+        tasks_from: configure_nvidia_drivers
+        apply: 
+          tags: ['gaming_configure_nvidia_drivers', 'configure_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+      tags: ['gaming_configure_nvidia_drivers', 'configure_nvidia_drivers', 'nvidia_drivers', 'nvidia']
+
     
     - name: Install Cemu
       ansible.builtin.include_role:
