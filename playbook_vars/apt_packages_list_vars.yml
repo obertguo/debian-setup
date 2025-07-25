@@ -8,6 +8,7 @@ apt_packages_list_vars:
     - linux-headers-amd64 # needed for future driver installations
     - perl # needed for miktex installer, and likely for other software that need a perl interpreter
     - jq
+    - lshw
   programming: 
     - git
     - code
