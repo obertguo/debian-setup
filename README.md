@@ -8,10 +8,8 @@ A collection of Ansible and bash scripts for setting up a personal Debian 12 Boo
 
 ## To-Dos
 - Consolidate setup scripts into one master setup script
-- Separate Gnome configuration and add KDE Plasma configuration
 - Add maintenance scripts (e.g., package updates, archiving/backups, regular config syncing, add some cron jobs, etc)
 - Look into Ansible vault for better credential management
-- Utilize Ansible tags to run certain playbooks
 - Run Ansible tasks in parallel and run playbooks in parallel through bash
 - Add handlers, rescues/always, etc, for cleanup and redundancy
 
