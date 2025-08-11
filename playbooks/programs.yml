@@ -65,6 +65,17 @@
           tags: ['programs_photopea', 'photopea', 'photoshop']
       tags: ['programs_photopea', 'photopea', 'photoshop']
 
+
+    - name: Install TinyTex for LaTeX support on Trixie
+      ansible.builtin.include_role:
+        name: programs
+        tasks_from: tinytex
+        apply:
+          tags: ['programs_tinytex', 'tinytex', 'latex']
+      tags: ['programs_tinytex', 'tinytex', 'latex']
+      when:
+        - ansible_distribution_release | lower == 'trixie'
+
     - name: Install MikTeX for LaTeX support (not supported on Trixie yet)
       ansible.builtin.include_role:
         name: programs
