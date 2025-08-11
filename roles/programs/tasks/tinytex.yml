@@ -1,0 +1,43 @@
+---
+# MOP: https://yihui.org/tinytex/
+
+- name: Set TinyTex version for unix installer
+  ansible.builtin.shell:
+    command: export TINYTEX_VERSION="2025.08.02"
+
+- name: Check if TinyTex is already installed
+  ansible.builtin.shell:
+    command: which tlmgr | wc -l
+  register: tinytex_installed_check
+
+- name: End role if TinyTex is already installed
+  ansible.builtin.meta: end_role
+  when: tinytex_installed_check.stdout | int > 0
+
+- name: Install TinyTex using unix installer
+  ansible.builtin.shell:
+    command: wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+
+- name: Set TinyTex PATH in user ~/.env if not present
+  ansible.builtin.lineinfile:
+    state: present
+    path: ~/.env
+    regexp: "^export PATH=\\$PATH:\\$HOME/bin"
+    line: export $PATH:$HOME/bin
+
+- name: Source updated PATH
+  ansible.builtin.shell:
+    command: . ~/.env
+
+# Note: If LaTeX compiler complains "! Latex Error: File XXX not found."
+# Then, that indicates a missing LaTeX package. Run tlmgr search --global --file "XXX" to find out which package the file belongs to
+# Afterward, run tlmgr install MISSING_PACKAGE
+
+- name: Install additional LaTeX packages
+  ansible.builtin.shell:
+    command: tlmgr install {{ item }}
+  loop:
+    - units
+    - fancyhdr
+    - adjustbox
+  
