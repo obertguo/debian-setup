@@ -3,7 +3,7 @@
 
 - name: Set TinyTex version for unix installer
   ansible.builtin.shell:
-    command: export TINYTEX_VERSION="2025.08.02"
+    cmd: export TINYTEX_VERSION="2025.08.02"
 
 - name: Check if TinyTex is already installed
   ansible.builtin.shell:
