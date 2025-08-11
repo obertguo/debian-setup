@@ -16,7 +16,7 @@
 
 - name: Install TinyTex using unix installer
   ansible.builtin.shell:
-    cmd: wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+    cmd: wget --no-proxy -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
 
 - name: Set TinyTex PATH in user ~/.env if not present
   ansible.builtin.lineinfile:
