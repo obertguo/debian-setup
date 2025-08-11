@@ -35,7 +35,9 @@
 
 - name: Install additional LaTeX packages
   ansible.builtin.shell:
-    cmd: tlmgr install {{ item }}
+    cmd: ./tlmgr install {{ item }}
+  args:
+    chdir: $HOME/bin
   loop:
     - units
     - fancyhdr
