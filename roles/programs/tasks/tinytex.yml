@@ -23,7 +23,7 @@
     state: present
     path: ~/.env
     regexp: "^export PATH=\\$PATH:\\$HOME/bin"
-    line: export $PATH:$HOME/bin
+    line: export PATH=$PATH:$HOME/bin
 
 - name: Source updated PATH
   ansible.builtin.shell:
