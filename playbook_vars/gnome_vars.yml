@@ -14,8 +14,8 @@ gnome_vars:
     temperature: 4500 # ranges from 1700 (very warm) to 4700 (less warm)
 
   weather:
-    temperature-unit: centigrate # either centigrade or fahrenheit
-    automatic-location: true
+    temperature_unit: centigrate # either centigrade or fahrenheit
+    automatic_location: true
     locations: "[<(uint32 2, <('Waterloo', 'CYKF', true, [(0.75863645401796609, -1.402953824577011)], [(0.75863645401796609, -1.4055718184550026)])>)>]"
 
   desktop:
