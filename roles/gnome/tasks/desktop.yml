@@ -37,6 +37,10 @@
     cmd: dconf write /org/gnome/desktop/interface/color-scheme \"{{ "'prefer-dark'" if preferDarkTheme else "'prefer-light'" }}\"
   when: preferDarkTheme is boolean
 
+- name: Set user desktop accent color
+   ansible.builtin.shell:
+    cmd: dconf write /org/gnome/desktop/interface/accent-color "'{{ accent-color | default('blue', true) }}'"
+    
 - name: Set user terminal theme
   ansible.builtin.shell:
     cmd: dconf write /org/gnome/terminal/legacy/theme-variant \"{{ "'dark'" if prefer_dark_theme else "'light'" }}\"
