@@ -39,7 +39,7 @@
 
 - name: Set user desktop accent color
    ansible.builtin.shell:
-    cmd: dconf write /org/gnome/desktop/interface/accent-color "'{{ accent-color | default('blue', true) }}'"
+    cmd: dconf write /org/gnome/desktop/interface/accent-color "'{{ accent_color | default('blue', true) }}'"
     
 - name: Set user terminal theme
   ansible.builtin.shell:
