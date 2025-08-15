@@ -25,7 +25,7 @@ gnome_vars:
     wallpaper_dark_filename: life_waves/life_waves_dark_00.jpg # space-gooose-spacehawks.jpg
     screensaver_filename: life_waves/life_waves_light_00.jpg
 
-    accent-color: pink # choices are: blue, teal, green, yellow, orange, red, pink, purple, slate
+    accent_color: pink # choices are: blue, teal, green, yellow, orange, red, pink, purple, slate
     prefer_dark_theme: true
     enable_hot_corners: false
 
