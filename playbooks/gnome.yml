@@ -141,4 +141,6 @@
         tasks_from: misc_settings
         apply:
           tags: ['gnome_misc_settings', 'misc_settings']
+      vars:
+        weather: "{{ gnome_vars.weather }}"
       tags: ['gnome_misc_settings', 'misc_settings']
