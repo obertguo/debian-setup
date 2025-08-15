@@ -31,6 +31,7 @@ apt_packages_list_vars:
     - gnome-logs # Gnome systemd journalctl viewer
     - gnome-disk-utility
     - gnome-shell-extensions
+    - gnome-weather
   files:
     - qimgv # Lightweight image viewer
     - vlc
