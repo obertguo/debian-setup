@@ -30,6 +30,7 @@ apt_packages_list_vars:
     - file-roller # Gnome archive manager
     - gnome-logs # Gnome systemd journalctl viewer
     - gnome-disk-utility
+    - gnome-shell-extensions
   files:
     - qimgv # Lightweight image viewer
     - vlc
