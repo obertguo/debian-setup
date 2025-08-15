@@ -32,6 +32,7 @@ apt_packages_list_vars:
     - gnome-disk-utility
     - gnome-shell-extensions
     - gnome-weather
+    - gnome-tweaks
   files:
     - qimgv # Lightweight image viewer
     - vlc
