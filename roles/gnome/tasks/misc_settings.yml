@@ -21,7 +21,7 @@
 - block:
   - name: Configure Gnome weather automatic location
     ansible.builtin.shell:
-      cmd: dconf write /org/gnome/shell/weather/automatic-location {{ weather.automatic_location | default(true, true) | bool }}
+      cmd: dconf write /org/gnome/shell/weather/automatic-location {{ weather.automatic_location | default(true, true) | lower }}
 
   - name: Configure Gnome weather locations
     ansible.builtin.shell:
