@@ -13,6 +13,11 @@ gnome_vars:
     enabled: true
     temperature: 4500 # ranges from 1700 (very warm) to 4700 (less warm)
 
+  weather:
+    temperature-unit: centigrate # either centigrade or fahrenheit
+    automatic-location: true
+    locations: "[<(uint32 2, <('Waterloo', 'CYKF', true, [(0.75863645401796609, -1.402953824577011)], [(0.75863645401796609, -1.4055718184550026)])>)>]"
+
   desktop:
     # note: only wallpaper_filename is needed. 
     # If wallpaper_dark_filename is omitted, then wallpaper_filename is used for the dark theme wallpaper as well 
