@@ -25,7 +25,7 @@
 
   - name: Configure Gnome weather locations
     ansible.builtin.shell:
-      cmd: dconf write /org/gnome/shell/weather/automatic-location {{ weather.locations }}
+      cmd: dconf write /org/gnome/shell/weather/automatic-location "{{ weather.locations }}"
     when: weather.locations is defined and weather.locations | length > 0
 
   - name: Configure temperature unit
