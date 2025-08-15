@@ -38,7 +38,7 @@
   when: preferDarkTheme is boolean
 
 - name: Set user desktop accent color
-   ansible.builtin.shell:
+  ansible.builtin.shell:
     cmd: dconf write /org/gnome/desktop/interface/accent-color "'{{ accent_color | default('blue', true) }}'"
     
 - name: Set user terminal theme
