@@ -48,7 +48,8 @@
       vars:
         wallpaper_filename: "{{ gnome_vars.desktop.wallpaper_filename | default('') }}"
         wallpaper_dark_filename: "{{ gnome_vars.desktop.wallpaper_dark_filename | default(wallpaper_filename) }}"
-        screensaver_filename:  "{{ gnome_vars.desktop.screensaver_filename | default('') }}"
+        screensaver_filename: "{{ gnome_vars.desktop.screensaver_filename | default('') }}"
+        accent_color: "{{ gnome_vars.desktop.accent_color | default('blue', true) }}"
         prefer_dark_theme: "{{ gnome_vars.desktop.prefer_dark_theme | default(false) | bool }}"
         enable_hot_corners: "{{ gnome_vars.desktop.enable_hot_corners | default(true) | bool }}"
         clock: "{{ gnome_vars.desktop.clock }}"
