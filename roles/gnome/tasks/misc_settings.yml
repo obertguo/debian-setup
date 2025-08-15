@@ -17,3 +17,19 @@
     # default is "'appmenu:close'"
     cmd: >-
       dconf write /org/gnome/desktop/wm/preferences/button-layout \"'appmenu:minimize,maximize,close'\" 
+
+- block:
+  - name: Configure Gnome weather automatic location
+    ansible.builtin.shell:
+      cmd: dconf write /org/gnome/shell/weather/automatic-location {{ weather.automatic_location | default(true, true) | bool }}
+
+  - name: Configure Gnome weather locations
+    ansible.builtin.shell:
+      cmd: dconf write /org/gnome/shell/weather/automatic-location {{ weather.locations }}
+    when: weather.locations is defined and weather.locations | length > 0
+
+  - name: Configure temperature unit
+    ansible.builtin.shell:
+      cmd: dconf write /org/gnome/GWeather4/temperature-unit "'{{ weather.temperatuure_unit | default('centigrade', true) }}'"
+      
+    
