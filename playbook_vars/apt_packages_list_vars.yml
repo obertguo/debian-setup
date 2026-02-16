@@ -19,6 +19,7 @@ apt_packages_list_vars:
     - docker-compose
     - nmap # to scan for exposed ports
     - netcat-traditional # to do banner grabbing
+    - lftp # a more sophisticated ftp tool (e.g., supports recursivie copying)
   school:
     - miktex
   gnome:
